@@ -1,6 +1,6 @@
-# netshow-linux-lib
+# netshow-cumulus-lib
 
-# Linux netshow library
+# Cumulus netshow library
 
 Abstracts network related information such as L2 info, LLDP, Network services
 (ntp, dhcp, dhcrelay) into Iface Objects.
