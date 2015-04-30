@@ -1,3 +1,4 @@
+# pylint: disable=W0232
 """
 Cumulus Iface module with print functions
 """
@@ -12,8 +13,6 @@ class PrintIface(linux_printiface.PrintIface):
     """
     Linux Iface class with print functions
     """
-    def __init__(self, name, cache=None):
-        linux_printiface.PrintIface.__init__(self, name, cache)
 
     def speed(self):
         return _("myspeed")
