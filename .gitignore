@@ -1,0 +1,17 @@
+venv
+*.egg
+*.zip
+.tox/
+Session.vim
+*._pycache_/
+MANIFEST
+build/
+*.mo
+*.ropeproject/
+*.swp
+*.pyc
+*.old
+*dist/
+*.gz
+*-info/
+*coverage
