@@ -55,6 +55,14 @@ setup(
     cmdclass={"install_data": PostInstall,
               "build": BuildWithI18n},
     namespace_packages=['netshowlib', 'netshowlib.cumulus'],
+    install_requires=[
+        'netshow',
+        'netshow-lib',
+        'docopt',
+        'tabulate',
+        'flufl.i18n',
+        'netshow-linux-lib'
+    ],
     classifiers=[
         'Topic :: System :: Networking',
         'Intended Audience :: Developers',
