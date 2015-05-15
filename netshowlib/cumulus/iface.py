@@ -103,6 +103,7 @@ class Iface(linux_iface.Iface):
             _m0 = re.match(_match_regex, line)
             if _m0:
                 return _m0.group(1)
+        return None
 
     @property
     def speed(self):
