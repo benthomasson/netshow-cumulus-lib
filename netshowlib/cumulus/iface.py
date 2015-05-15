@@ -1,11 +1,11 @@
 """
 Iface module for Cumulus Provider
 """
-
 from netshowlib import netshowlib as nn
 from netshowlib.linux import common
 from netshowlib.linux import iface as linux_iface
 import re
+
 
 def iface(name, cache=None):
     """
@@ -40,7 +40,7 @@ class Iface(linux_iface.Iface):
 
     def is_phy_initial_test(self):
         """
-        :return: sets port bitmap entry ``MGMT_INT``
+        :return: sets port bitmap entry ``PHY_INT``
         """
         self._port_type = common.clear_bit(self._port_type, linux_iface.PHY_INT)
         if re.match(r'swp\d+(s\d+)?$', self.name):
@@ -55,15 +55,20 @@ class Iface(linux_iface.Iface):
 
     @property
     def connector_type(self):
-        """
-        :return: connector type of the physical port
+        """ type of connector physical switch has
+        Returns:
+            int. The return code::
+                0 -- SFP (1G/10G)
+                1 -- SFP+ (10G)
+                2 -- QSFP (40G or 4x10G)
+
         """
         if not self.is_phy():
             return ''
 
     def bcm_name(self):
         """
-        :return: broadcom name of the physical port
+        returns the name broadcom gives the physical port
         """
         _porttab = '/var/lib/cumulus/porttab'
         porttab = common.read_file(_porttab)
@@ -79,15 +84,21 @@ class Iface(linux_iface.Iface):
     @property
     def initial_speed(self):
         """
-        :return initial speed as reported by the broadcom initialization files
+        returns initial speed of the physical port
         """
+        # if not a physical port, return none
+        if not self.is_phy():
+            return None
+
         _bcmfile = '/etc/bcm.d/config.bcm'
         bcm_config_file = common.read_file(_bcmfile)
+
+        # if bcm config file doesn't exist, return none
         if bcm_config_file is None:
-            return
+            return None
 
         for line in bcm_config_file:
-            _match_str = r"^_port_init_speed_%s=(\d+)" % (self.get_bcm_name())
+            _match_str = r"^port_init_speed_%s=(\d+)" % (self.bcm_name())
             _match_regex = re.compile(_match_str)
             _m0 = re.match(_match_regex, line)
             if _m0:
