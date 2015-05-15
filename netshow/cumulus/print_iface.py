@@ -1,4 +1,5 @@
 # pylint: disable=W0232
+# pylint: disable=E0611
 """
 Cumulus Iface module with print functions
 """

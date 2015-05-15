@@ -1,5 +1,7 @@
+# pylint: disable=E0611
 """ Module for Managing switch neighbor printout for the cumulus provider
 """
+
 import netshow.linux.show_neighbors as linux_showneighbors
 
 class ShowNeighbors(linux_showneighbors.ShowNeighbors):

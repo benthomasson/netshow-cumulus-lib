@@ -1,5 +1,6 @@
 # pylint: disable=R0902
 # pylint: disable=W0232
+# pylint: disable=E0611
 """
 Module for printout of 'netshow interfaces' of the Cumulus provider
 """
@@ -15,3 +16,6 @@ class ShowInterfaces(linux_printiface.PrintIface):
         the cumulus provider
     """
     pass
+
+    def run(self):
+        pass
