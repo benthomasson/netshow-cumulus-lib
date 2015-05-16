@@ -33,18 +33,22 @@ def iface(name, cache=None):
         return bondmem.BondMember(name, cache=cache)
 
     return test_iface
+
+def switch_asic():
+    """ return class instance that matches switching asic used on the cumulus switch
+    """
+    if os.path.exists('/etc/bcm.d/config.bcm'):
+        return asic.BroadcomAsic()
+    return None
+
+
 class Iface(linux_iface.Iface):
     """ Cumulus Iface Class
     """
 
-    @classmethod
-    def asic(cls):
-        """ return class instance that matches switching asic used on the cumulus switch
-        """
-        if os.path.exists('/etc/bcm.d/config.bcm'):
-            return asic.BroadcomAsic()
-        return None
-
+    def __init__(self, name, cache=None):
+        linux_iface.Iface.__init__(self, name, cache)
+        self._asic = switch_asic()
 
     def is_mgmt_initial_test(self):
         """
@@ -85,13 +89,16 @@ class Iface(linux_iface.Iface):
         """ type of connector physical switch has
         Returns:
             int. The return code::
-                0 -- SFP (1G/10G)
-                1 -- SFP+ (10G)
-                2 -- QSFP (40G or 4x10G)
+                1 -- SFP (1G/10G)
+                2 -- SFP+ (10G)
+                3 -- QSFP (40G or 4x10G)
 
         """
         if not self.is_phy():
             return ''
+
+        if self._asic:
+            return self._asic.connector_type()
 
     def initial_speed(self):
         """
@@ -101,9 +108,8 @@ class Iface(linux_iface.Iface):
         if not self.is_phy():
             return None
 
-        _asic = self.asic()
-        if _asic:
-            return _asic.portspeed(self.name)
+        if self._asic:
+            return self._asic.portspeed(self.name)
 
     @property
     def speed(self):

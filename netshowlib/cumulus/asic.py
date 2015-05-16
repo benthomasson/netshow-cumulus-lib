@@ -32,6 +32,24 @@ class BroadcomAsic(object):
 
         return None
 
+    def connector_type(self, linuxname):
+        """ type of connector physical switch has
+        Args:
+            linuxname: linux kernel name of the physical interface
+        Returns:
+            int. The return code::
+                1 -- SFP (1G/10G)
+                2 -- SFP+ (10G)
+                3 -- QSFP (40G or 4x10G)
+        """
+        _speed = self.portspeed(linuxname)
+        if _speed == '1000':
+            return 1
+        elif _speed == '10000':
+            return 2
+        elif _speed == '40000':
+            return 3
+
     def portspeed(self, linuxname):
         """
         :param linuxname: port name of the physical port according to \

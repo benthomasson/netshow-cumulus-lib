@@ -6,10 +6,17 @@
 # pylint: disable=W0201
 # pylint: disable=F0401
 import netshowlib.cumulus.iface as cumulus_iface
+from netshowlib.cumulus import asic
 import mock
 from asserts import assert_equals, mock_open_str, mod_args_generator
 from nose.tools import set_trace
 
+@mock.patch('netshowlib.cumulus.iface.os.path.exists')
+def test_switch_asic(mock_path_exists):
+    values ={'/etc/bcm.d/config.bcm': True}
+    mock_path_exists.side_effect = mod_args_generator(values)
+    _output = cumulus_iface.switch_asic()
+    assert_equals(isinstance(_output, asic.BroadcomAsic), True)
 
 class TestCumulusIface(object):
 
@@ -27,9 +34,12 @@ class TestCumulusIface(object):
         self.iface._name = 'swp10.100'
         assert_equals(self.iface.is_phy(), False)
 
+    @mock.patch('netshowlib.cumulus.iface.Iface.is_phy')
     @mock.patch('netshowlib.cumulus.iface.os.path.exists')
     @mock.patch('netshowlib.cumulus.asic.BroadcomAsic.portspeed')
-    def test_initial_speed(self, mock_port_speed, mock_path_exists):
+    def test_initial_speed(self, mock_port_speed, mock_path_exists,
+                           mock_is_phy):
+        mock_is_phy.return_value = True
         # initial speed cannot be found
         mock_path_exists.return_value = False
         assert_equals(self.iface.initial_speed(), None)
@@ -37,6 +47,7 @@ class TestCumulusIface(object):
         values = {'/etc/bcm.d/config.bcm': True}
         mock_path_exists.side_effect = mod_args_generator(values)
         mock_port_speed.return_value = '1000'
+        self.iface._asic = asic.BroadcomAsic()
         assert_equals(self.iface.initial_speed(), '1000')
 
     @mock.patch('netshowlib.linux.iface.Iface.read_from_sys')
@@ -57,12 +68,3 @@ class TestCumulusIface(object):
         values = {'carrier': '1', 'speed': '1000'}
         mock_read_from_sys.side_effect = mod_args_generator(values)
         assert_equals(self.iface.speed, '1000')
-
-
-
-
-
-
-
-
-
