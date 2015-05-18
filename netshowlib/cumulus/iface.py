@@ -8,6 +8,7 @@ from netshowlib.cumulus import asic
 import re
 import os
 
+
 def iface(name, cache=None):
     """
     calls on checks to determine best interface type match for the named interface
@@ -37,8 +38,11 @@ def iface(name, cache=None):
 def switch_asic():
     """ return class instance that matches switching asic used on the cumulus switch
     """
-    if os.path.exists('/etc/bcm.d/config.bcm'):
-        return asic.BroadcomAsic()
+    os_devicelist = open('/proc/devices').readlines()
+    for _line in os_devicelist:
+        _loadedmodule = _line.split()[1]
+        if _loadedmodule == 'linux-kernel-bde':
+            return asic.BroadcomAsic()
     return None
 
 
@@ -46,10 +50,12 @@ class Iface(linux_iface.Iface):
     """ Cumulus Iface Class
     """
 
-    def __init__(self, name, cache=None):
+    def __init__(self, name, cache=None, swasic=None):
         linux_iface.Iface.__init__(self, name, cache)
-        self._asic = switch_asic()
-
+        if asic:
+            self._asic = swasic
+        else:
+            self._asic = switch_asic()
 
     def is_vlan_aware_bridge(self):
         """
@@ -70,11 +76,10 @@ class Iface(linux_iface.Iface):
         if not self.is_subint():
             return False
         parent_ifacename = self.name.split('.')[0]
-        parent_iface = Iface(parent_ifacename)
+        parent_iface = Iface(parent_ifacename, swasic=self._asic)
         if parent_iface.is_vlan_aware_bridge():
             return True
         return False
-
 
     def is_svi_initial_test(self):
         """
@@ -84,7 +89,6 @@ class Iface(linux_iface.Iface):
         self._port_type = common.clear_bit(self._port_type, linux_iface.SVI_INT)
         if self.parent_is_vlan_aware_bridge():
             self._port_type = common.set_bit(self._port_type, linux_iface.SVI_INT)
-
 
     def is_svi(self):
         """

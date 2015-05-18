@@ -8,22 +8,25 @@
 import netshowlib.cumulus.iface as cumulus_iface
 from netshowlib.cumulus import asic
 import mock
-from asserts import assert_equals,  mod_args_generator
+from asserts import assert_equals, mock_open_str, mod_args_generator
 from nose.tools import set_trace
 
 
-@mock.patch('netshowlib.cumulus.iface.os.path.exists')
-def test_switch_asic(mock_path_exists):
-    values = {'/etc/bcm.d/config.bcm': True}
-    mock_path_exists.side_effect = mod_args_generator(values)
-    _output = cumulus_iface.switch_asic()
-    assert_equals(isinstance(_output, asic.BroadcomAsic), True)
+def test_switch_asic():
+    proc_devices_str = 'tests/test_netshowlib/test_proc_devices.txt'
+    proc_devices = open(proc_devices_str)
+    with mock.patch(mock_open_str()) as mock_open:
+        mock_open.return_value = proc_devices
+        instance = cumulus_iface.switch_asic()
+        assert_equals(isinstance(instance, asic.BroadcomAsic), True)
+
 
 
 class TestCumulusIface(object):
 
     def setup(self):
-        self.iface = cumulus_iface.Iface('swp10')
+        self.asic = asic.BroadcomAsic()
+        self.iface = cumulus_iface.Iface('swp10', swasic=self.asic)
 
     @mock.patch('netshowlib.linux.iface.Iface.is_subint')
     @mock.patch('netshowlib.linux.iface.Iface.read_from_sys')
@@ -44,8 +47,6 @@ class TestCumulusIface(object):
         values = {'bridge/vlan_filtering': '1'}
         mock_read_from_sys.side_effect = mod_args_generator(values)
         assert_equals(self.iface.is_svi(), True)
-
-
 
     def test_is_mgmt(self):
         # if starts with eth
@@ -69,19 +70,14 @@ class TestCumulusIface(object):
         assert_equals(self.iface.is_phy(), False)
 
     @mock.patch('netshowlib.cumulus.iface.Iface.is_phy')
-    @mock.patch('netshowlib.cumulus.iface.os.path.exists')
     @mock.patch('netshowlib.cumulus.asic.BroadcomAsic.portspeed')
-    def test_initial_speed(self, mock_port_speed, mock_path_exists,
+    def test_initial_speed(self, mock_port_speed,
                            mock_is_phy):
-        mock_is_phy.return_value = True
+        mock_port_speed.return_value = None
         # initial speed cannot be found
-        mock_path_exists.return_value = False
         assert_equals(self.iface.initial_speed(), None)
         # initial speed is broadcom
-        values = {'/etc/bcm.d/config.bcm': True}
-        mock_path_exists.side_effect = mod_args_generator(values)
         mock_port_speed.return_value = '1000'
-        self.iface._asic = asic.BroadcomAsic()
         assert_equals(self.iface.initial_speed(), '1000')
 
     @mock.patch('netshowlib.linux.iface.Iface.read_from_sys')

@@ -13,6 +13,7 @@ class BroadcomAsic(object):
     def __init__(self):
         self.name = 'broadcom'
 
+
     @classmethod
     def portname(cls, linuxname):
         """
