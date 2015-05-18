@@ -50,6 +50,50 @@ class Iface(linux_iface.Iface):
         linux_iface.Iface.__init__(self, name, cache)
         self._asic = switch_asic()
 
+
+    def is_vlan_aware_bridge(self):
+        """
+        used in :meth:`is_svi_initial_test`
+
+        :return: True if ``bridge/vlan_filtering`` exists and is set to 1
+        """
+        _vlanfiltering = self.read_from_sys('bridge/vlan_filtering')
+        if _vlanfiltering and _vlanfiltering == "1":
+            return True
+        return False
+
+    def parent_is_vlan_aware_bridge(self):
+        """
+        :return: True if  parent of subint is vlan aware bridge.
+        :return: False if  not subint or parent is not vlan aware bridge
+        """
+        if not self.is_subint():
+            return False
+        parent_ifacename = self.name.split('.')[0]
+        parent_iface = Iface(parent_ifacename)
+        if parent_iface.is_vlan_aware_bridge():
+            return True
+        return False
+
+
+    def is_svi_initial_test(self):
+        """
+        :return: sets port bitmap entry ``SVI_INT``. This applies to any bridge \
+            subinterface in vlan aware mode
+        """
+        self._port_type = common.clear_bit(self._port_type, linux_iface.SVI_INT)
+        if self.parent_is_vlan_aware_bridge():
+            self._port_type = common.set_bit(self._port_type, linux_iface.SVI_INT)
+
+
+    def is_svi(self):
+        """
+        :return: true if port is a management port
+        """
+        self.is_svi_initial_test()
+        return common.check_bit(self._port_type, linux_iface.SVI_INT)
+
+
     def is_mgmt_initial_test(self):
         """
         :return: sets port bitmap entry ``MGMT_INT``. This applies to any ethX and lo interface.

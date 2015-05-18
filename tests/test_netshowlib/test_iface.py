@@ -25,6 +25,28 @@ class TestCumulusIface(object):
     def setup(self):
         self.iface = cumulus_iface.Iface('swp10')
 
+    @mock.patch('netshowlib.linux.iface.Iface.is_subint')
+    @mock.patch('netshowlib.linux.iface.Iface.read_from_sys')
+    def test_is_svi(self, mock_read_from_sys, mock_subint):
+        # is not subint
+        assert_equals(self.iface.is_svi(), False)
+
+        # is subint but bridge parent does not have vlan_filtering
+        self.iface._name = 'br10.100'
+        mock_subint.return_value = True
+        values = {'bridge/vlan_filtering': '0'}
+        mock_read_from_sys.side_effect = mod_args_generator(values)
+        assert_equals(self.iface.is_svi(), False)
+
+        # is subint but bridge parent does have vlan filtering
+        self.iface._name = 'br10.100'
+        mock_subint.return_value = True
+        values = {'bridge/vlan_filtering': '1'}
+        mock_read_from_sys.side_effect = mod_args_generator(values)
+        assert_equals(self.iface.is_svi(), True)
+
+
+
     def test_is_mgmt(self):
         # if starts with eth
         self.iface._name = 'eth22'
