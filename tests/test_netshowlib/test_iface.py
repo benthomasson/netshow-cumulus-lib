@@ -8,20 +8,32 @@
 import netshowlib.cumulus.iface as cumulus_iface
 from netshowlib.cumulus import asic
 import mock
-from asserts import assert_equals, mock_open_str, mod_args_generator
+from asserts import assert_equals,  mod_args_generator
 from nose.tools import set_trace
+
 
 @mock.patch('netshowlib.cumulus.iface.os.path.exists')
 def test_switch_asic(mock_path_exists):
-    values ={'/etc/bcm.d/config.bcm': True}
+    values = {'/etc/bcm.d/config.bcm': True}
     mock_path_exists.side_effect = mod_args_generator(values)
     _output = cumulus_iface.switch_asic()
     assert_equals(isinstance(_output, asic.BroadcomAsic), True)
+
 
 class TestCumulusIface(object):
 
     def setup(self):
         self.iface = cumulus_iface.Iface('swp10')
+
+    def test_is_mgmt(self):
+        # if starts with eth
+        self.iface._name = 'eth22'
+        assert_equals(self.iface.is_mgmt(), True)
+        self.iface._name = 'eth0'
+        assert_equals(self.iface.is_mgmt(), True)
+        # starts with swp
+        self.iface._name = 'swp10'
+        assert_equals(self.iface.is_mgmt(), False)
 
     def test_is_phy(self):
         # if physical port
