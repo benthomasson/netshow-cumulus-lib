@@ -63,6 +63,7 @@ setup(
         'flufl.i18n',
         'netshow-linux-lib'
     ],
+    use_2to3=True,
     classifiers=[
         'Topic :: System :: Networking',
         'Intended Audience :: Developers',
