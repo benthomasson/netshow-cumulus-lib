@@ -2,11 +2,12 @@
 Iface module for Cumulus Provider
 """
 from netshowlib import netshowlib as nn
-from netshowlib.linux import common
+from netshowlib.linux import common as linux_common
+from netshowlib.cumulus import common
 from netshowlib.linux import iface as linux_iface
 from netshowlib.cumulus import asic
+from netshowlib.cumulus import counters
 import re
-import os
 
 
 def iface(name, cache=None):
@@ -32,8 +33,8 @@ def iface(name, cache=None):
     elif test_iface.is_bondmem():
         bondmem = nn.import_module('netshowlib.cumulus.bond')
         return bondmem.BondMember(name, cache=cache)
-
     return test_iface
+
 
 def switch_asic():
     """ return class instance that matches switching asic used on the cumulus switch
@@ -52,10 +53,14 @@ class Iface(linux_iface.Iface):
 
     def __init__(self, name, cache=None, swasic=None):
         linux_iface.Iface.__init__(self, name, cache)
+        # import class that collects asic specific info
+        # Not this doesn't run things like bcmcmd, just looks at flat files
         if asic:
             self._asic = swasic
         else:
             self._asic = switch_asic()
+
+        self._counters = counters.Counters(name=name, cache=cache)
 
     def is_vlan_aware_bridge(self):
         """
@@ -83,54 +88,52 @@ class Iface(linux_iface.Iface):
 
     def is_svi_initial_test(self):
         """
-        :return: sets port bitmap entry ``SVI_INT``. This applies to any bridge \
-            subinterface in vlan aware mode
+        :return: sets port bitmap entry ``SVI_INT``. This applies to any \
+            bridge subinterface in vlan aware mode
         """
-        self._port_type = common.clear_bit(self._port_type, linux_iface.SVI_INT)
+        self._port_type = linux_common.clear_bit(self._port_type, linux_iface.SVI_INT)
         if self.parent_is_vlan_aware_bridge():
-            self._port_type = common.set_bit(self._port_type, linux_iface.SVI_INT)
+            self._port_type = linux_common.set_bit(self._port_type, linux_iface.SVI_INT)
 
     def is_svi(self):
         """
         :return: true if port is a management port
         """
         self.is_svi_initial_test()
-        return common.check_bit(self._port_type, linux_iface.SVI_INT)
-
+        return linux_common.check_bit(self._port_type, linux_iface.SVI_INT)
 
     def is_mgmt_initial_test(self):
         """
-        :return: sets port bitmap entry ``MGMT_INT``. This applies to any ethX and lo interface.
+        :return: sets port bitmap entry ``MGMT_INT``. \
+            This applies to any ethX and lo interface.
         """
-        self._port_type = common.clear_bit(self._port_type, linux_iface.MGMT_INT)
+        self._port_type = linux_common.clear_bit(self._port_type, linux_iface.MGMT_INT)
         if re.match(r'eth\d+$', self.name):
-            self._port_type = common.set_bit(self._port_type, linux_iface.MGMT_INT)
+            self._port_type = linux_common.set_bit(self._port_type, linux_iface.MGMT_INT)
         elif self.is_loopback():
-            self._port_type = common.set_bit(self._port_type, linux_iface.MGMT_INT)
-
+            self._port_type = linux_common.set_bit(self._port_type, linux_iface.MGMT_INT)
 
     def is_mgmt(self):
         """
         :return: true if port is a management port
         """
         self.is_mgmt_initial_test()
-        return common.check_bit(self._port_type, linux_iface.MGMT_INT)
-
+        return linux_common.check_bit(self._port_type, linux_iface.MGMT_INT)
 
     def is_phy_initial_test(self):
         """
         :return: sets port bitmap entry ``PHY_INT``
         """
-        self._port_type = common.clear_bit(self._port_type, linux_iface.PHY_INT)
-        if re.match(r'swp\d+(s\d+)?$', self.name):
-            self._port_type = common.set_bit(self._port_type, linux_iface.PHY_INT)
+        self._port_type = linux_common.clear_bit(self._port_type, linux_iface.PHY_INT)
+        if common.is_phy(self.name):
+            self._port_type = linux_common.set_bit(self._port_type, linux_iface.PHY_INT)
 
     def is_phy(self):
         """
         :return: true if port is a physical port
         """
         self.is_phy_initial_test()
-        return common.check_bit(self._port_type, linux_iface.PHY_INT)
+        return linux_common.check_bit(self._port_type, linux_iface.PHY_INT)
 
     @property
     def connector_type(self):

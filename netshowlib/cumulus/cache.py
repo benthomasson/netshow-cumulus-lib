@@ -11,4 +11,8 @@ class Cache(linuxCache):
     This class produces the cache info for Cumulus \
         networking such as ip addressing, lldp, QOS
     """
-    pass
+    def __init__(self):
+        linuxCache.Cache.__init__(self)
+        self._feature_list.append('counters')
+        self.counters = {}
+        self.provider = 'cumulus'
