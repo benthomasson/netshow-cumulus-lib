@@ -8,7 +8,7 @@ from netshowlib.linux import iface as linux_iface
 from netshowlib.cumulus import asic
 from netshowlib.cumulus import counters
 import re
-
+import os
 
 def iface(name, cache=None):
     """
@@ -39,11 +39,8 @@ def iface(name, cache=None):
 def switch_asic():
     """ return class instance that matches switching asic used on the cumulus switch
     """
-    os_devicelist = open('/proc/devices').readlines()
-    for _line in os_devicelist:
-        _loadedmodule = _line.split()[1]
-        if _loadedmodule == 'linux-kernel-bde':
-            return asic.BroadcomAsic()
+    if os.path.exists('/sys/bus/pci/drivers/linux-kernel-bde'):
+        return asic.BroadcomAsic()
     return None
 
 

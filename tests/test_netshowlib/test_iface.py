@@ -8,19 +8,21 @@
 import netshowlib.cumulus.iface as cumulus_iface
 from netshowlib.cumulus import asic
 import mock
-from asserts import assert_equals, mock_open_str, mod_args_generator
+from asserts import assert_equals, mod_args_generator
 from nose.tools import set_trace
 
 
-def test_switch_asic():
-    proc_devices_str = 'tests/test_netshowlib/test_proc_devices.txt'
-    proc_devices = open(proc_devices_str)
-    with mock.patch(mock_open_str()) as mock_open:
-        mock_open.return_value = proc_devices
-        instance = cumulus_iface.switch_asic()
-        assert_equals(isinstance(instance, asic.BroadcomAsic), True)
-
-
+@mock.patch('netshowlib.cumulus.iface.os.path.exists')
+def test_switch_asic(mock_path_exists):
+    values = {'/sys/bus/pci/drivers/linux-kernel-bde': True}
+    mock_path_exists.side_effect = mod_args_generator(values)
+    instance = cumulus_iface.switch_asic()
+    assert_equals(isinstance(instance, asic.BroadcomAsic), True)
+    # no asic found
+    values = {'/sys/bus/pci/drivers/linux-kernel-bde': None}
+    mock_path_exists.side_effect = mod_args_generator(values)
+    instance = cumulus_iface.switch_asic()
+    assert_equals(instance, None)
 
 class TestCumulusIface(object):
 
