@@ -39,8 +39,15 @@ def iface(name, cache=None):
 def switch_asic():
     """ return class instance that matches switching asic used on the cumulus switch
     """
-    if os.path.exists('/sys/bus/pci/drivers/linux-kernel-bde'):
-        return asic.BroadcomAsic()
+    try:
+        lspci_output = linux_common.exec_command('lspci -nn')
+    except linux_common.ExecCommandException:
+        return None
+
+    for _line in lspci_output.split('\n'):
+        _line = _line.lower()
+        if re.search(r'ethernet\s+controller.*broadcom', _line):
+            return asic.BroadcomAsic()
     return None
 
 

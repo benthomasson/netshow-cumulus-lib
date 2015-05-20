@@ -7,20 +7,19 @@
 # pylint: disable=F0401
 import netshowlib.cumulus.iface as cumulus_iface
 from netshowlib.cumulus import asic
+from netshowlib.linux import common as linux_common
 import mock
 from asserts import assert_equals, mod_args_generator
 from nose.tools import set_trace
 
 
-@mock.patch('netshowlib.cumulus.iface.os.path.exists')
-def test_switch_asic(mock_path_exists):
-    values = {'/sys/bus/pci/drivers/linux-kernel-bde': True}
-    mock_path_exists.side_effect = mod_args_generator(values)
+@mock.patch('netshowlib.cumulus.iface.linux_common.exec_command')
+def test_switch_asic(mock_exec_command):
+    mock_exec_command.return_value = open('tests/test_netshowlib/lspci_output.txt').read()
     instance = cumulus_iface.switch_asic()
     assert_equals(isinstance(instance, asic.BroadcomAsic), True)
     # no asic found
-    values = {'/sys/bus/pci/drivers/linux-kernel-bde': None}
-    mock_path_exists.side_effect = mod_args_generator(values)
+    mock_exec_command.side_effect = linux_common.ExecCommandException
     instance = cumulus_iface.switch_asic()
     assert_equals(instance, None)
 
