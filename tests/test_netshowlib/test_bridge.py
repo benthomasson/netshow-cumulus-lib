@@ -25,3 +25,5 @@ class TestCumulusBridge(object):
         mock_read_from_sys.side_effect = mod_args_generator(values)
         assert_equals(self.iface.vlan_filtering, 0)
 
+
+

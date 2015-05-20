@@ -3,7 +3,10 @@ Bridge module for the cumulus provider
 """
 
 from netshowlib.cumulus import iface as cumulus_iface
+from netshowlib.linux import bridge as linux_bridge
 
+class MstpctlStpBridge(object):
+    pass
 
 class Bridge(cumulus_iface.Iface):
     """ Bridge class for the cumulus provider
@@ -22,3 +25,17 @@ class Bridge(cumulus_iface.Iface):
         if self.is_vlan_aware_bridge():
             self._vlan_filtering = 1
         return self._vlan_filtering
+
+    @property
+    def stp(self):
+        """
+        :return: ``None`` if STP is disabled
+        :return: :class:`KernelStpBridge` instance if stp_state == 1
+        :return: :class:`MstpctlStpBridge` instance if stp_state == 2
+        """
+        if self.read_from_sys('bridge/stp_state') == '2':
+            self._stp = MstpctlStpBridge(self)
+            return self._stp
+        return super(Bridge, self).stp
+
+

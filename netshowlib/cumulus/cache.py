@@ -13,6 +13,5 @@ class Cache(linuxCache):
     """
     def __init__(self):
         linuxCache.Cache.__init__(self)
-        self._feature_list.append('counters')
-        self.counters = {}
-        self.provider = 'cumulus'
+        self.feature_list['counters'] = 'cumulus'
+        self.feature_list['mstpd'] = 'cumulus'
