@@ -23,6 +23,7 @@ def test_switch_asic(mock_exec_command):
     instance = cumulus_iface.switch_asic()
     assert_equals(instance, None)
 
+
 class TestCumulusIface(object):
 
     def setup(self):
@@ -30,7 +31,7 @@ class TestCumulusIface(object):
         self.iface = cumulus_iface.Iface('swp10', swasic=self.asic)
 
     @mock.patch('netshowlib.linux.iface.Iface.is_subint')
-    @mock.patch('netshowlib.linux.iface.Iface.read_from_sys')
+    @mock.patch('netshowlib.linux.common.read_from_sys')
     def test_is_svi(self, mock_read_from_sys, mock_subint):
         # is not subint
         assert_equals(self.iface.is_svi(), False)
@@ -38,14 +39,14 @@ class TestCumulusIface(object):
         # is subint but bridge parent does not have vlan_filtering
         self.iface._name = 'br10.100'
         mock_subint.return_value = True
-        values = {'bridge/vlan_filtering': '0'}
+        values = {('bridge/vlan_filtering', 'br10'): '0'}
         mock_read_from_sys.side_effect = mod_args_generator(values)
         assert_equals(self.iface.is_svi(), False)
 
         # is subint but bridge parent does have vlan filtering
         self.iface._name = 'br10.100'
         mock_subint.return_value = True
-        values = {'bridge/vlan_filtering': '1'}
+        values = {('bridge/vlan_filtering', 'br10'): '1'}
         mock_read_from_sys.side_effect = mod_args_generator(values)
         assert_equals(self.iface.is_svi(), True)
 
@@ -85,17 +86,17 @@ class TestCumulusIface(object):
     @mock.patch('netshowlib.cumulus.iface.Iface.initial_speed')
     def test_speed(self, mock_initial_speed, mock_read_from_sys):
         # admin down
-        values = {'carrier': None}
+        values = {('carrier',): None}
         mock_read_from_sys.side_effect = mod_args_generator(values)
         mock_initial_speed.return_value = 'initial_speed'
         assert_equals(self.iface.speed, 'initial_speed')
         # carrier down, but admin up
         self.iface._speed = None
-        values = {'carrier': '0', 'speed': '0'}
+        values = {('carrier',): '0', ('speed',): '0'}
         mock_read_from_sys.side_effect = mod_args_generator(values)
         assert_equals(self.iface.speed, '0')
         # carrier up, but admin up
         self.iface._speed = None
-        values = {'carrier': '1', 'speed': '1000'}
+        values = {('carrier',): '1', ('speed',): '1000'}
         mock_read_from_sys.side_effect = mod_args_generator(values)
         assert_equals(self.iface.speed, '1000')

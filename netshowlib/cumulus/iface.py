@@ -66,17 +66,6 @@ class Iface(linux_iface.Iface):
 
         self._counters = counters.Counters(name=name, cache=cache)
 
-    def is_vlan_aware_bridge(self):
-        """
-        used in :meth:`is_svi_initial_test`
-
-        :return: True if ``bridge/vlan_filtering`` exists and is set to 1
-        """
-        _vlanfiltering = self.read_from_sys('bridge/vlan_filtering')
-        if _vlanfiltering and _vlanfiltering == "1":
-            return True
-        return False
-
     def parent_is_vlan_aware_bridge(self):
         """
         :return: True if  parent of subint is vlan aware bridge.
@@ -86,7 +75,7 @@ class Iface(linux_iface.Iface):
             return False
         parent_ifacename = self.name.split('.')[0]
         parent_iface = Iface(parent_ifacename, swasic=self._asic)
-        if parent_iface.is_vlan_aware_bridge():
+        if common.is_vlan_aware_bridge(parent_iface.name):
             return True
         return False
 

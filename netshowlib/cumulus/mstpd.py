@@ -18,7 +18,7 @@ def cacheinfo():
         result = linux_common.exec_command('/sbin/mstpctl showall')
     except (ValueError, IOError):
         return {}
-    bridgehash = {}
+    bridgehash = {'bridge': {}, 'iface': {}}
     is_bridge_info = False
     bridgename = None
     iface = None
@@ -55,8 +55,8 @@ def cacheinfo():
             # if line starts with the bridgename, then create
             # the stp hash associated with the bridge
             if line.split()[0] == bridgename:
-                bridgehash[bridgename] = {}
-                bridgehash[bridgename]['ifaces'] = {}
+                bridgehash['bridge'][bridgename] = {}
+                bridgehash['bridge'][bridgename]['ifaces'] = {}
                 is_bridge_info = True
                 iface = None
                 continue
@@ -75,10 +75,13 @@ def cacheinfo():
             # the stp info. either the bridge or bridge member hash
             if not bridge_loc:
                 if iface:
-                    bridgehash[bridgename]['ifaces'][iface] = {}
-                    bridge_loc = bridgehash[bridgename]['ifaces'][iface]
+                    bridgehash['bridge'][bridgename]['ifaces'][iface] = {}
+                    bridge_loc = bridgehash['bridge'][bridgename]['ifaces'][iface]
+                    if not bridgehash.get('iface').get(iface):
+                        bridgehash['iface'][iface] = {}
+                    bridgehash['iface'][iface][bridgename] = bridge_loc
                 else:
-                    bridge_loc = bridgehash[bridgename]
+                    bridge_loc = bridgehash['bridge'][bridgename]
 
             # col splitting magic. courteous of Jtoppins@cumulus
             if len(line) > 45:
