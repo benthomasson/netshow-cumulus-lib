@@ -12,6 +12,75 @@ from asserts import assert_equals, mock_open_str, mod_args_generator
 from nose.tools import set_trace
 
 
+class TestCumulusBridgeMember(object):
+
+    def setup(self):
+        self.iface = cumulus_bridge.BridgeMember('swp1')
+
+    @mock.patch('netshowlib.linux.iface.Iface.read_from_sys')
+    def test_get_vlans_new_driver_untagged(self, mock_read_from_sys):
+        # get untagged vlans. should be 9
+        _filename = 'tests/test_netshowlib/brport_untagged_vlans.txt'
+        vlanlist = open(_filename).readlines()
+        mock_read_from_sys.return_value = vlanlist
+        assert_equals(self.iface.vlan_aware_vlan_list('untagged_vlans'),
+                      [9])
+        mock_read_from_sys.assert_called_with('brport/untagged_vlans')
+
+    @mock.patch('netshowlib.linux.iface.Iface.read_from_sys')
+    def test_get_vlans_new_driver(self, mock_read_from_sys):
+        # Get all vlans of vlan aware port
+        # vlans are 1-10,20-24,29-30,32,64,4092
+        mock_read_from_sys.return_value = \
+            ['0x61f007fe\n', '0x00000001\n', '0x00000001\n',
+             '0x00000000\n', '0x00000000\n', '0x00000000\n',
+             '0x00000000\n', '0x00000000\n', '0x00000000\n',
+             '0x00000000\n', '0x00000000\n', '0x00000000\n',
+             '0x00000000\n', '0x00000000\n', '0x00000000\n',
+             '0x00000000\n', '0x00000000\n', '0x00000000\n',
+             '0x00000000\n', '0x00000000\n', '0x00000000\n',
+             '0x00000000\n', '0x00000000\n', '0x00000000\n',
+             '0x00000000\n', '0x00000000\n', '0x00000000\n',
+             '0x00000000\n', '0x00000000\n', '0x00000000\n',
+             '0x00000000\n', '0x00000000\n', '0x00000000\n',
+             '0x00000000\n', '0x00000000\n', '0x00000000\n',
+             '0x00000000\n', '0x00000000\n', '0x00000000\n',
+             '0x00000000\n', '0x00000000\n', '0x00000000\n',
+             '0x00000000\n', '0x00000000\n', '0x00000000\n',
+             '0x00000000\n', '0x00000000\n', '0x00000000\n',
+             '0x00000000\n', '0x00000000\n', '0x00000000\n',
+             '0x00000000\n', '0x00000000\n', '0x00000000\n',
+             '0x00000000\n', '0x00000000\n', '0x00000000\n',
+             '0x00000000\n', '0x00000000\n', '0x00000000\n',
+             '0x00000000\n', '0x00000000\n', '0x00000000\n',
+             '0x00000000\n', '0x00000000\n', '0x00000000\n',
+             '0x00000000\n', '0x00000000\n', '0x00000000\n',
+             '0x00000000\n', '0x00000000\n', '0x00000000\n',
+             '0x00000000\n', '0x00000000\n', '0x00000000\n',
+             '0x00000000\n', '0x00000000\n', '0x00000000\n',
+             '0x00000000\n', '0x00000000\n', '0x00000000\n',
+             '0x00000000\n', '0x00000000\n', '0x00000000\n',
+             '0x00000000\n', '0x00000000\n', '0x00000000\n',
+             '0x00000000\n', '0x00000000\n', '0x00000000\n',
+             '0x00000000\n', '0x00000000\n', '0x00000000\n',
+             '0x00000000\n', '0x00000000\n', '0x00000000\n',
+             '0x00000000\n', '0x00000000\n', '0x00000000\n',
+             '0x00000000\n', '0x00000000\n', '0x00000000\n',
+             '0x00000000\n', '0x00000000\n', '0x00000000\n',
+             '0x00000000\n', '0x00000000\n', '0x00000000\n',
+             '0x00000000\n', '0x00000000\n', '0x00000000\n',
+             '0x00000000\n', '0x00000000\n', '0x00000000\n',
+             '0x00000000\n', '0x00000000\n', '0x00000000\n',
+             '0x00000000\n', '0x00000000\n', '0x00000000\n',
+             '0x00000000\n', '0x00000000\n', '0x00000000\n',
+             '0x00000000\n', '0x00000000\n', '0x00000000\n',
+             '0x00000000\n', '0x10000000\n']
+        vlan_list = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 20, 21, 22, 23, 24,
+                     29, 30, 32, 64, 4092]
+        assert_equals(self.iface.vlan_aware_vlan_list('vlans'), vlan_list)
+        mock_read_from_sys.assert_called_with('brport/vlans')
+
+
 class TestCumulusBridge(object):
 
     def setup(self):
