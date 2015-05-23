@@ -8,19 +8,83 @@ from netshowlib.cumulus import mstpd
 import re
 
 
+BRIDGE_CACHE = {}
+
+
+class MstpctlStpBridgeMember(object):
+    """
+    class responsible for managing stp info gathered from mstpctl
+    """
+    def __init__(self, bridgemem, cache=None):
+        self.bridgemem = bridgemem
+        if cache:
+            self._cache = cache.get('iface').get(bridgemem.name)
+        else:
+            self._cache = mstpd.cacheinfo().get('iface').get(bridgemem.name)
+        self.orig_cache = cache
+
+    def _initialize_state(self):
+        """ initialize state attribute that keeps interesting
+        info about a bridge port
+        """
+        self._state = {
+            'root': [],
+            'designated': [],
+            'alternate': [],
+            'edge_port': [],
+            'network_port': [],
+            'discarding': [],
+            'forwarding': [],
+            'backup': []
+        }
+
+    @property
+    def state(self):
+        """
+        parse through mstpctl output
+        """
+        self._initialize_state()
+        for _bridgename, _stpinfo in self._cache.iteritems():
+            _bridge = BRIDGE_CACHE.get(_bridgename)
+            if not _bridge:
+                _bridge = Bridge(_bridgename, self.orig_cache)
+                BRIDGE_CACHE[_bridgename] = _bridge
+            if _stpinfo.get('role') == 'root':
+                self._state['root'].append(_bridge)
+            elif _stpinfo.get('role') == 'designated':
+                self._state['designated'].append(_bridge)
+            elif _stpinfo.get('role') == 'alternate':
+                self._state['alternate'].append(_bridge)
+            elif _stpinfo.get('role') == 'backup':
+                self._state['backup'].append(_bridge)
+
+            if _stpinfo.get('state') == 'forwarding':
+                self._state['forwarding'].append(_bridge)
+            elif _stpinfo.get('state') == 'discarding':
+                self._state['discarding'].append(_bridge)
+
+            if _stpinfo.get('oper_edge_port') == 'yes':
+                self._state['edge_port'].append(_bridge)
+            elif _stpinfo.get('network_port') == 'yes':
+                self._state['network_port'].append(_bridge)
+
+        return self._state
+
+
 class MstpctlStpBridge(object):
     """
     class responsible to managing stp info gathered from mstpctl
     """
-    def __init__(self, bridge, cache):
+    def __init__(self, bridge, cache=None):
         self.bridge = bridge
         self._root_priority = None
         self._bridge_priority = None
         if cache:
-            self.cache = cache.get('mstpd').get('bridge')
+            self._cache = cache.get('mstpd').get('bridge')
         else:
-            self.cache = mstpd.cacheinfo().get('bridge')
-        self._stpdetails = self.cache.get(self.bridge.name)
+            self._cache = mstpd.cacheinfo().get('bridge')
+        self.orig_cache = cache
+        self._stpdetails = self._cache.get(self.bridge.name)
 
     def is_root(self):
         """
@@ -28,6 +92,13 @@ class MstpctlStpBridge(object):
         """
         return self._stpdetails.get('designated_root') == \
             self._stpdetails.get('bridge_id')
+
+    @property
+    def root_port(self):
+        """
+        :return: root port
+        """
+        return self._stpdetails.get('root_port')
 
     @property
     def root_priority(self):
@@ -64,10 +135,17 @@ class BridgeMember(linux_bridge.BridgeMember):
         :return: :class:`MstpctlStpBridge` instance if stp_state == 2
         """
         if self.read_from_sys('bridge/stp_state') == '2':
-            self._stp = MstpctlStpBridge(self, self._cache)
+            self._stp = MstpctlStpBridgeMember(self, self._cache)
             return self._stp
         return super(BridgeMember, self).stp
 
+    @property
+    def native_vlan(self):
+        """
+        :return: native vlan for the vlan aware bridge
+        """
+        if self.read_from_sys('bridge/stp_state') == '2':
+            return self.vlan_aware_vlan_list('untagged_vlans')
 
     @property
     def vlan_filtering(self):

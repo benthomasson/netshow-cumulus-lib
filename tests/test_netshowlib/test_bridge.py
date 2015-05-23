@@ -18,6 +18,36 @@ class TestCumulusBridgeMember(object):
         self.iface = cumulus_bridge.BridgeMember('swp1')
 
     @mock.patch('netshowlib.linux.iface.Iface.read_from_sys')
+    @mock.patch('netshowlib.cumulus.mstpd.linux_common.exec_command')
+    def test_trunk_port_classic_driver(self, mock_exec,
+                                       mock_read_from_sys):
+        values = {('bridge/stp_state',): '2'}
+        mock_read_from_sys.side_effect = mod_args_generator(values)
+        mock_exec.return_value = open('tests/test_netshowlib/mstpctl_showall').read()
+        self.iface = cumulus_bridge.BridgeMember('swp3')
+        for i in ['root', 'backup', 'alternate','edge_port',
+                  'network_port','discarding', 'forwarding']:
+            self.__dict__[i] = [x.name for x in self.iface.stp.state.get(i)]
+        assert_equals(self.root, ['br0'])
+        assert_equals(self.backup, ['br2'])
+        assert_equals(self.network_port, ['br0'])
+        assert_equals(self.edge_port, [])
+        assert_equals(self.alternate, [])
+        assert_equals(self.discarding, ['br2'])
+        assert_equals(self.forwarding, ['br0'])
+
+    @mock.patch('netshowlib.linux.iface.Iface.read_from_sys')
+    def test_get_native_vlan(self, mock_read_from_sys):
+        # get untagged vlans. should be 9
+        _filename = 'tests/test_netshowlib/brport_untagged_vlans.txt'
+        vlanlist = open(_filename).readlines()
+        values = {('bridge/stp_state',): '2',
+                  ('brport/untagged_vlans',): vlanlist}
+        mock_read_from_sys.side_effect = mod_args_generator(values)
+        assert_equals(self.iface.native_vlan, [9])
+
+
+    @mock.patch('netshowlib.linux.iface.Iface.read_from_sys')
     def test_get_vlans_new_driver_untagged(self, mock_read_from_sys):
         # get untagged vlans. should be 9
         _filename = 'tests/test_netshowlib/brport_untagged_vlans.txt'

@@ -79,7 +79,8 @@ def cacheinfo():
                     bridge_loc = bridgehash['bridge'][bridgename]['ifaces'][iface]
                     if not bridgehash.get('iface').get(iface):
                         bridgehash['iface'][iface] = {}
-                    bridgehash['iface'][iface][bridgename] = bridge_loc
+                    master_iface = iface.split('.')[0]
+                    bridgehash['iface'][master_iface][bridgename] = bridge_loc
                 else:
                     bridge_loc = bridgehash['bridge'][bridgename]
 

@@ -23,5 +23,7 @@ def test_cacheinfo(mock_exec):
     assert_equals(_output['bridge'].get('br0').get('designated_root'),
                   '8.000.00:02:00:00:00:02')
     # test getting data from iface structure
+    assert_equals(sorted(_output['iface'].get('swp4').keys()),
+                  ['br0', 'br2'])
     assert_equals(_output['iface'].get('swp3').get('br0').get('auto_edge_port'),
                   'yes')

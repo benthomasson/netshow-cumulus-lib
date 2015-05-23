@@ -33,7 +33,7 @@ br0:swp3 CIST info
   restricted role    no                      restricted TCN       no
   port hello time    2                       disputed             no
   bpdu guard port    no                      bpdu guard error     no
-  network port       no                      BA inconsistent      no
+  network port       yes                     BA inconsistent      no
   Num TX BPDU        10                      Num TX TCN           8
   Num RX BPDU        685772                  Num RX TCN           6
   Num Transition FWD 1                       Num Transition BLK   1
