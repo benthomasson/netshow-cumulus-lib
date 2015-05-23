@@ -119,8 +119,38 @@ class MstpctlStpBridge(object):
         """
         :return: stp state of iface members of the bridge
         """
-        return self._stpdetails.get('ifaces')
+        _member_state = {
+            'root': [],
+            'designated': [],
+            'alternate': [],
+            'edge_port': [],
+            'network_port': [],
+            'discarding': [],
+            'forwarding': [],
+            'backup': []
+        }
 
+        for _ifacename, _stpinfo in self._stpdetails.get('ifaces').iteritems():
+            _iface_to_add = self.bridge.members.get(_ifacename)
+            if _stpinfo.get('role') == 'root':
+                _member_state['root'].append(_iface_to_add)
+            elif _stpinfo.get('role') == 'designated':
+                _member_state['designated'].append(_iface_to_add)
+            elif _stpinfo.get('role') == 'alternate':
+                _member_state['alternate'].append(_iface_to_add)
+            elif _stpinfo.get('role') == 'backup':
+                _member_state['backup'].append(_iface_to_add)
+
+            if _stpinfo.get('state') == 'forwarding':
+                _member_state['forwarding'].append(_iface_to_add)
+            elif _stpinfo.get('state') == 'discarding':
+                _member_state['discarding'].append(_iface_to_add)
+
+            if _stpinfo.get('oper_edge_port') == 'yes':
+                _member_state['edge_port'].append(_iface_to_add)
+            elif _stpinfo.get('network_port') == 'yes':
+                _member_state['network_port'].append(_iface_to_add)
+        return _member_state
 
 class BridgeMember(linux_bridge.BridgeMember):
     """

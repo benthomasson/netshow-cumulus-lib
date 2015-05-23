@@ -163,13 +163,26 @@ class TestCumulusBridge(object):
 
     @mock.patch('netshowlib.cumulus.mstpd.linux_common.exec_command')
     @mock.patch('netshowlib.linux.common.read_from_sys')
-    def test_member_state(self, mock_read_from_sys, mock_exec):
+    @mock.patch('netshowlib.linux.bridge.os.listdir')
+    def test_member_state(self, mock_listdir,
+                          mock_read_from_sys, mock_exec):
+        mock_listdir.return_value = ['swp3', 'swp4']
         mock_exec.return_value = open('tests/test_netshowlib/mstpctl_showall').read()
         values = {('bridge/stp_state', 'br0'): '2'}
         mock_read_from_sys.side_effect = mod_args_generator(values)
-        assert_equals(sorted(self.iface.stp.member_state.keys()), ['swp3', 'swp4'])
-        # test grabbing iface stp property
-        assert_equals(self.iface.stp.member_state.get('swp4').get('port_id'), '8.002')
+        _output = self.iface.stp.member_state
+        for i in ['root', 'backup', 'alternate','edge_port',
+                  'network_port','discarding', 'forwarding']:
+            self.__dict__[i] = [x.name for x in _output]
+        assert_equals(self.root, [])
+        assert_equals(self.backup, [])
+        assert_equals(self.network_port, [])
+        assert_equals(self.edge_port, [])
+        assert_equals(self.alternate, [])
+        assert_equals(self.discarding, [])
+        assert_equals(self.forwarding,[])
+
+
 
     @mock.patch('netshowlib.linux.common.os.listdir')
     def test_members(self, mock_listdir):
