@@ -21,7 +21,7 @@ class Lacp(linux_lacp.Lacp):
         self._lacp_bypass = None
 
     @property
-    def lacp_bypass(self):
+    def bypass(self):
         """
         :return: '1', '0' if LACP bypass is supported. '1' means that its active
         :return: None if not supported on this Cumulus Linux release
