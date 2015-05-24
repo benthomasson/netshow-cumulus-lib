@@ -3,6 +3,8 @@ related to bond interface and bond member interfaces """
 import netshowlib.cumulus.bridge as cumulus_bridge
 import netshowlib.linux.bond as linux_bond
 from netshowlib.cumulus import lacp
+import netshowlib.linux.common as linux_common
+
 
 class Bond(linux_bond.Bond):
     """ Class for managing Bond on Cumulus Linux """
@@ -15,9 +17,12 @@ class Bond(linux_bond.Bond):
         :run MstpctlStpMember if using mstpd
         :run KernelStpMember if using kernel stp
         """
-        if self.read_from_sys('bridge/stp_state') == '2':
+        stp_state = linux_common.read_file_oneline(
+            '/proc/sys/net/bridge/bridge-stp-user-space')
+        if stp_state == '1':
             self._stp = cumulus_bridge.MstpctlStpBridgeMember(self, self._cache)
-        self._stp = super(Bond, self).stp
+        else:
+            self._stp = super(Bond, self).stp
         return self._stp
 
     @property
@@ -32,7 +37,6 @@ class Bond(linux_bond.Bond):
                 self._lacp = lacp.Lacp(self.name)
             return self._lacp
         return None
-
 
     @property
     def clag_enable(self):
