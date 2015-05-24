@@ -54,3 +54,18 @@ class PrintIface(linux_printiface.PrintIface):
             return _('sfp')
         elif _connector == 1:
             return _('rj45')
+
+    @property
+    def port_category(self):
+        """
+        :return: port type. Via interface discovery determine classify port \
+        type
+        """
+        if self.iface.is_mgmt():
+            return _('mgmt')
+        elif self.iface.is_svi():
+            return _('svi/l3')
+        else:
+            return super(PrintIface, self).port_category
+
+

@@ -45,3 +45,26 @@ class TestPrintIface(object):
         self.piface.iface._name = 'swp2s0'
         assert_equals(self.piface.connector_type, '4x10g')
 
+    @mock.patch('netshowlib.cumulus.iface.Iface.is_mgmt')
+    @mock.patch('netshowlib.cumulus.iface.Iface.is_svi')
+    @mock.patch('netshowlib.linux.iface.Iface.is_loopback')
+    def test_port_category(self, mock_linux_is_loopback,
+                           mock_is_svi, mock_is_mgmt):
+        # is svi
+        mock_is_svi.return_value = True
+        mock_is_mgmt.return_value = False
+        assert_equals(self.piface.port_category, ('svi/l3'))
+        assert_equals(mock_linux_is_loopback.call_count, 0)
+        # is mgmt
+        mock_is_svi.return_value = False
+        mock_is_mgmt.return_value = True
+        assert_equals(self.piface.port_category, ('mgmt'))
+        assert_equals(mock_linux_is_loopback.call_count, 0)
+        # use parent print category
+        mock_is_mgmt.return_value = False
+        mock_is_mgmt.return_value = False
+        self.piface.port_category
+        assert_equals(mock_linux_is_loopback.call_count, 1)
+
+
+
