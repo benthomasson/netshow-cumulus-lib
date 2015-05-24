@@ -20,11 +20,14 @@ class TestBroadcomAsic(object):
         assert_equals(self.asic.name, 'broadcom')
 
     @mock.patch('netshowlib.cumulus.asic.BroadcomAsic.portspeed')
-    def test_connector_type(self, mock_portspeed):
-        # sfp
+    @mock.patch('netshowlib.cumulus.asic.BroadcomAsic.portname')
+    def test_connector_type(self, mock_portname, mock_portspeed):
+        # rj45
+        mock_portname.return_value = 'ge10'
         mock_portspeed.return_value = '1000'
         assert_equals(self.asic.connector_type('swp1'), 1)
         # sfp+
+        mock_portname.return_value = 'xe22'
         mock_portspeed.return_value = '10000'
         assert_equals(self.asic.connector_type('swp2'), 2)
         # qsfp+

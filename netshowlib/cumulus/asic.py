@@ -39,12 +39,13 @@ class BroadcomAsic(object):
             linuxname: linux kernel name of the physical interface
         Returns:
             int. The return code::
-                1 -- SFP (1G/10G)
+                1 -- RJ-45 (1G/10G)
                 2 -- SFP+ (10G)
                 3 -- QSFP (40G or 4x10G)
         """
+        _portname = self.portname(linuxname)
         _speed = self.portspeed(linuxname)
-        if _speed == '1000':
+        if _portname.startswith('ge'):
             return 1
         elif _speed == '10000':
             return 2

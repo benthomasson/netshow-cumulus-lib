@@ -8,7 +8,7 @@ from netshowlib.linux import iface as linux_iface
 from netshowlib.cumulus import asic
 from netshowlib.cumulus import counters
 import re
-import os
+
 
 def iface(name, cache=None):
     """
@@ -133,10 +133,9 @@ class Iface(linux_iface.Iface):
         """ type of connector physical switch has
         Returns:
             int. The return code::
-                1 -- SFP (1G/10G)
+                1 -- RJ45 (1G/10G)
                 2 -- SFP+ (10G)
                 3 -- QSFP (40G or 4x10G)
-
         """
         if not self.is_phy():
             return ''
