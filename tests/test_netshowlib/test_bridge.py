@@ -19,6 +19,16 @@ class TestCumulusBridgeMember(object):
 
     @mock.patch('netshowlib.linux.iface.Iface.read_from_sys')
     @mock.patch('netshowlib.cumulus.mstpd.linux_common.exec_command')
+    def test_port_no_stp_enabled(self, mock_exec, mock_read_from_sys):
+        values = {('bridge/stp_state',): '2'}
+        mock_read_from_sys.side_effect = mod_args_generator(values)
+        mock_exec.return_value = open('tests/test_netshowlib/mstpctl_showall').read()
+        self.iface = cumulus_bridge.BridgeMember('swp100')
+        assert_equals(self.iface.stp.state, None)
+
+
+    @mock.patch('netshowlib.linux.iface.Iface.read_from_sys')
+    @mock.patch('netshowlib.cumulus.mstpd.linux_common.exec_command')
     def test_trunk_port_classic_driver(self, mock_exec,
                                        mock_read_from_sys):
         _results = {}

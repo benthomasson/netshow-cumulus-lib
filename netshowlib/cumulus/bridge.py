@@ -17,11 +17,9 @@ class MstpctlStpBridgeMember(object):
     """
     def __init__(self, bridgemem, cache=None):
         self.bridgemem = bridgemem
-        if cache:
-            self._cache = cache.get('iface').get(bridgemem.name)
-        else:
-            self._cache = mstpd.cacheinfo().get('iface').get(bridgemem.name)
+        self._cache = None
         self.orig_cache = cache
+        self._initialize_state()
 
     def _initialize_state(self):
         """ initialize state attribute that keeps interesting
@@ -42,7 +40,17 @@ class MstpctlStpBridgeMember(object):
     def state(self):
         """
         parse through mstpctl output
+        :return:  state hash with interesting info about the port
+        :return: None if STP is not running the port.
         """
+
+        if self.orig_cache:
+            self._cache = self.orig_cache.get('iface').get(self.bridgemem.name)
+        else:
+            self._cache = mstpd.cacheinfo().get('iface').get(self.bridgemem.name)
+        # if STP is not enabled on the interface, return state as None
+        if not self._cache:
+            return None
         self._initialize_state()
         for _bridgename, _stpinfo in self._cache.iteritems():
             _bridge = BRIDGE_CACHE.get(_bridgename)
