@@ -84,14 +84,29 @@ class PrintIface(linux_printiface.PrintIface):
         else:
             return _speed
 
+    def cli_output(self):
+        """
+        Each PrintIface child should define their own  of this function
+        :return: output for 'netshow interface <ifacename>'
+        """
+        _str = self.cli_header() + self.new_line()
+        _str += self.ip_details() + self.new_line()
+        _str += self.counters_summary() + self.new_line()
+        _str += self.lldp_details() + self.new_line()
+        return _str
+
+
     def counters_summary(self):
         """
         if counters are available print a summary of the counters.
         """
-        _counters = self.iface.counters.all
+        _counters = self.iface.counters
+        if not _counters:
+            return ''
+        _counters_all = _counters.all
         _header = [_('counters'), _('tx'), _('rx')]
         _table = []
         for _countername in ['errors', 'unicast', 'broadcast', 'multicast']:
-            _table.append([_(_countername), _counters.get('tx').get(_countername),
-                          _counters.get('rx').get(_countername)])
+            _table.append([_(_countername), _counters_all.get('tx').get(_countername),
+                          _counters_all.get('rx').get(_countername)])
         return tabulate(_table, _header)
