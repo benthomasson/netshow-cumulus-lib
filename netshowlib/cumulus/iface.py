@@ -64,7 +64,7 @@ class Iface(linux_iface.Iface):
         else:
             self._asic = switch_asic()
 
-        self._counters = counters.Counters(name=name, cache=cache)
+        self._counters = None
 
     def parent_is_vlan_aware_bridge(self):
         """
@@ -168,3 +168,9 @@ class Iface(linux_iface.Iface):
             self._speed = super(Iface, self).speed
 
         return self._speed
+
+    @property
+    def counters(self):
+        if self._counters is None:
+            self._counters = counters.Counters(name=self.name, cache=self.orig_cache)
+        return self._counters
