@@ -30,6 +30,14 @@ class TestCumulusIface(object):
         self.asic = asic.BroadcomAsic()
         self.iface = cumulus_iface.Iface('swp10', swasic=self.asic)
 
+    @mock.patch('netshowlib.linux.common.exec_command')
+    def test_counters(self, mock_exec_command):
+        mock_file = 'tests/test_netshowlib/ethtool_swp.txt'
+        mock_exec_command.return_value = open(mock_file).read()
+        _output = self.iface.counters.rx
+        assert_equals(_output, {'unicast': 100, 'multicast': 300,
+                                'errors': 10, 'broadcast': 200})
+
     @mock.patch('netshowlib.linux.iface.Iface.is_subint')
     @mock.patch('netshowlib.linux.common.read_from_sys')
     def test_is_svi(self, mock_read_from_sys, mock_subint):
