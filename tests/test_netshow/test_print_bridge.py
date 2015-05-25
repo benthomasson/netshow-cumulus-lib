@@ -30,3 +30,10 @@ class TestPrintBridgeMember(object):
         # call the linux bridge member port_category function
         assert_equals(self.piface.port_category, 'Access/L2')
 
+    @mock.patch('netshow.linux.print_iface.linux_iface.Iface.is_trunk')
+    @mock.patch('netshow.linux.print_iface.PrintIface.access_summary')
+    def test_summary(self, mock_access_summary, mock_is_trunk):
+        mock_is_trunk.return_value = False
+        mock_access_summary.return_value = 'access summary'
+        # call the linux bridge member summary function
+        assert_equals(self.piface.summary, 'access summary')
