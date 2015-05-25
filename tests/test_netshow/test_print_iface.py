@@ -101,6 +101,6 @@ class TestPrintIface(object):
         mock_lldp.return_value = 'lldp_output'
         mock_ip_details.return_value = 'ip_details_output'
         mock_cli_header.return_value = 'cli_header_output'
-        assert_equals([ x  for x in self.piface.cli_output().split('\n') if x != ''],
+        assert_equals([x  for x in self.piface.cli_output().split('\n') if x != ''],
                       ['cli_header_output', 'ip_details_output',
                        'counters_output', 'lldp_output'])

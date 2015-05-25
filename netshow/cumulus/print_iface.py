@@ -107,6 +107,8 @@ class PrintIface(linux_printiface.PrintIface):
         _header = [_('counters'), _('tx'), _('rx')]
         _table = []
         for _countername in ['errors', 'unicast', 'broadcast', 'multicast']:
-            _table.append([_(_countername), _counters_all.get('tx').get(_countername),
-                          _counters_all.get('rx').get(_countername)])
+            _table.append([_(_countername),
+                           _counters_all.get('tx').get(_countername),
+                           _counters_all.get('rx').get(_countername)])
+        # keep return in the right place please!
         return tabulate(_table, _header)
