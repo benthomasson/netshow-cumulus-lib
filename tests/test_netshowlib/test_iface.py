@@ -31,7 +31,12 @@ class TestCumulusIface(object):
         self.iface = cumulus_iface.Iface('swp10', swasic=self.asic)
 
     @mock.patch('netshowlib.linux.common.exec_command')
-    def test_counters(self, mock_exec_command):
+    @mock.patch('netshowlib.cumulus.iface.Iface.is_phy')
+    def test_counters(self, mock_is_phy,
+                      mock_exec_command):
+        mock_is_phy.return_value = False
+        assert_equals(self.iface.counters, None)
+        mock_is_phy.return_value = True
         mock_file = 'tests/test_netshowlib/ethtool_swp.txt'
         mock_exec_command.return_value = open(mock_file).read()
         _output = self.iface.counters.rx

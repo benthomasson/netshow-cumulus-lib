@@ -171,6 +171,8 @@ class Iface(linux_iface.Iface):
 
     @property
     def counters(self):
+        if not self.is_phy():
+            return None
         if self._counters is None:
             self._counters = counters.Counters(name=self.name, cache=self.orig_cache)
         # check counters each time this property is called
