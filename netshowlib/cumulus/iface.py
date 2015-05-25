@@ -48,8 +48,8 @@ def switch_asic():
         _line = _line.lower()
         if re.search(r'ethernet\s+controller.*broadcom', _line):
             return asic.BroadcomAsic()
-    return None
 
+SWITCHING_ASIC = switch_asic()
 
 class Iface(linux_iface.Iface):
     """ Cumulus Iface Class
@@ -59,11 +59,10 @@ class Iface(linux_iface.Iface):
         linux_iface.Iface.__init__(self, name, cache)
         # import class that collects asic specific info
         # Not this doesn't run things like bcmcmd, just looks at flat files
-        if asic:
+        if swasic:
             self._asic = swasic
         else:
-            self._asic = switch_asic()
-
+            self._asic = SWITCHING_ASIC
         self._counters = None
 
     def parent_is_vlan_aware_bridge(self):
