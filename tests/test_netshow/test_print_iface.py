@@ -73,6 +73,14 @@ class TestPrintIface(object):
         self.piface.iface._name = 'swp2s0'
         assert_equals(self.piface.speed, '2G(4x10g)')
 
-
-
-
+    @mock.patch('netshowlib.linux.common.exec_command')
+    def test_counter_summary(self, mock_exec_command):
+        mock_file = 'tests/test_netshowlib/ethtool_swp.txt'
+        mock_exec_command.return_value = open(mock_file).read()
+        _output = self.piface.counters_summary()
+        _outputtable = _output.split('\n')
+        assert_equals(_outputtable[0].split(), ['counters', 'tx', 'rx'])
+        assert_equals(_outputtable[2].split(), ['errors', '20', '10'])
+        assert_equals(_outputtable[3].split(), ['unicast', '400', '100'])
+        assert_equals(_outputtable[4].split(), ['broadcast', '600', '200'])
+        assert_equals(_outputtable[5].split(), ['multicast', '500', '300'])

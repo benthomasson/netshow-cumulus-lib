@@ -80,7 +80,6 @@ def cacheinfo(ifacename=None):
     return counters_hash
 
 
-
 class Counters(object):
     """
     class responsible for printing counters for the cumulus provider
@@ -115,3 +114,10 @@ class Counters(object):
         if counter_cache:
             self.tx = counter_cache.get('tx')
             self.rx = counter_cache.get('rx')
+
+    @property
+    def all(self):
+        """
+        :return: all both tx and rx counters as a hash
+        """
+        return {'tx': self.tx, 'rx': self.rx}

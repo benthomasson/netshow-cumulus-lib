@@ -14,7 +14,6 @@
 # pylint: disable=F0401
 # pylint: disable=E0611
 # pylint: disable=W0611
-# pylint: disable=E1101
 
 import netshow.cumulus.print_bridge as print_bridge
 import netshowlib.cumulus.bridge as cumulus_bridge

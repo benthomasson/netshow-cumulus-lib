@@ -8,9 +8,11 @@ from netshowlib import netshowlib as nn
 from netshowlib.cumulus import iface as cumulus_iface
 from netshow.linux import print_iface as linux_printiface
 from flufl.i18n import initialize
+from tabulate import tabulate
 import re
 
 _ = initialize('netshow-cumulus-lib')
+
 
 def iface(name, cache=None):
     """
@@ -78,7 +80,7 @@ class PrintIface(linux_printiface.PrintIface):
         _connector_type = self.connector_type
         _speed = super(PrintIface, self).speed
         if _connector_type:
-            return "%s(%s)"  % (_speed, _connector_type)
+            return "%s(%s)" % (_speed, _connector_type)
         else:
             return _speed
 
@@ -86,4 +88,10 @@ class PrintIface(linux_printiface.PrintIface):
         """
         if counters are available print a summary of the counters.
         """
-
+        _counters = self.iface.counters.all
+        _header = [_('counters'), _('tx'), _('rx')]
+        _table = []
+        for _countername in ['errors', 'unicast', 'broadcast', 'multicast']:
+            _table.append([_(_countername), _counters.get('tx').get(_countername),
+                          _counters.get('rx').get(_countername)])
+        return tabulate(_table, _header)

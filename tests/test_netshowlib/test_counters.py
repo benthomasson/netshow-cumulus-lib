@@ -61,3 +61,16 @@ class TestCumulusCounters(object):
         self.counters.run()
         assert_equals(self.counters.rx.get('unicast'), 100)
         assert_equals(self.counters.tx.get('errors'), 20)
+
+    @mock.patch('netshowlib.cumulus.counters.os.listdir')
+    @mock.patch('netshowlib.linux.common.exec_command')
+    def test_all(self, mock_exec, mock_listdir):
+        mock_file = 'tests/test_netshowlib/ethtool_swp.txt'
+        mock_exec.return_value = open(mock_file).read()
+        mock_listdir.return_value = ['swp1', 'swp2s0',
+                                     'swp2.2', 'swp3', 'swp10',
+                                     'br0']
+        self.counters.run()
+        _output = self.counters.all
+        assert_equals(_output['rx'].get('unicast'), 100)
+        assert_equals(_output['tx'].get('errors'), 20)
