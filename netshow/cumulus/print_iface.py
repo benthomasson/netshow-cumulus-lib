@@ -1,5 +1,6 @@
 # pylint: disable=W0232
 # pylint: disable=E0611
+# pylint: disable=E1101
 """
 Cumulus Iface module with print functions
 """
@@ -80,3 +81,9 @@ class PrintIface(linux_printiface.PrintIface):
             return "%s(%s)"  % (_speed, _connector_type)
         else:
             return _speed
+
+    def counters_summary(self):
+        """
+        if counters are available print a summary of the counters.
+        """
+

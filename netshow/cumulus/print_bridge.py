@@ -1,0 +1,63 @@
+# pylint: disable=E0611
+# pylint: disable=E1101
+"""
+Print and Analysis Module for Linux bridge interfaces
+"""
+from netshow.cumulus.print_iface import PrintIface
+from netshow.linux import print_bridge as linux_print_bridge
+from netshowlib.linux import common
+
+from flufl.i18n import initialize
+from tabulate import tabulate
+
+_ = initialize('netshow-cumulus-lib')
+
+
+class PrintBridgeMember(PrintIface):
+    """
+    Print and Analysis Class for Linux bridge member interfaces
+    """
+    @property
+    def port_category(self):
+        """
+        :return: port category for bridge member
+        """
+        return linux_print_bridge.PrintBridgeMember.port_category.fget(self)
+
+    @property
+    def summary(self):
+        """
+        :return: summary info regarding a bridge member
+        """
+        return linux_print_bridge.PrintBridgeMember.summary.fget(self)
+
+    def _pretty_vlanlist(self, stpstate, category):
+        """
+        :return: list of vlans that match category. First list of \
+            native ports, then vlan ids of tagged bridges MODIFY
+        """
+        pass
+
+    def bridgemem_details(self):
+        """
+        :return: list vlans or bridge names of various stp states MODIFY
+        """
+        pass
+
+    def cli_output(self):
+        """
+        :return: output for 'netshow interface <ifacename> for a bridge interface' MODIFY
+        """
+        _str = self.cli_header() + self.new_line()
+        _str += self.bridgemem_details() + self.new_line()
+        _str += self.counters_summary() + self.new_line()
+        _str += self.lldp_details() + self.new_line()
+
+        return _str
+
+
+class PrintBridge(PrintIface):
+    """
+    Print and Analysis Class for Cumulus bridge interfaces
+    """
+    pass
