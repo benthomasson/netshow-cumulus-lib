@@ -68,4 +68,15 @@ class PrintIface(linux_printiface.PrintIface):
         else:
             return super(PrintIface, self).port_category
 
-
+    @property
+    def speed(self):
+        """
+        used by the functions that print speed info on cumulus linux.
+        :return: speed + connector type in one print statement.
+        """
+        _connector_type = self.connector_type
+        _speed = super(PrintIface, self).speed
+        if _connector_type:
+            return "%s(%s)"  % (_speed, _connector_type)
+        else:
+            return _speed
