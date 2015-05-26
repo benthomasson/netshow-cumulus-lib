@@ -27,3 +27,10 @@ def test_cacheinfo(mock_exec):
                   ['br0', 'br2'])
     assert_equals(_output['iface'].get('swp3').get('br0').get('auto_edge_port'),
                   'yes')
+
+@mock.patch('netshowlib.cumulus.mstpd.linux_common.exec_command')
+def test_cacheinfo_no_stp(mock_exec):
+    mock_exec.return_value = ''
+    _output = mstpd.cacheinfo()
+    assert_equals(_output.get('bridge'), {})
+    assert_equals(_output.get('iface'), {})
