@@ -8,9 +8,6 @@ from netshowlib.cumulus import mstpd
 import re
 
 
-BRIDGE_CACHE = {}
-
-
 class MstpctlStpBridgeMember(object):
     """
     class responsible for managing stp info gathered from mstpctl
@@ -33,7 +30,8 @@ class MstpctlStpBridgeMember(object):
             'network_port': [],
             'discarding': [],
             'forwarding': [],
-            'backup': []
+            'backup': [],
+            'disabled': []
         }
 
     @property
@@ -49,14 +47,28 @@ class MstpctlStpBridgeMember(object):
         else:
             self._cache = mstpd.cacheinfo().get('iface').get(self.bridgemem.name)
         # if STP is not enabled on the interface, return state as None
+        # sub interfaces
+        _allbridges = set(self.bridgemem.bridge_masters.keys())
+        if self._cache:
+            _allstpbridges = set(self._cache.keys())
+        else:
+            _allstpbridges = set([])
+        # list bridges in disabled mode
+        for _disabled_bridge in _allbridges.difference(_allstpbridges):
+            _bridge = linux_bridge.BRIDGE_CACHE.get(_disabled_bridge)
+            if not _bridge:
+                _bridge = Bridge(_disabled_bridge, self.orig_cache)
+                linux_bridge.BRIDGE_CACHE[_disabled_bridge] = _bridge
+            self._state['disabled'].append(_bridge)
+
         if not self._cache:
-            return None
+            return self._state
         self._initialize_state()
         for _bridgename, _stpinfo in self._cache.iteritems():
-            _bridge = BRIDGE_CACHE.get(_bridgename)
+            _bridge = linux_bridge.BRIDGE_CACHE.get(_bridgename)
             if not _bridge:
                 _bridge = Bridge(_bridgename, self.orig_cache)
-                BRIDGE_CACHE[_bridgename] = _bridge
+                linux_bridge.BRIDGE_CACHE[_bridgename] = _bridge
             if _stpinfo.get('role') == 'root':
                 self._state['root'].append(_bridge)
             elif _stpinfo.get('role') == 'designated':
@@ -159,6 +171,7 @@ class MstpctlStpBridge(object):
             elif _stpinfo.get('network_port') == 'yes':
                 _member_state['network_port'].append(_iface_to_add)
         return _member_state
+
 
 class BridgeMember(linux_bridge.BridgeMember):
     """
