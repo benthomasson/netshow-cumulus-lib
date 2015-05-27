@@ -5,7 +5,7 @@ Print and Analysis Module for Linux bridge interfaces
 """
 from netshow.cumulus.print_iface import PrintIface
 from netshow.linux import print_bridge as linux_print_bridge
-from netshowlib.linux import common
+from netshowlib.linux import common as linux_common
 
 from flufl.i18n import initialize
 from tabulate import tabulate
@@ -42,7 +42,25 @@ class PrintBridgeMember(PrintIface):
         """
         :return: list vlans or bridge names of various stp states MODIFY
         """
-        pass
+        # check if port is in STP
+        _str = ''
+        if self.iface.vlan_filtering:
+            _vlanlist = self.iface.vlan_list
+        _stpstate = self.iface.stp.state.get('iface').get(self.name)
+        # get the list of states by grabbing all the keys
+        for _state, _bridgelist in _stpstate.iteritems():
+            if _bridgelist:
+                _header = [_("vlans in %s state" % (_state))]
+                # if vlan aware and bridgelist is not empty, then assume
+                # all vlans have that stp state
+                if self.iface.vlan_filtering:
+                    _table = [linux_common.create_range('', self.iface.vlan_list)]
+                else:
+                    _table = [self._pretty_vlanlist(_bridgelist)]
+
+                _str += tabulate(_table, _header, numalign='left') + self.new_line()
+
+        return _str
 
     def cli_output(self):
         """
@@ -54,7 +72,6 @@ class PrintBridgeMember(PrintIface):
         _str += self.lldp_details() + self.new_line()
 
         return _str
-
 
 class PrintBridge(PrintIface):
     """
