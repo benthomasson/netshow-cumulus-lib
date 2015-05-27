@@ -21,6 +21,7 @@ def cacheinfo():
         return bridgehash
     is_bridge_info = False
     bridgename = None
+    newbridgename = None
     iface = None
     bridge_loc = None
     textio = StringIO(result)
@@ -34,18 +35,22 @@ def cacheinfo():
         if len(line.split(',')) > 2:
             continue
 
+        if newbridgename  and bridgename != newbridgename:
+            bridgename = newbridgename
+            newbridgename = None
+
+        if line.startswith('BRIDGE'):
+            splitline = line.split()
+            newbridgename = splitline[1].strip(',')
+            iface = None
+            continue
+
+
         if bridgename:
             # if already parsing a bridge, and line starting
             # with BRIDGE is encountered, reset iface and bridgenam vars
-            # get current line position and go back one line
-            if line.startswith('BRIDGE'):
-                bridgename = None
-                iface = None
-                pos = textio.tell()
-                textio.seek(pos-1)
-                continue
-
-            # some magic code written by Jtoppins@cumulus
+            # copy bridgename as newbridgename
+                       # some magic code written by Jtoppins@cumulus
             # sets proper col dividers of the text output
             if is_bridge_info:
                 next_col_at = 26
@@ -100,12 +105,5 @@ def cacheinfo():
                 subkey = '_'.join(col[0:-1]).lower()
                 value = col[-1]
                 bridge_loc[subkey] = value.lower()
-
-        # this captures the beginning of a BRIDGE block
-        # determine the bridge name and set the `bridgename var
-        splitline = line.split()
-        if splitline[0] == 'BRIDGE:':
-            bridgename = splitline[1].strip(',')
-            continue
 
     return bridgehash
