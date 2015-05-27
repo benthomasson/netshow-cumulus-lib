@@ -242,7 +242,7 @@ class BridgeMember(linux_bridge.BridgeMember):
                 for i in reversed(range(32)):
                     # If vlan bit is set to one, add it to the vlan list
                     if mod32bit[i] == '1':
-                        vlan_list.append(vlanid)
+                        vlan_list.append(str(vlanid))
                     # increment vlan after from the list when check is done
                     vlanid += 1
         return vlan_list

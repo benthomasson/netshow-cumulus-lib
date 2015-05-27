@@ -21,24 +21,29 @@ import mock
 from asserts import assert_equals, mod_args_generator
 from nose.tools import set_trace
 
+
 class TestPrintBridgeMember(object):
     def setup(self):
         iface = cumulus_bridge.BridgeMember('swp22')
         self.piface = print_bridge.PrintBridgeMember(iface)
 
-
     @mock.patch('netshowlib.linux.common.exec_command')
+    @mock.patch('netshowlib.linux.common.read_symlink')
     @mock.patch('netshowlib.linux.iface.Iface.read_from_sys')
     def test_bridgemem_details_vlan_aware_driver(self,
                                                  mock_read_sys,
+                                                 mock_symlink,
                                                  mock_exec):
 
         values2 = {('/sbin/mstpctl showall',): open(
-            'tests/test_netshowlib/mstpctl_showall') }
-        mock_exec.side_effect  = mod_args_generator(values2)
+            'tests/test_netshowlib/mstpctl_showall').read()}
+        mock_exec.side_effect = mod_args_generator(values2)
+        values3 = {('/sys/class/net/swp22/brport/bridge',): 'br22'}
+        mock_symlink.side_effect = mod_args_generator(values3)
+
         # vlans are 1-10,20-24,29-30,32,64,4092
-        values = { ('bridge/stp_state',): '2',
-                ('brport/vlans',):
+        values = {('bridge/stp_state',): '2',
+                  ('brport/vlans',):
                   ['0x61f007fe\n', '0x00000001\n',
                    '0x00000001\n',
                    '0x00000000\n', '0x00000000\n', '0x00000000\n',
@@ -84,7 +89,10 @@ class TestPrintBridgeMember(object):
                    '0x00000000\n', '0x00000000\n', '0x00000000\n',
                    '0x00000000\n', '0x10000000\n']}
         mock_read_sys.side_effect = mod_args_generator(values)
-        self.piface.bridgemem_details()
+        _output = self.piface.bridgemem_details()
+        _outputtable = _output.split('\n')
+        assert_equals(_outputtable[0], 'vlans in disabled state')
+        assert_equals(_outputtable[2], '1-10, 20-24, 29-30, 32, 64, 4092')
 
     def test_port_category(self):
         # call the linux bridge member port_category function

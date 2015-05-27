@@ -14,11 +14,11 @@ def cacheinfo():
     :return hash of mstpd data. Logic is complicated. mstpctl needs to be JSON
     """
     # fails mccabe test..oh well!
+    bridgehash = {'bridge': {}, 'iface': {}}
     try:
         result = linux_common.exec_command('/sbin/mstpctl showall')
     except (ValueError, IOError):
-        return {}
-    bridgehash = {'bridge': {}, 'iface': {}}
+        return bridgehash
     is_bridge_info = False
     bridgename = None
     iface = None

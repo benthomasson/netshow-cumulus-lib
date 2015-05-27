@@ -12,7 +12,7 @@ from tabulate import tabulate
 
 _ = initialize('netshow-cumulus-lib')
 
-
+_
 class PrintBridgeMember(PrintIface):
     """
     Print and Analysis Class for Linux bridge member interfaces
@@ -46,15 +46,16 @@ class PrintBridgeMember(PrintIface):
         _str = ''
         if self.iface.vlan_filtering:
             _vlanlist = self.iface.vlan_list
-        _stpstate = self.iface.stp.state.get('iface').get(self.name)
+        _stpstate = self.iface.stp.state
         # get the list of states by grabbing all the keys
-        for _state, _bridgelist in _stpstate.iteritems():
+        for _state, _bridgelist in _stpstate.items():
             if _bridgelist:
                 _header = [_("vlans in %s state" % (_state))]
                 # if vlan aware and bridgelist is not empty, then assume
                 # all vlans have that stp state
                 if self.iface.vlan_filtering:
-                    _table = [linux_common.create_range('', self.iface.vlan_list)]
+                    _table = [[', '.join(linux_common.create_range(
+                        '', _vlanlist))]]
                 else:
                     _table = [self._pretty_vlanlist(_bridgelist)]
 
