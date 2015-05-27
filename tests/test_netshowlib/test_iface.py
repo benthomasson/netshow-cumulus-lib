@@ -15,7 +15,7 @@ from nose.tools import set_trace
 
 @mock.patch('netshowlib.cumulus.iface.linux_common.exec_command')
 def test_switch_asic(mock_exec_command):
-    mock_exec_command.return_value = open('tests/test_netshowlib/lspci_output.txt').read()
+    mock_exec_command.return_value = open('tests/test_netshowlib/lspci_output.txt', 'rb').read()
     instance = cumulus_iface.switch_asic()
     assert_equals(isinstance(instance, asic.BroadcomAsic), True)
     # no asic found

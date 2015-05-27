@@ -44,12 +44,13 @@ def switch_asic():
     except linux_common.ExecCommandException:
         return None
 
-    for _line in lspci_output.split('\n'):
+    for _line in lspci_output.decode('utf-8').split('\n'):
         _line = _line.lower()
         if re.search(r'ethernet\s+controller.*broadcom', _line):
             return asic.BroadcomAsic()
 
 SWITCHING_ASIC = switch_asic()
+
 
 class Iface(linux_iface.Iface):
     """ Cumulus Iface Class
