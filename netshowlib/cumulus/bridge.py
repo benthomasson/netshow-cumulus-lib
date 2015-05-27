@@ -216,7 +216,7 @@ class BridgeMember(linux_bridge.BridgeMember):
         if self.vlan_filtering:
             return self.vlan_aware_vlan_list('vlans')
         else:
-            return super(Bridge, self).vlan_list
+            return super(BridgeMember, self).vlan_list
 
     def vlan_aware_vlan_list(self, type_of_vlan):
         """
