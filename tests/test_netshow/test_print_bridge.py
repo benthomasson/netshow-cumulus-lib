@@ -51,6 +51,39 @@ class TestPrintBridgeMember(object):
         assert_equals(_outputtable[0], 'vlans in disabled state')
         assert_equals(_outputtable[2], '1-10, 20-24, 29-30, 32, 64, 4092')
 
+    @mock.patch('netshowlib.linux.iface.Iface.read_from_sys')
+    @mock.patch('netshowlib.linux.bridge.os.listdir')
+    @mock.patch('netshowlib.linux.common.exec_command')
+    @mock.patch('netshowlib.linux.common.read_symlink')
+    def test_bridgemem_details_classic_driver(self,
+                                              mock_symlink,
+                                              mock_exec,
+                                              mock_listdir,
+                                              mock_read_sys):
+        values4 = {('/sys/class/net',): ['swp3', 'swp3.1', 'swp3.2'],
+                   ('/sys/class/net/br0/brif',): ['swp3'],
+                   ('/sys/class/net/br1/brif',): ['swp3.1'],
+                   ('/sys/class/net/br2/brif',): ['swp3.2']
+                   }
+        mock_listdir.side_effect = mod_args_generator(values4)
+        mock_exec.return_value = open(
+            'tests/test_netshowlib/mstpctl_showall').read()
+        # vlans are 1-10,20-24,29-30,32,64,4092
+        values = {('bridge/stp_state',): '2',
+                  ('brport/vlans',): None}
+        mock_read_sys.side_effect = mod_args_generator(values)
+        values5 = {
+            ('/sys/class/net/swp3/brport/bridge',): 'br0',
+            ('/sys/class/net/swp3.1/brport/bridge',): 'br1',
+            ('/sys/class/net/swp3.2/brport/bridge',): 'br2'
+        }
+        mock_symlink.side_effect = mod_args_generator(values5)
+        self.piface.iface._name = 'swp3'
+        _output = self.piface.bridgemem_details()
+        _outputtable = _output.split('\n')
+        assert_equals(_outputtable[0], 'vlans in disabled state')
+        assert_equals(_outputtable[2], '1-10, 20-24, 29-30, 32, 64, 4092')
+
     def test_port_category(self):
         # call the linux bridge member port_category function
         assert_equals(self.piface.port_category, 'access/l2')

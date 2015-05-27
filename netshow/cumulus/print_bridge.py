@@ -31,12 +31,14 @@ class PrintBridgeMember(PrintIface):
         """
         return linux_print_bridge.PrintBridgeMember.summary.fget(self)
 
-    def _pretty_vlanlist(self, stpstate, category):
+    @classmethod
+    def _pretty_vlanlist(cls, bridgelist):
         """
         :return: list of vlans that match category. First list of \
             native ports, then vlan ids of tagged bridges MODIFY
         """
-        pass
+        return linux_print_bridge.PrintBridgeMember._pretty_vlanlist(
+            bridgelist)
 
     def bridgemem_details(self):
         """
