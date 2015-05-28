@@ -81,8 +81,20 @@ class TestPrintBridgeMember(object):
         self.piface.iface._name = 'swp3'
         _output = self.piface.bridgemem_details()
         _outputtable = _output.split('\n')
-        assert_equals(_outputtable[0], 'vlans in disabled state')
-        assert_equals(_outputtable[2], '1-10, 20-24, 29-30, 32, 64, 4092')
+        assert_equals(_outputtable[0], 'vlans in root state')
+        assert_equals(_outputtable[2], 'br0')
+        assert_equals(_outputtable[4], 'vlans in designated state')
+        assert_equals(_outputtable[6], '1')
+        assert_equals(_outputtable[8], 'vlans in forwarding state')
+        assert_equals(_outputtable[10], 'br0, 1')
+        assert_equals(_outputtable[12], 'vlans in discarding state')
+        assert_equals(_outputtable[14], '2')
+        assert_equals(_outputtable[16], 'vlans in edge_port state')
+        assert_equals(_outputtable[18], '1')
+        assert_equals(_outputtable[20], 'vlans in network_port state')
+        assert_equals(_outputtable[22], 'br0')
+        assert_equals(_outputtable[24], 'vlans in backup state')
+        assert_equals(_outputtable[26], '2')
 
     def test_port_category(self):
         # call the linux bridge member port_category function

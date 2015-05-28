@@ -6,6 +6,7 @@ from netshowlib.cumulus import common
 from netshowlib.linux import bridge as linux_bridge
 from netshowlib.cumulus import mstpd
 import re
+from collections import OrderedDict
 
 
 class MstpctlStpBridgeMember(object):
@@ -22,17 +23,16 @@ class MstpctlStpBridgeMember(object):
         """ initialize state attribute that keeps interesting
         info about a bridge port
         """
-        self._state = {
-            'root': [],
-            'designated': [],
-            'alternate': [],
-            'edge_port': [],
-            'network_port': [],
-            'discarding': [],
-            'forwarding': [],
-            'backup': [],
-            'disabled': []
-        }
+        self._state = OrderedDict([
+            ('root', []),
+            ('designated', []),
+            ('forwarding', []),
+            ('alternate', []),
+            ('discarding', []),
+            ('edge_port', []),
+            ('network_port', []),
+            ('backup', []),
+            ('disabled', [])])
 
     @property
     def state(self):
