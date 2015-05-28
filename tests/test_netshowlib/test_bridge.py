@@ -60,7 +60,7 @@ class TestCumulusBridgeMember(object):
         assert_equals(_results.get('edge_port'), ['br1'])
         assert_equals(_results.get('alternate'), [])
         assert_equals(_results.get('discarding'), ['br2'])
-        assert_equals(_results.get('forwarding'), ['br0', 'br1'])
+        assert_equals(sorted(_results.get('forwarding')), ['br0', 'br1'])
 
     @mock.patch('netshowlib.linux.iface.Iface.read_from_sys')
     def test_get_native_vlan(self, mock_read_from_sys):
