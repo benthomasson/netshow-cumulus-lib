@@ -27,6 +27,17 @@ class TestPrintBridge(object):
         iface = cumulus_bridge.Bridge('br1')
         self.piface = print_bridge.PrintBridge(iface)
 
+    @mock.patch('netshowlib.linux.common.read_from_sys')
+    def test_summary(self, mock_read_from_sys):
+        values = {('bridge/vlan_filtering', 'br1'): '1'}
+        mock_read_from_sys.side_effect = mod_args_generator(values)
+        assert_equals(self.piface.is_vlan_aware_bridge(), 'vlan aware bridge')
+
+        values = {('bridge/vlan_filtering', 'br1'): None}
+        mock_read_from_sys.side_effect = mod_args_generator(values)
+        assert_equals(self.piface.is_vlan_aware_bridge(), '')
+
+
     @mock.patch('netshowlib.linux.common.exec_command')
     @mock.patch('netshowlib.linux.common.read_symlink')
     @mock.patch('netshowlib.linux.iface.Iface.read_from_sys')

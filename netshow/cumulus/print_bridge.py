@@ -89,3 +89,20 @@ class PrintBridge(PrintIface):
         """
         linux_piface = linux_print_bridge.PrintBridge(self.iface)
         return linux_piface.stp_summary()
+
+    def is_vlan_aware_bridge(self):
+        if self.iface.vlan_filtering:
+            return _('vlan aware bridge')
+        return ''
+
+    def summary(self):
+        """
+        :return: summary information regarding the bridge
+        """
+        _info = []
+        _info.append(self.untagged_ifaces())
+        _info.append(self.tagged_ifaces())
+        _info.append(self.vlan_id_field())
+        _info.append(self.stp_summary())
+        _info.append(self.is_vlan_aware_bridge())
+        return _info
