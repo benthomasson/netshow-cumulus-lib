@@ -81,14 +81,27 @@ class PrintBridge(PrintIface):
     """
     Print and Analysis Class for Cumulus bridge interfaces
     """
+
+    def __init__(self, iface):
+        PrintIface.__init__(self, iface)
+        self.linux_piface = linux_print_bridge.PrintBridge(iface)
+
+    def untagged_ifaces(self):
+        return self.linux_piface.untagged_ifaces()
+
+    def tagged_ifaces(self):
+        return self.linux_piface.tagged_ifaces()
+
+    def vlan_id_field(self):
+        return self.linux_piface.vlan_id_field()
+
     def stp_summary(self):
         """
         Leverages function call from linux provider. Wraps cumulus Iface in linux provider
         and calls
         :return: stp summary info.
         """
-        linux_piface = linux_print_bridge.PrintBridge(self.iface)
-        return linux_piface.stp_summary()
+        return self.linux_piface.stp_summary()
 
     def is_vlan_aware_bridge(self):
         if self.iface.vlan_filtering:
@@ -101,8 +114,9 @@ class PrintBridge(PrintIface):
         """
         _info = []
         _info.append(self.untagged_ifaces())
-        _info.append(self.tagged_ifaces())
+        if not self.iface.vlan_filtering:
+            _info.append(self.tagged_ifaces())
         _info.append(self.vlan_id_field())
         _info.append(self.stp_summary())
         _info.append(self.is_vlan_aware_bridge())
-        return _info
+        return [x for x in _info if x]

@@ -19,7 +19,6 @@ import netshow.cumulus.print_bridge as print_bridge
 import netshowlib.cumulus.bridge as cumulus_bridge
 import mock
 from asserts import assert_equals, mod_args_generator
-from nose.tools import set_trace
 
 
 class TestPrintBridge(object):
@@ -27,8 +26,32 @@ class TestPrintBridge(object):
         iface = cumulus_bridge.Bridge('br1')
         self.piface = print_bridge.PrintBridge(iface)
 
+    @mock.patch('netshowlib.linux.bridge.os.listdir')
     @mock.patch('netshowlib.linux.common.read_from_sys')
-    def test_summary(self, mock_read_from_sys):
+    @mock.patch('netshowlib.linux.common.exec_command')
+    @mock.patch('netshowlib.linux.common.read_symlink')
+    def test_summary(self, mock_read_symlink,
+                     mock_exec,
+                     mock_read_from_sys,
+                     mock_os_listdir):
+        values4 = {
+            ('/sys/class/net/br1/brif',): ['swp3.1', 'swp4.1']
+        }
+        mock_os_listdir.side_effect = mod_args_generator(values4)
+        values1 = {}
+        values2 = {('bridge/stp_state', 'br1'): '2',
+                   ('bridge/vlan_filtering', 'br1'): None}
+        mock_read_symlink.side_effect = mod_args_generator(values1)
+        mock_read_from_sys.side_effect = mod_args_generator(values2)
+        values3 = {('/sbin/mstpctl showall',): open(
+            'tests/test_netshowlib/mstpctl_showall').read()}
+        mock_exec.side_effect = mod_args_generator(values3)
+        assert_equals(self.piface.summary(),
+                      ['tagged: swp3-4', '802.1q_tag: 1',
+                       'stp: rootswitch(32768)'])
+
+    @mock.patch('netshowlib.linux.common.read_from_sys')
+    def test_is_vlan_aware_bridge(self, mock_read_from_sys):
         values = {('bridge/vlan_filtering', 'br1'): '1'}
         mock_read_from_sys.side_effect = mod_args_generator(values)
         assert_equals(self.piface.is_vlan_aware_bridge(), 'vlan aware bridge')
@@ -36,7 +59,6 @@ class TestPrintBridge(object):
         values = {('bridge/vlan_filtering', 'br1'): None}
         mock_read_from_sys.side_effect = mod_args_generator(values)
         assert_equals(self.piface.is_vlan_aware_bridge(), '')
-
 
     @mock.patch('netshowlib.linux.common.exec_command')
     @mock.patch('netshowlib.linux.common.read_symlink')
@@ -56,6 +78,8 @@ class TestPrintBridge(object):
 
         _output = self.piface.stp_summary()
         assert_equals(_output, 'stp: rootswitch(32768)')
+
+
 class TestPrintBridgeMember(object):
     def setup(self):
         iface = cumulus_bridge.BridgeMember('swp22')
