@@ -28,6 +28,10 @@ class MstpdInfo(object):
 
     @property
     def mstpctl_output(self):
+        """
+        :returns: mstpctl showall output(raw)
+        """
+
         result = ''
         try:
             result = linux_common.exec_command('/sbin/mstpctl showall')
@@ -36,6 +40,9 @@ class MstpdInfo(object):
         return result
 
     def set_bridge_name(self, line):
+        """
+        when parsing mstpctl, set the bridge name. and reset iface and bridge_loc variables.
+        """
         if self.newbridgename and self.bridgename != self.newbridgename:
             self.bridgename = self.newbridgename
             self.newbridgename = None
@@ -49,6 +56,10 @@ class MstpdInfo(object):
         return False
 
     def run(self):
+        """
+        execute mstpctl and parse it. return hash of most of the mstpctl output.
+        mstpctl needs to have JSON output. would do away with this class.
+        """
         self.textio = StringIO(self.mstpctl_output)
         for line in self.textio:
             if len(line.strip()) <= 0:
@@ -71,12 +82,18 @@ class MstpdInfo(object):
         return self.bridgehash
 
     def set_next_col_at(self):
+        """
+        :return: column width to use. if parsing bridge entry, use 26 if parsing iface entry use 45.
+        """
         if self.is_bridge_info:
             self.next_col_at = 26
         else:
             self.next_col_at = 45
 
     def initialize_bridgehash(self, line):
+        """
+        initialize bridge and bridge->ifaces section of the bridgehash attribute.
+        """
         if line.split()[0] == self.bridgename:
             self.bridgehash['bridge'][self.bridgename] = {}
             self.bridgehash['bridge'][self.bridgename]['ifaces'] = {}
@@ -87,6 +104,9 @@ class MstpdInfo(object):
         return False
 
     def initialize_ifacehash(self, line):
+        """
+        initialize the iface portion of the bridgehash attribute.
+        """
         if len(line.split()[0].split(':')) == 2:
             self.iface = line.split()[0].split(':')[1]
             self.is_bridge_info = False
@@ -95,6 +115,9 @@ class MstpdInfo(object):
         return False
 
     def create_iface_bridge_hash_to_write_to(self):
+        """
+        determine whether to print iface info  or bridge info and use the right class/hash for the job.
+        """
         if not self.bridge_loc:
             if self.iface:
                 self.bridgehash['bridge'][self.bridgename]['ifaces'][self.iface] = {}
@@ -107,6 +130,9 @@ class MstpdInfo(object):
                 self.bridge_loc = self.bridgehash['bridge'].get(self.bridgename)
 
     def update_stp_attributes(self, line):
+        """
+        decided to stick to scraping mstpctl. so need to do a little magic on the text output
+        """
         # col splitting magic. courteous of Jtoppins@cumulus
         if len(line) > 45:
             col = line[:self.next_col_at].strip().split()
