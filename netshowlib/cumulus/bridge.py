@@ -104,48 +104,48 @@ class MstpctlStpBridge(object):
         else:
             self._cache = mstpd.cacheinfo().get('bridge')
         self.orig_cache = cache
-        self._stpdetails = self._cache.get(self.bridge.name)
+        self.stpdetails = self._cache.get(self.bridge.name)
         self.initialize_member_state()
 
     def is_root(self):
         """
         :return: True if switch is root for bridge domain
         """
-        return self._stpdetails.get('designated_root') == \
-            self._stpdetails.get('bridge_id')
+        return self.stpdetails.get('designated_root') == \
+            self.stpdetails.get('bridge_id')
 
     @property
     def root_port(self):
         """
         :return: root port
         """
-        return self._stpdetails.get('root_port')
+        return self.stpdetails.get('root_port')
 
     @property
     def root_priority(self):
         """
         :return root priority
         """
-        return int(self._stpdetails.get('designated_root').split('.')[0]) * 4096
+        return int(self.stpdetails.get('designated_root').split('.')[0]) * 4096
 
     @property
     def bridge_priority(self):
         """
         :return: bridge priority
         """
-        return int(self._stpdetails.get('bridge_id').split('.')[0]) * 4096
+        return int(self.stpdetails.get('bridge_id').split('.')[0]) * 4096
 
     def initialize_member_state(self):
-        self._member_state = {
-            'root': [],
-            'designated': [],
-            'alternate': [],
-            'oper_edge_port': [],
-            'network_port': [],
-            'discarding': [],
-            'forwarding': [],
-            'backup': []
-        }
+        self._member_state = OrderedDict([
+            ('root', []),
+            ('designated', []),
+            ('alternate', []),
+            ('oper_edge_port', []),
+            ('network_port', []),
+            ('discarding', []),
+            ('forwarding', []),
+            ('backup', [])
+        ])
 
     def append_member_state_from_roles(self, iface_to_add, stpinfo):
         if stpinfo.get('role') == 'root':
@@ -175,7 +175,7 @@ class MstpctlStpBridge(object):
         :return: stp state of iface members of the bridge
         """
         self.initialize_member_state()
-        for _ifacename, _stpinfo in self._stpdetails.get('ifaces').iteritems():
+        for _ifacename, _stpinfo in self.stpdetails.get('ifaces').iteritems():
             _iface_to_add = self.bridge.members.get(_ifacename)
             self.append_member_state_from_roles(_iface_to_add, _stpinfo)
             self.append_member_state_from_state(_iface_to_add, _stpinfo)
