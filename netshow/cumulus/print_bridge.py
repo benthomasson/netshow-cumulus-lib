@@ -117,6 +117,7 @@ class PrintBridge(linux_print_bridge.PrintBridge):
             _str = _('RSTP / single instance')
 
         return _str
+
     def root_port(self):
         ":return: root port in the form of a list"
         if self.iface.stp:

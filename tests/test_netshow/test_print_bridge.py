@@ -37,6 +37,18 @@ class TestPrintBridge(object):
         # CIST RSTP
         assert_equals(self.piface.stp_mode(), 'RSTP / single instance')
 
+    @mock.patch('netshowlib.linux.common.exec_command')
+    @mock.patch('netshowlib.linux.common.read_from_sys')
+    @mock.patch('netshowlib.cumulus.bridge.MstpctlStpBridge.root_port')
+    def test_stp_root_port(self, mock_root_port, read_from_sys, mock_exec):
+        mock_exec.return_value = open(
+            'tests/test_netshowlib/mstpctl_showall').read()
+        mock_root_port.return_value = 'root port found'
+        values = {('bridge/vlan_filtering', 'br1'): '1',
+                  ('bridge/stp_state', 'br1'): '2'}
+        read_from_sys.side_effect = mod_args_generator(values)
+        assert_equals(self.piface.root_port(), 'root port found')
+
     @mock.patch('netshowlib.linux.bridge.os.listdir')
     @mock.patch('netshowlib.linux.common.read_from_sys')
     @mock.patch('netshowlib.linux.common.exec_command')

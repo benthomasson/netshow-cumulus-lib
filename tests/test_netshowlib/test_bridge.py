@@ -127,6 +127,15 @@ class TestCumulusBridge(object):
 
     @mock.patch('netshowlib.cumulus.mstpd.linux_common.exec_command')
     @mock.patch('netshowlib.linux.common.read_from_sys')
+    def test_root_port(self, mock_read_from_sys, mock_exec):
+        mock_exec.return_value = open(
+            'tests/test_netshowlib/mstpctl_showall').read()
+        values = {('bridge/stp_state', 'br0'): '2'}
+        mock_read_from_sys.side_effect = mod_args_generator(values)
+        assert_equals(self.iface.stp.root_port, 'swp3')
+
+    @mock.patch('netshowlib.cumulus.mstpd.linux_common.exec_command')
+    @mock.patch('netshowlib.linux.common.read_from_sys')
     def test_is_root(self, mock_read_from_sys, mock_exec):
         mock_exec.return_value = open(
             'tests/test_netshowlib/mstpctl_showall').read()
