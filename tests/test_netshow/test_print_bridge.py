@@ -26,6 +26,17 @@ class TestPrintBridge(object):
         iface = cumulus_bridge.Bridge('br1')
         self.piface = print_bridge.PrintBridge(iface)
 
+    @mock.patch('netshowlib.cumulus.mstpd.linux_common.exec_command')
+    @mock.patch('netshowlib.linux.common.read_from_sys')
+    def test_stp_mode(self, mock_read_from_sys, mock_exec):
+        mock_exec.return_value = open(
+            'tests/test_netshowlib/mstpctl_showall').read()
+        values = {('bridge/vlan_filtering', 'br1'): '1',
+                  ('bridge/stp_state', 'br1'): '2'}
+        mock_read_from_sys.side_effect = mod_args_generator(values)
+        # CIST RSTP
+        assert_equals(self.piface.stp_mode(), 'RSTP / single instance')
+
     @mock.patch('netshowlib.linux.bridge.os.listdir')
     @mock.patch('netshowlib.linux.common.read_from_sys')
     @mock.patch('netshowlib.linux.common.exec_command')

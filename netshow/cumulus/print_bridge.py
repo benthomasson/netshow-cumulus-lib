@@ -91,10 +91,6 @@ class PrintBridge(linux_print_bridge.PrintBridge):
             return _('vlan aware bridge')
         return ''
 
-    def root_port(self):
-        ":return: root port in the form of a list"
-        pass
-
     @property
     def summary(self):
         """
@@ -108,6 +104,41 @@ class PrintBridge(linux_print_bridge.PrintBridge):
         _info.append(self.stp_summary())
         _info.append(self.is_vlan_aware_bridge())
         return [x for x in _info if x]
+
+    def stp_mode(self):
+        stp_mode = self.iface.stp.mode
+        if stp_mode == 0:
+            _str = _('802.1d / per vlan instance')
+        elif stp_mode == 1:
+            _str = _('802.1d / single instance')
+        elif stp_mode == 2:
+            _str = _('RSTP / per vlan instance')
+        elif stp_mode == 3:
+            _str = _('RSTP / single instance')
+
+        return _str
+    def root_port(self):
+        ":return: root port in the form of a list"
+        if self.iface.stp:
+            return self.iface.stp.root_port()
+
+    def designated_ports(self):
+        if self.iface.stp:
+            portlist = self.iface.stp.member_state.get('designated')
+            portnames = [x.name for x in portlist]
+            return linux_common.group_ports(portnames)
+        return []
+
+    def alternate_ports(self):
+        if self.iface.stp:
+            portlist = self.iface.stp.member_state.get('alternate')
+            portnames = [x.name for x in portlist]
+            return linux_common.group_ports(portnames)
+        return []
+
+    def last_tcn(self):
+        if self.iface.stp:
+            tcn_in_sec = self.iface.stp.get('last_tcn')
 
     def stp_details(self):
         """
@@ -124,7 +155,7 @@ class PrintBridge(linux_print_bridge.PrintBridge):
         _table.append([_('root_priority') + ':', self.iface.stp.root_priority])
         _table.append([_('bridge_priority') + ':',
                        self.iface.stp.bridge_priority])
-        _table.append([_('last_tcn') + ':', self.iface.stp.last_tcn()])
+        _table.append([_('last_tcn') + ':', self.last_tcn()])
         _table.append(self.vlan_id_field().split())
         return tabulate(_table, _header)
 

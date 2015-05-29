@@ -169,8 +169,6 @@ class MstpctlStpBridge(object):
 
         return 0
 
-
-
     def append_member_state_from_roles(self, iface_to_add, stpinfo):
         if stpinfo.get('role') == 'root':
             self._member_state['root'].append(iface_to_add)
