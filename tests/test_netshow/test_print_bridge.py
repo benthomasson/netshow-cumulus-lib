@@ -22,6 +22,29 @@ from asserts import assert_equals, mod_args_generator
 from nose.tools import set_trace
 
 
+class TestPrintBridge(object):
+    def setup(self):
+        iface = cumulus_bridge.Bridge('br1')
+        self.piface = print_bridge.PrintBridge(iface)
+
+    @mock.patch('netshowlib.linux.common.exec_command')
+    @mock.patch('netshowlib.linux.common.read_symlink')
+    @mock.patch('netshowlib.linux.iface.Iface.read_from_sys')
+    def test_stp_summary(self,
+                         mock_read_sys,
+                         mock_symlink,
+                         mock_exec):
+
+        values2 = {('/sbin/mstpctl showall',): open(
+            'tests/test_netshowlib/mstpctl_showall').read()}
+        mock_exec.side_effect = mod_args_generator(values2)
+
+        # vlans are 1-10,20-24,29-30,32,64,4092
+        values = {('bridge/stp_state',): '2'}
+        mock_read_sys.side_effect = mod_args_generator(values)
+
+        _output = self.piface.stp_summary()
+        assert_equals(_output, 'stp: rootswitch(32768)')
 class TestPrintBridgeMember(object):
     def setup(self):
         iface = cumulus_bridge.BridgeMember('swp22')

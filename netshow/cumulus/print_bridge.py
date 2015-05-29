@@ -12,7 +12,7 @@ from tabulate import tabulate
 
 _ = initialize('netshow-cumulus-lib')
 
-_
+
 class PrintBridgeMember(PrintIface):
     """
     Print and Analysis Class for Linux bridge member interfaces
@@ -76,8 +76,16 @@ class PrintBridgeMember(PrintIface):
 
         return _str
 
+
 class PrintBridge(PrintIface):
     """
     Print and Analysis Class for Cumulus bridge interfaces
     """
-    pass
+    def stp_summary(self):
+        """
+        Leverages function call from linux provider. Wraps cumulus Iface in linux provider
+        and calls
+        :return: stp summary info.
+        """
+        linux_piface = linux_print_bridge.PrintBridge(self.iface)
+        return linux_piface.stp_summary()
