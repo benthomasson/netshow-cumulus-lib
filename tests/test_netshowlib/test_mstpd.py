@@ -28,6 +28,9 @@ def test_cacheinfo(mock_exec):
     assert_equals(_output['iface'].get('swp3').get('br0').get('auto_edge_port'),
                   'yes')
 
+    # test getting force_protocol_version data
+    assert_equals(_output.get('bridge').get('br0').get('force_protocol_version'), 'rstp')
+
 @mock.patch('netshowlib.cumulus.mstpd.linux_common.exec_command')
 def test_cacheinfo_no_stp(mock_exec):
     mock_exec.return_value = ''

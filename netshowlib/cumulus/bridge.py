@@ -147,6 +147,30 @@ class MstpctlStpBridge(object):
             ('backup', [])
         ])
 
+    @property
+    def mode(self):
+        """
+        defines STP mode
+        new bridge driver only uses cist
+        classic bridge supports only per vlan instance.
+            * 0 - 802.1ad, per vlan instance
+            * 1 - 802.1ad , single instance
+            * 2 - rstp, per vlan instance
+            * 3 - rstp, single instance
+        """
+        if self.bridge.vlan_filtering:
+            if self.stpdetails.get('force_protocol_version') == 'rstp':
+                return 3
+            else:
+                return 1
+        else:
+            if self.stpdetails.get('force_protocol_version') == 'rstp':
+                return 2
+
+        return 0
+
+
+
     def append_member_state_from_roles(self, iface_to_add, stpinfo):
         if stpinfo.get('role') == 'root':
             self._member_state['root'].append(iface_to_add)

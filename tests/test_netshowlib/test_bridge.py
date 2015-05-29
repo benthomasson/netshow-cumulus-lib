@@ -100,6 +100,22 @@ class TestCumulusBridge(object):
     def setup(self):
         self.iface = cumulus_bridge.Bridge('br0')
 
+    @mock.patch('netshowlib.cumulus.mstpd.linux_common.exec_command')
+    @mock.patch('netshowlib.linux.common.read_from_sys')
+    def test_stp_mode(self, mock_read_from_sys, mock_exec):
+        mock_exec.return_value = open(
+            'tests/test_netshowlib/mstpctl_showall').read()
+        values = {('bridge/vlan_filtering', 'br0'): '1',
+                  ('bridge/stp_state', 'br0'): '2'}
+        mock_read_from_sys.side_effect = mod_args_generator(values)
+        # CIST RSTP
+        assert_equals(self.iface.stp.mode, 3)
+        values = {('bridge/vlan_filtering', 'br0'): None,
+                  ('bridge/stp_state', 'br0'): '2'}
+        mock_read_from_sys.side_effect = mod_args_generator(values)
+        # PSVT RSTP
+        assert_equals(self.iface.stp.mode, 2)
+
     @mock.patch('netshowlib.linux.common.read_from_sys')
     def test_vlan_filtering(self, mock_read_from_sys):
         values = {('bridge/vlan_filtering', 'br0'): '1'}
@@ -112,7 +128,8 @@ class TestCumulusBridge(object):
     @mock.patch('netshowlib.cumulus.mstpd.linux_common.exec_command')
     @mock.patch('netshowlib.linux.common.read_from_sys')
     def test_is_root(self, mock_read_from_sys, mock_exec):
-        mock_exec.return_value = open('tests/test_netshowlib/mstpctl_showall').read()
+        mock_exec.return_value = open(
+            'tests/test_netshowlib/mstpctl_showall').read()
         values = {('bridge/stp_state', 'br0'): '2'}
         mock_read_from_sys.side_effect = mod_args_generator(values)
         assert_equals(self.iface.stp.is_root(), False)
