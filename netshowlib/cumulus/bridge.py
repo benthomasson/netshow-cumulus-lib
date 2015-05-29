@@ -29,7 +29,7 @@ class MstpctlStpBridgeMember(object):
             ('forwarding', []),
             ('alternate', []),
             ('discarding', []),
-            ('edge_port', []),
+            ('oper_edge_port', []),
             ('network_port', []),
             ('backup', []),
             ('disabled', [])])
@@ -84,7 +84,7 @@ class MstpctlStpBridgeMember(object):
                 self._state['discarding'].append(_bridge)
 
             if _stpinfo.get('oper_edge_port') == 'yes':
-                self._state['edge_port'].append(_bridge)
+                self._state['oper_edge_port'].append(_bridge)
             elif _stpinfo.get('network_port') == 'yes':
                 self._state['network_port'].append(_bridge)
 
@@ -105,6 +105,7 @@ class MstpctlStpBridge(object):
             self._cache = mstpd.cacheinfo().get('bridge')
         self.orig_cache = cache
         self._stpdetails = self._cache.get(self.bridge.name)
+        self.initialize_member_state()
 
     def is_root(self):
         """
@@ -134,43 +135,53 @@ class MstpctlStpBridge(object):
         """
         return int(self._stpdetails.get('bridge_id').split('.')[0]) * 4096
 
-    @property
-    def member_state(self):
-        """
-        :return: stp state of iface members of the bridge
-        """
-        _member_state = {
+    def initialize_member_state(self):
+        self._member_state = {
             'root': [],
             'designated': [],
             'alternate': [],
-            'edge_port': [],
+            'oper_edge_port': [],
             'network_port': [],
             'discarding': [],
             'forwarding': [],
             'backup': []
         }
 
+    def append_member_state_from_roles(self, iface_to_add, stpinfo):
+        if stpinfo.get('role') == 'root':
+            self._member_state['root'].append(iface_to_add)
+        elif stpinfo.get('role') == 'designated':
+            self._member_state['designated'].append(iface_to_add)
+        elif stpinfo.get('role') == 'alternate':
+            self._member_state['alternate'].append(iface_to_add)
+        elif stpinfo.get('role') == 'backup':
+            self._member_state['backup'].append(iface_to_add)
+
+    def append_member_state_from_state(self, iface_to_add, stpinfo):
+        if stpinfo.get('state') == 'forwarding':
+            self._member_state['forwarding'].append(iface_to_add)
+        elif stpinfo.get('state') == 'discarding':
+            self._member_state['discarding'].append(iface_to_add)
+
+    def append_member_state_from_other_attrs(self, iface_to_add, stpinfo):
+        if stpinfo.get('oper_edge_port') == 'yes':
+            self._member_state['oper_edge_port'].append(iface_to_add)
+        elif stpinfo.get('network_port') == 'yes':
+            self._member_state['network_port'].append(iface_to_add)
+
+    @property
+    def member_state(self):
+        """
+        :return: stp state of iface members of the bridge
+        """
+        self.initialize_member_state()
         for _ifacename, _stpinfo in self._stpdetails.get('ifaces').iteritems():
             _iface_to_add = self.bridge.members.get(_ifacename)
-            if _stpinfo.get('role') == 'root':
-                _member_state['root'].append(_iface_to_add)
-            elif _stpinfo.get('role') == 'designated':
-                _member_state['designated'].append(_iface_to_add)
-            elif _stpinfo.get('role') == 'alternate':
-                _member_state['alternate'].append(_iface_to_add)
-            elif _stpinfo.get('role') == 'backup':
-                _member_state['backup'].append(_iface_to_add)
+            self.append_member_state_from_roles(_iface_to_add, _stpinfo)
+            self.append_member_state_from_state(_iface_to_add, _stpinfo)
+            self.append_member_state_from_other_attrs(_iface_to_add, _stpinfo)
 
-            if _stpinfo.get('state') == 'forwarding':
-                _member_state['forwarding'].append(_iface_to_add)
-            elif _stpinfo.get('state') == 'discarding':
-                _member_state['discarding'].append(_iface_to_add)
-
-            if _stpinfo.get('oper_edge_port') == 'yes':
-                _member_state['edge_port'].append(_iface_to_add)
-            elif _stpinfo.get('network_port') == 'yes':
-                _member_state['network_port'].append(_iface_to_add)
-        return _member_state
+        return self._member_state
 
 
 class BridgeMember(linux_bridge.BridgeMember):
@@ -281,6 +292,7 @@ class Bridge(linux_bridge.Bridge):
     @property
     def members(self):
         """
+        Note it converts members into Cumulus Bridgemembers not Linux bridgemembers.
         :return: list of bridge port members
         """
         self._get_members(BridgeMember)

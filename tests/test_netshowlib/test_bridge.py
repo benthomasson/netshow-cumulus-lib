@@ -33,7 +33,7 @@ class TestCumulusBridgeMember(object):
             'disabled': ['br100'],
             'root': [],
             'backup': [],
-            'edge_port': [],
+            'oper_edge_port': [],
             'discarding': [],
             'forwarding': [],
             'network_port': []
@@ -51,13 +51,13 @@ class TestCumulusBridgeMember(object):
         mock_read_from_sys.side_effect = mod_args_generator(values)
         mock_exec.return_value = open('tests/test_netshowlib/mstpctl_showall').read()
         self.iface = cumulus_bridge.BridgeMember('swp3')
-        for i in ['root', 'backup', 'alternate', 'edge_port',
+        for i in ['root', 'backup', 'alternate', 'oper_edge_port',
                   'network_port', 'discarding', 'forwarding']:
             _results[i] = [x.name for x in self.iface.stp.state.get(i)]
         assert_equals(_results.get('root'), ['br0'])
         assert_equals(_results.get('backup'), ['br2'])
         assert_equals(_results.get('network_port'), ['br0'])
-        assert_equals(_results.get('edge_port'), ['br1'])
+        assert_equals(_results.get('oper_edge_port'), ['br1'])
         assert_equals(_results.get('alternate'), [])
         assert_equals(_results.get('discarding'), ['br2'])
         assert_equals(sorted(_results.get('forwarding')), ['br0', 'br1'])
@@ -155,13 +155,13 @@ class TestCumulusBridge(object):
         values = {('bridge/stp_state', 'br0'): '2'}
         mock_read_from_sys.side_effect = mod_args_generator(values)
         _output = self.iface.stp.member_state
-        for i in ['root', 'backup', 'alternate', 'edge_port',
+        for i in ['root', 'backup', 'alternate', 'oper_edge_port',
                   'network_port', 'discarding', 'forwarding']:
             self.__dict__[i] = [x.name for x in _output.get(i)]
         assert_equals(self.root, ['swp3'])
         assert_equals(self.backup, [])
         assert_equals(self.network_port, ['swp3'])
-        assert_equals(self.edge_port, [])
+        assert_equals(self.oper_edge_port, [])
         assert_equals(self.alternate, ['swp4'])
         assert_equals(self.discarding, ['swp4'])
         assert_equals(self.forwarding, ['swp3'])

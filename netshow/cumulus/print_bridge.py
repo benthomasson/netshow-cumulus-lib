@@ -77,37 +77,25 @@ class PrintBridgeMember(PrintIface):
         return _str
 
 
-class PrintBridge(PrintIface):
+class PrintBridge(linux_print_bridge.PrintBridge):
     """
     Print and Analysis Class for Cumulus bridge interfaces
+    Inherits from PrintBridge from Linux provider because it
+    doesn't need any of the PrintIface functions from the cumulus Provider.
+    But does need to inherit most of the PrintBridge functions from the
+    Linux Provider.
     """
-
-    def __init__(self, iface):
-        PrintIface.__init__(self, iface)
-        self.linux_piface = linux_print_bridge.PrintBridge(iface)
-
-    def untagged_ifaces(self):
-        return self.linux_piface.untagged_ifaces()
-
-    def tagged_ifaces(self):
-        return self.linux_piface.tagged_ifaces()
-
-    def vlan_id_field(self):
-        return self.linux_piface.vlan_id_field()
-
-    def stp_summary(self):
-        """
-        Leverages function call from linux provider. Wraps cumulus Iface in linux provider
-        and calls
-        :return: stp summary info.
-        """
-        return self.linux_piface.stp_summary()
 
     def is_vlan_aware_bridge(self):
         if self.iface.vlan_filtering:
             return _('vlan aware bridge')
         return ''
 
+    def root_port(self):
+        ":return: root port in the form of a list"
+        pass
+
+    @property
     def summary(self):
         """
         :return: summary information regarding the bridge
@@ -120,3 +108,25 @@ class PrintBridge(PrintIface):
         _info.append(self.stp_summary())
         _info.append(self.is_vlan_aware_bridge())
         return [x for x in _info if x]
+
+    def stp_details(self):
+        """
+        :return: stp details for the bridge interface
+        """
+        _header = [_(''), '']
+        _table = []
+        _table.append([_('stp_mode') + ':', self.stp_mode()])
+        _table.append([_('root_port') + ':', ', '.join(self.root_port())])
+        _table.append([_('ports_in_designated_role') + ':',
+                       ', '.join(self.designated_ports())])
+        _table.append([_('ports_in_alternate_role') + ':',
+                       ', '.join(self.alternate_ports())])
+        _table.append([_('root_priority') + ':', self.iface.stp.root_priority])
+        _table.append([_('bridge_priority') + ':',
+                       self.iface.stp.bridge_priority])
+        _table.append([_('last_tcn') + ':', self.iface.stp.last_tcn()])
+        _table.append(self.vlan_id_field().split())
+        return tabulate(_table, _header)
+
+    def cli_output(self):
+        pass

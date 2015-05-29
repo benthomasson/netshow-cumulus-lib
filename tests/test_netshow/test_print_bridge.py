@@ -46,7 +46,7 @@ class TestPrintBridge(object):
         values3 = {('/sbin/mstpctl showall',): open(
             'tests/test_netshowlib/mstpctl_showall').read()}
         mock_exec.side_effect = mod_args_generator(values3)
-        assert_equals(self.piface.summary(),
+        assert_equals(self.piface.summary,
                       ['tagged: swp3-4', '802.1q_tag: 1',
                        'stp: rootswitch(32768)'])
 
@@ -147,7 +147,7 @@ class TestPrintBridgeMember(object):
         assert_equals(_outputtable[10], 'br0, 1')
         assert_equals(_outputtable[12], 'vlans in discarding state')
         assert_equals(_outputtable[14], '2')
-        assert_equals(_outputtable[16], 'vlans in edge_port state')
+        assert_equals(_outputtable[16], 'vlans in oper_edge_port state')
         assert_equals(_outputtable[18], '1')
         assert_equals(_outputtable[20], 'vlans in network_port state')
         assert_equals(_outputtable[22], 'br0')
