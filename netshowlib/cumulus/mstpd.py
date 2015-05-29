@@ -9,101 +9,117 @@ except ImportError:
 
 import re
 
-def cacheinfo():
-    """
-    :return hash of mstpd data. Logic is complicated. mstpctl needs to be JSON
-    """
-    # fails mccabe test..oh well!
-    bridgehash = {'bridge': {}, 'iface': {}}
-    try:
-        result = linux_common.exec_command('/sbin/mstpctl showall')
-    except (ValueError, IOError):
-        return bridgehash
-    is_bridge_info = False
-    bridgename = None
-    newbridgename = None
-    iface = None
-    bridge_loc = None
-    textio = StringIO(result)
-    for line in textio:
-        # if line is blank continue
-        if len(line.strip()) <= 0:
-            continue
-        # if line as a ',' in it ignore it too. don't know how
-        # parse these lines properly..so just ignore for now
-        # again mstpctl output should be in JSON (filed a bug already)
-        if len(line.split(',')) > 2:
-            continue
 
-        if newbridgename  and bridgename != newbridgename:
-            bridgename = newbridgename
-            newbridgename = None
+def cacheinfo():
+    _mstpdcache = MstpdInfo()
+    return _mstpdcache.run()
+
+
+class MstpdInfo(object):
+
+    def __init__(self):
+        self.is_bridge_info = None
+        self.newbridgename = None
+        self.bridgename = None
+        self.iface = None
+        self.bridge_loc = None
+        self.textio = None
+        self.bridgehash = {'bridge': {}, 'iface': {}}
+
+    @property
+    def mstpctl_output(self):
+        result = ''
+        try:
+            result = linux_common.exec_command('/sbin/mstpctl showall')
+        except (ValueError, IOError):
+            pass
+        return result
+
+    def set_bridge_name(self, line):
+        if self.newbridgename and self.bridgename != self.newbridgename:
+            self.bridgename = self.newbridgename
+            self.newbridgename = None
 
         if line.startswith('BRIDGE'):
             splitline = line.split()
-            newbridgename = splitline[1].strip(',')
-            iface = None
-            continue
+            self.newbridgename = splitline[1].split(',')[0]
+            self.iface = None
+            self.bridge_loc = None
+            return True
+        return False
 
-
-        if bridgename:
-            # if already parsing a bridge, and line starting
-            # with BRIDGE is encountered, reset iface and bridgenam vars
-            # copy bridgename as newbridgename
-                       # some magic code written by Jtoppins@cumulus
-            # sets proper col dividers of the text output
-            if is_bridge_info:
-                next_col_at = 26
-            else:
-                next_col_at = 45
-
-            # if line starts with the bridgename, then create
-            # the stp hash associated with the bridge
-            if line.split()[0] == bridgename:
-                bridgehash['bridge'][bridgename] = {}
-                bridgehash['bridge'][bridgename]['ifaces'] = {}
-                is_bridge_info = True
-                iface = None
+    def run(self):
+        self.textio = StringIO(self.mstpctl_output)
+        for line in self.textio:
+            if len(line.strip()) <= 0:
+                continue
+            if len(line.split(',')) > 2:
+                continue
+            if self.set_bridge_name(line):
                 continue
 
-            # else if its a line with the bridge member name
-            # grab that and tell the parser that its time to
-            # stop parsing bridge stp info and start parsing
-            # bridge member stp info
-            elif len(line.split()[0].split(':')) == 2:
-                iface = line.split()[0].split(':')[1]
-                is_bridge_info = False
-                bridge_loc = None
-                continue
+            if self.bridgename:
+                self.set_next_col_at()
+                if self.initialize_bridgehash(line):
+                    continue
+                elif self.initialize_ifacehash(line):
+                    continue
 
-            # this sets the correct hash location to write
-            # the stp info. either the bridge or bridge member hash
-            if not bridge_loc:
-                if iface:
-                    bridgehash['bridge'][bridgename]['ifaces'][iface] = {}
-                    bridge_loc = bridgehash['bridge'][bridgename]['ifaces'][iface]
-                    if not bridgehash.get('iface').get(iface):
-                        bridgehash['iface'][iface] = {}
-                    master_iface = iface.split('.')[0]
-                    bridgehash['iface'][master_iface][bridgename] = bridge_loc
-                else:
-                    bridge_loc = bridgehash['bridge'][bridgename]
+                self.create_iface_bridge_hash_to_write_to()
+                self.update_stp_attributes(line)
 
-            # col splitting magic. courteous of Jtoppins@cumulus
-            if len(line) > 45:
-                col = line[:next_col_at].strip().split()
-                subkey = '_'.join(col[0:-1]).lower()
-                value = col[-1]
-                bridge_loc[subkey] = value.lower()
-                col = line[next_col_at:].strip().split()
-                subkey = '_'.join(col[0:-1]).lower()
-                value = col[-1]
-                bridge_loc[subkey] = value.lower()
+        return self.bridgehash
+
+    def set_next_col_at(self):
+        if self.is_bridge_info:
+            self.next_col_at = 26
+        else:
+            self.next_col_at = 45
+
+    def initialize_bridgehash(self, line):
+        if line.split()[0] == self.bridgename:
+            self.bridgehash['bridge'][self.bridgename] = {}
+            self.bridgehash['bridge'][self.bridgename]['ifaces'] = {}
+            self.is_bridge_info = True
+            self.bridge_loc = None
+            self.iface = None
+            return True
+        return False
+
+    def initialize_ifacehash(self, line):
+        if len(line.split()[0].split(':')) == 2:
+            self.iface = line.split()[0].split(':')[1]
+            self.is_bridge_info = False
+            self.bridge_loc = None
+            return True
+        return False
+
+    def create_iface_bridge_hash_to_write_to(self):
+        if not self.bridge_loc:
+            if self.iface:
+                self.bridgehash['bridge'][self.bridgename]['ifaces'][self.iface] = {}
+                self.bridge_loc = self.bridgehash['bridge'][self.bridgename]['ifaces'][self.iface]
+                if not self.bridgehash.get('iface').get(self.iface):
+                    self.bridgehash['iface'][self.iface] = {}
+                master_iface = self.iface.split('.')[0]
+                self.bridgehash['iface'][master_iface][self.bridgename] = self.bridge_loc
             else:
-                line = re.sub(r'\(.*\)', '', line)
-                col = line.strip().split()
-                subkey = '_'.join(col[0:-1]).lower()
-                value = col[-1]
-                bridge_loc[subkey] = value.lower()
+                self.bridge_loc = self.bridgehash['bridge'].get(self.bridgename)
 
-    return bridgehash
+    def update_stp_attributes(self, line):
+        # col splitting magic. courteous of Jtoppins@cumulus
+        if len(line) > 45:
+            col = line[:self.next_col_at].strip().split()
+            subkey = '_'.join(col[0:-1]).lower()
+            value = col[-1]
+            self.bridge_loc[subkey] = value.lower()
+            col = line[self.next_col_at:].strip().split()
+            subkey = '_'.join(col[0:-1]).lower()
+            value = col[-1]
+            self.bridge_loc[subkey] = value.lower()
+        else:
+            line = re.sub(r'\(.*\)', '', line)
+            col = line.strip().split()
+            subkey = '_'.join(col[0:-1]).lower()
+            value = col[-1]
+            self.bridge_loc[subkey] = value.lower()
