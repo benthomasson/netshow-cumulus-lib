@@ -52,7 +52,7 @@ class PrintBridgeMember(PrintIface):
         # get the list of states by grabbing all the keys
         for _state, _bridgelist in _stpstate.items():
             if _bridgelist:
-                _header = [_("vlans in %s state" % (_state))]
+                _header = [_("vlans in $_state state")]
                 # if vlan aware and bridgelist is not empty, then assume
                 # all vlans have that stp state
                 if self.iface.vlan_filtering:
@@ -121,7 +121,10 @@ class PrintBridge(linux_print_bridge.PrintBridge):
     def root_port(self):
         ":return: root port in the form of a list"
         if self.iface.stp:
-            return [self.iface.stp.root_port]
+            _stproot = self.iface.stp.root_port
+            if _stproot != 'none':
+                return [_stproot]
+        return [_('root_switch')]
 
     def designated_ports(self):
         if self.iface.stp:
@@ -181,4 +184,19 @@ class PrintBridge(linux_print_bridge.PrintBridge):
         return tabulate(_table, _header)
 
     def cli_output(self):
-        pass
+        """
+        :return: output for 'netshow interface <ifacename> for a
+        bridge interface for cumulus provider
+        """
+        _str = self.cli_header() + self.new_line()
+        _str += self.ip_details() + self.new_line()
+        if self.iface.stp:
+            _str += self.stp_details() + self.new_line()
+            for _state in ['discarding', 'forwarding', 'backup',
+                           'oper_edge_port', 'network_port']:
+                _str += self.ports_of_some_kind_of_state(_state) + \
+                    self.new_line()
+        else:
+            _str += self.no_stp_details() + self.new_line()
+
+        return _str

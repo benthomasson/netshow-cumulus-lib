@@ -21,6 +21,7 @@ import mock
 from asserts import assert_equals, mod_args_generator
 import re
 
+
 class TestPrintBridge(object):
     def setup(self):
         iface = cumulus_bridge.Bridge('br1')
@@ -29,8 +30,37 @@ class TestPrintBridge(object):
     @mock.patch('netshowlib.linux.bridge.os.listdir')
     @mock.patch('netshowlib.cumulus.mstpd.linux_common.exec_command')
     @mock.patch('netshowlib.linux.common.read_from_sys')
+    def test_cli_output(self, mock_read_from_sys, mock_exec,
+                         mock_os_listdir):
+        values10 = {('/sbin/mstpctl showall',):
+                    open('tests/test_netshowlib/mstpctl_showall').read()}
+        mock_exec.side_effect = mod_args_generator(values10)
+        values = {('bridge/vlan_filtering', 'br1'): None,
+                  ('bridge/stp_state', 'br1'): '2',
+                  ('carrier', 'br1'): '1',
+                  ('address', 'br1'): '11:22:33:44:55:66',
+                  ('speed', 'br1'): '10000',
+                  ('mtu', 'br1'): '1500'}
+        mock_read_from_sys.side_effect = mod_args_generator(values)
+        values4 = {
+            ('/sys/class/net/br1/brif',): ['swp3.1', 'swp4.1']
+        }
+        mock_os_listdir.side_effect = mod_args_generator(values4)
+        from nose.tools import set_trace; set_trace()
+        _output = self.piface.cli_output()
+        _outputtable = _output.split('\n')
+        # checks to make sure stp details is there
+        assert_equals(re.split(r'\s{3,}', _outputtable[14]),
+                      ['root_priority:', '32768'])
+
+        assert_equals(_outputtable[21], 'ports in forwarding state')
+        assert_equals(_outputtable[23], 'swp3-4')
+
+    @mock.patch('netshowlib.linux.bridge.os.listdir')
+    @mock.patch('netshowlib.cumulus.mstpd.linux_common.exec_command')
+    @mock.patch('netshowlib.linux.common.read_from_sys')
     def test_stp_details(self, mock_read_from_sys, mock_exec,
-                              mock_os_listdir):
+                         mock_os_listdir):
         mock_exec.return_value = open(
             'tests/test_netshowlib/mstpctl_showall').read()
         values = {('bridge/vlan_filtering', 'br1'): None,
@@ -41,22 +71,22 @@ class TestPrintBridge(object):
         }
         mock_os_listdir.side_effect = mod_args_generator(values4)
         _output = self.piface.stp_details()
-        assert_equals(re.split('\s{3,}', _output.split('\n')[2]),
+        assert_equals(re.split(r'\s{3,}', _output.split('\n')[2]),
                       ['stp_mode:', 'RSTP / per vlan instance'])
 
-        assert_equals(re.split('\s{3,}', _output.split('\n')[3]),
-                      ['root_port:', 'none'])
-        assert_equals(re.split('\s{3,}', _output.split('\n')[4]),
+        assert_equals(re.split(r'\s{3,}', _output.split('\n')[3]),
+                      ['root_port:', 'root_switch'])
+        assert_equals(re.split(r'\s{3,}', _output.split('\n')[4]),
                       ['ports_in_designated_role:  swp3-4'])
-        assert_equals(re.split('\s{3,}', _output.split('\n')[5]),
+        assert_equals(re.split(r'\s{3,}', _output.split('\n')[5]),
                       ['ports_in_alternate_role:', 'none'])
-        assert_equals(re.split('\s{3,}', _output.split('\n')[6]),
+        assert_equals(re.split(r'\s{3,}', _output.split('\n')[6]),
                       ['root_priority:', '32768'])
-        assert_equals(re.split('\s{3,}', _output.split('\n')[7]),
+        assert_equals(re.split(r'\s{3,}', _output.split('\n')[7]),
                       ['bridge_priority:', '32768'])
-        assert_equals(re.split('\s{3,}', _output.split('\n')[8]),
+        assert_equals(re.split(r'\s{3,}', _output.split('\n')[8]),
                       ['last_tcn:', 'swp4.1 (15 days, 20:34:24)'])
-        assert_equals(re.split('\s{3,}', _output.split('\n')[9]),
+        assert_equals(re.split(r'\s{3,}', _output.split('\n')[9]),
                       ['802.1q_tag:', '1'])
 
     @mock.patch('netshowlib.linux.bridge.os.listdir')
@@ -253,4 +283,5 @@ class TestPrintBridgeMember(object):
         mock_is_trunk.return_value = False
         mock_access_summary.return_value = 'access summary'
         # call the linux bridge member summary function
+
         assert_equals(self.piface.summary, 'access summary')
