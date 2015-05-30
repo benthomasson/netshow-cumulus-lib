@@ -6,7 +6,7 @@ Print and Analysis Module for Linux bridge interfaces
 from netshow.cumulus.print_iface import PrintIface
 from netshow.linux import print_bridge as linux_print_bridge
 from netshowlib.linux import common as linux_common
-
+from datetime import timedelta
 from flufl.i18n import initialize
 from tabulate import tabulate
 
@@ -121,30 +121,50 @@ class PrintBridge(linux_print_bridge.PrintBridge):
     def root_port(self):
         ":return: root port in the form of a list"
         if self.iface.stp:
-            return self.iface.stp.root_port()
+            return [self.iface.stp.root_port]
 
     def designated_ports(self):
         if self.iface.stp:
             portlist = self.iface.stp.member_state.get('designated')
             portnames = [x.name for x in portlist]
-            return linux_common.group_ports(portnames)
-        return []
+            if portlist:
+                return linux_common.group_ports(portnames)
+        return [_('none')]
 
     def alternate_ports(self):
         if self.iface.stp:
             portlist = self.iface.stp.member_state.get('alternate')
             portnames = [x.name for x in portlist]
-            return linux_common.group_ports(portnames)
-        return []
+            if portlist:
+                return linux_common.group_ports(portnames)
+        return [_('none')]
 
-    def last_tcn(self):
+    def last_topo_change_human_time(self):
+        """
+        :return: last topology change in human readable terms
+        """
+        last_topo = self.iface.stp.stpdetails.get('time_since_topology_change')
+        last_topo_int = int(last_topo.split('s')[0])
+        return str(timedelta(seconds=last_topo_int))
+
+    def last_topo_port(self):
+        """
+        :return: port that received the last topology notification
+        """
+        return self.iface.stp.stpdetails.get('topology_change_port')
+
+    def last_tcn_field(self):
+        """
+        :return: last topology change info. Port followed by time
+        """
         if self.iface.stp:
-            tcn_in_sec = self.iface.stp.get('last_tcn')
+            return "%s (%s)" % (self.last_topo_port(),
+                                self.last_topo_change_human_time())
 
     def stp_details(self):
         """
         :return: stp details for the bridge interface
-        """
+         """
         _header = [_(''), '']
         _table = []
         _table.append([_('stp_mode') + ':', self.stp_mode()])
@@ -156,7 +176,7 @@ class PrintBridge(linux_print_bridge.PrintBridge):
         _table.append([_('root_priority') + ':', self.iface.stp.root_priority])
         _table.append([_('bridge_priority') + ':',
                        self.iface.stp.bridge_priority])
-        _table.append([_('last_tcn') + ':', self.last_tcn()])
+        _table.append([_('last_tcn') + ':', self.last_tcn_field()])
         _table.append(self.vlan_id_field().split())
         return tabulate(_table, _header)
 

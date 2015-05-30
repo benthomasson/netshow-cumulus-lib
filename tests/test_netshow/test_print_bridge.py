@@ -19,35 +19,101 @@ import netshow.cumulus.print_bridge as print_bridge
 import netshowlib.cumulus.bridge as cumulus_bridge
 import mock
 from asserts import assert_equals, mod_args_generator
-
+import re
 
 class TestPrintBridge(object):
     def setup(self):
         iface = cumulus_bridge.Bridge('br1')
         self.piface = print_bridge.PrintBridge(iface)
 
+    @mock.patch('netshowlib.linux.bridge.os.listdir')
+    @mock.patch('netshowlib.cumulus.mstpd.linux_common.exec_command')
+    @mock.patch('netshowlib.linux.common.read_from_sys')
+    def test_stp_details(self, mock_read_from_sys, mock_exec,
+                              mock_os_listdir):
+        mock_exec.return_value = open(
+            'tests/test_netshowlib/mstpctl_showall').read()
+        values = {('bridge/vlan_filtering', 'br1'): None,
+                  ('bridge/stp_state', 'br1'): '2'}
+        mock_read_from_sys.side_effect = mod_args_generator(values)
+        values4 = {
+            ('/sys/class/net/br1/brif',): ['swp3.1', 'swp4.1']
+        }
+        mock_os_listdir.side_effect = mod_args_generator(values4)
+        _output = self.piface.stp_details()
+        assert_equals(re.split('\s{3,}', _output.split('\n')[2]),
+                      ['stp_mode:', 'RSTP / per vlan instance'])
+
+        assert_equals(re.split('\s{3,}', _output.split('\n')[3]),
+                      ['root_port:', 'none'])
+        assert_equals(re.split('\s{3,}', _output.split('\n')[4]),
+                      ['ports_in_designated_role:  swp3-4'])
+        assert_equals(re.split('\s{3,}', _output.split('\n')[5]),
+                      ['ports_in_alternate_role:', 'none'])
+        assert_equals(re.split('\s{3,}', _output.split('\n')[6]),
+                      ['root_priority:', '32768'])
+        assert_equals(re.split('\s{3,}', _output.split('\n')[7]),
+                      ['bridge_priority:', '32768'])
+        assert_equals(re.split('\s{3,}', _output.split('\n')[8]),
+                      ['last_tcn:', 'swp4.1 (15 days, 20:34:24)'])
+        assert_equals(re.split('\s{3,}', _output.split('\n')[9]),
+                      ['802.1q_tag:', '1'])
+
+    @mock.patch('netshowlib.linux.bridge.os.listdir')
+    @mock.patch('netshowlib.cumulus.mstpd.linux_common.exec_command')
+    @mock.patch('netshowlib.linux.common.read_from_sys')
+    def test_designated_ports(self, mock_read_from_sys, mock_exec,
+                              mock_os_listdir):
+        mock_exec.return_value = open(
+            'tests/test_netshowlib/mstpctl_showall').read()
+        values = {('bridge/vlan_filtering', 'br1'): None,
+                  ('bridge/stp_state', 'br1'): '2'}
+        mock_read_from_sys.side_effect = mod_args_generator(values)
+        values4 = {
+            ('/sys/class/net/br1/brif',): ['swp3.1', 'swp4.1']
+        }
+        mock_os_listdir.side_effect = mod_args_generator(values4)
+        assert_equals(self.piface.designated_ports(), ['swp3-4'])
+
+    @mock.patch('netshowlib.linux.bridge.os.listdir')
+    @mock.patch('netshowlib.cumulus.mstpd.linux_common.exec_command')
+    @mock.patch('netshowlib.linux.common.read_from_sys')
+    def test_alternate_ports(self, mock_read_from_sys, mock_exec,
+                             mock_os_listdir):
+        self.piface.iface = cumulus_bridge.Bridge('br0')
+        mock_exec.return_value = open(
+            'tests/test_netshowlib/mstpctl_showall').read()
+        values = {('bridge/vlan_filtering', 'br0'): None,
+                  ('bridge/stp_state', 'br0'): '2'}
+        mock_read_from_sys.side_effect = mod_args_generator(values)
+        values4 = {
+            ('/sys/class/net/br0/brif',): ['swp3', 'swp4']
+        }
+        mock_os_listdir.side_effect = mod_args_generator(values4)
+        assert_equals(self.piface.alternate_ports(), ['swp4'])
+
     @mock.patch('netshowlib.cumulus.mstpd.linux_common.exec_command')
     @mock.patch('netshowlib.linux.common.read_from_sys')
     def test_stp_mode(self, mock_read_from_sys, mock_exec):
         mock_exec.return_value = open(
             'tests/test_netshowlib/mstpctl_showall').read()
-        values = {('bridge/vlan_filtering', 'br1'): '1',
+        values = {('bridge/vlan_filtering', 'br1'): None,
                   ('bridge/stp_state', 'br1'): '2'}
         mock_read_from_sys.side_effect = mod_args_generator(values)
         # CIST RSTP
-        assert_equals(self.piface.stp_mode(), 'RSTP / single instance')
+        assert_equals(self.piface.stp_mode(), 'RSTP / per vlan instance')
 
     @mock.patch('netshowlib.linux.common.exec_command')
     @mock.patch('netshowlib.linux.common.read_from_sys')
-    @mock.patch('netshowlib.cumulus.bridge.MstpctlStpBridge.root_port')
-    def test_stp_root_port(self, mock_root_port, read_from_sys, mock_exec):
+    def test_stp_root_port(self, read_from_sys, mock_exec):
+        br0 = cumulus_bridge.Bridge('br0')
+        self.piface.iface = br0
         mock_exec.return_value = open(
             'tests/test_netshowlib/mstpctl_showall').read()
-        mock_root_port.return_value = 'root port found'
-        values = {('bridge/vlan_filtering', 'br1'): '1',
-                  ('bridge/stp_state', 'br1'): '2'}
+        values = {('bridge/vlan_filtering', 'br0'): None,
+                  ('bridge/stp_state', 'br0'): '2'}
         read_from_sys.side_effect = mod_args_generator(values)
-        assert_equals(self.piface.root_port(), 'root port found')
+        assert_equals(self.piface.root_port(), ['swp3'])
 
     @mock.patch('netshowlib.linux.bridge.os.listdir')
     @mock.patch('netshowlib.linux.common.read_from_sys')
