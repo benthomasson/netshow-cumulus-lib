@@ -1,3 +1,4 @@
 tox
 setuptools>=15.0
 pip>=6.1
+wheel
