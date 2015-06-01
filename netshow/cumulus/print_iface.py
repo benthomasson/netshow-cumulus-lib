@@ -48,10 +48,10 @@ class PrintIface(linux_printiface.PrintIface):
         """
         :return: prints out string for connector type
         """
-        if re.match('swp\d+s\d+', self.name):
-            return _('4x10g')
         _connector = self.iface.connector_type
-        if _connector == 3:
+        if _connector == 4:
+            return _('4x10g')
+        elif _connector == 3:
             return _('qsfp')
         elif _connector == 2:
             return _('sfp')
@@ -78,7 +78,7 @@ class PrintIface(linux_printiface.PrintIface):
         :return: speed + connector type in one print statement.
         """
         _connector_type = self.connector_type
-        _speed = super(PrintIface, self).speed
+        _speed = linux_printiface.PrintIface.speed.fget(self)
         if _connector_type:
             return "%s(%s)" % (_speed, _connector_type)
         else:

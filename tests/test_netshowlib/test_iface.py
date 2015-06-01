@@ -107,7 +107,6 @@ class TestCumulusIface(object):
     def test_connector_type(self, mock_exec):
         mock_exec.return_value = open('tests/test_netshowlib/lspci_output.txt', 'rb').read()
         values = {
-            ('.pdbrc',): open('/etc/hosts'),
             ('/var/lib/cumulus/porttab',): open('tests/test_netshowlib/xe_porttab'),
             ('/etc/bcm.d/config.bcm',): open('tests/test_netshowlib/config_xe.bcm')
         }

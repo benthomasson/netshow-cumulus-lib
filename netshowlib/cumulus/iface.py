@@ -130,10 +130,13 @@ class Iface(linux_iface.Iface):
                 0 -- Unknown
                 1 -- RJ45 (1G/10G)
                 2 -- SFP+ (10G)
-                3 -- QSFP (40G or 4x10G)
+                3 -- QSFP (40G)
+                4 -- QSFP (4x10G)
         """
         if self._connector_type:
             return self._connector_type
+        if re.match('swp\d+s\d+', self.name):
+            return 4
         if self.asic:
             if self.asic.get('asicname').startswith('ge'):
                 self._connector_type = 1
