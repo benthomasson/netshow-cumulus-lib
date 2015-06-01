@@ -12,8 +12,7 @@ import netshowlib.linux.bridge as linux_bridge
 import netshowlib.cumulus.bond as cumulus_bond
 import netshowlib.cumulus.lacp as cumulus_lacp
 import mock
-from asserts import assert_equals
-from nose.tools import set_trace
+from asserts import assert_equals, mod_args_generator
 
 
 class TestLinuxBond(object):
@@ -36,14 +35,16 @@ class TestLinuxBond(object):
     @mock.patch('netshowlib.linux.common.read_file_oneline')
     def test_get_stp(self, mock_file_oneline):
         # test stp call. returns mstpctl
-        mock_file_oneline.return_value = '1'
+        values = {('/sys/class/net/bond0/bridge/stp_state',): '2'}
+        mock_file_oneline.side_effect = mod_args_generator(values)
         assert_equals(isinstance(self.iface.stp,
                                  cumulus_bridge.MstpctlStpBridgeMember), True)
         mock_file_oneline.assert_called_with(
-            '/proc/sys/net/bridge/bridge-stp-user-space')
+            '/sys/class/net/bond0/bridge/stp_state')
         # test stp call, returns kernel stp
         self.iface._stp = None
-        mock_file_oneline.return_value = '0'
+        values = {('/sys/class/net/bond0/bridge/stp_state',): '1'}
+        mock_file_oneline.side_effect = mod_args_generator(values)
         assert_equals(isinstance(self.iface.stp,
                                  linux_bridge.KernelStpBridgeMember), True)
 

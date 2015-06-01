@@ -3,7 +3,6 @@ related to bond interface and bond member interfaces """
 import netshowlib.cumulus.bridge as cumulus_bridge
 import netshowlib.linux.bond as linux_bond
 from netshowlib.cumulus import lacp
-import netshowlib.linux.common as linux_common
 
 
 class Bond(linux_bond.Bond):
@@ -17,10 +16,10 @@ class Bond(linux_bond.Bond):
         :run MstpctlStpMember if using mstpd
         :run KernelStpMember if using kernel stp
         """
-        stp_state = linux_common.read_file_oneline(
-            '/proc/sys/net/bridge/bridge-stp-user-space')
-        if stp_state == '1':
-            self._stp = cumulus_bridge.MstpctlStpBridgeMember(self, self._cache)
+        stp_state = self.read_from_sys('bridge/stp_state')
+        if stp_state == '2':
+            self._stp = cumulus_bridge.MstpctlStpBridgeMember(self,
+                                                              self._cache)
         else:
             self._stp = super(Bond, self).stp
         return self._stp
