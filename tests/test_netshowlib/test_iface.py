@@ -9,26 +9,32 @@ import netshowlib.cumulus.iface as cumulus_iface
 from netshowlib.cumulus import asic
 from netshowlib.linux import common as linux_common
 import mock
-from asserts import assert_equals, mod_args_generator
+from asserts import assert_equals, mod_args_generator, mock_open_str
 from nose.tools import set_trace
 
+"""
+@mock.patch('netshowlib.cumulus.asic.linux_common.exec_command')
+def test_cacheinfo(mock_exec):
+    mock_exec.return_value = open('tests/test_netshowlib/lspci_output.txt', 'rb').read()
+    values = {
+        ('/var/lib/cumulus/porttab',): open('tests/test_netshowlib/xe_porttab'),
+        ('/etc/bcm.d/config.bcm',): open('tests/test_netshowlib/config_xe.bcm')
+    }
 
-@mock.patch('netshowlib.cumulus.iface.linux_common.exec_command')
-def test_switch_asic(mock_exec_command):
-    mock_exec_command.return_value = open('tests/test_netshowlib/lspci_output.txt', 'rb').read()
-    instance = cumulus_iface.switch_asic()
-    assert_equals(isinstance(instance, asic.BroadcomAsic), True)
-    # no asic found
-    mock_exec_command.side_effect = linux_common.ExecCommandException
-    instance = cumulus_iface.switch_asic()
-    assert_equals(instance, None)
 
+    with mock.patch(mock_open_str()) as mock_open:
+        mock_open.side_effect = mod_args_generator(values)
+        _output = asic.cacheinfo()
+        assert_equals(_output['kernelports']['swp1']['asicname'], 'xe0')
+        assert_equals(_output['kernelports']['swp1']['initial_speed'], '10000')
+
+"""
 
 class TestCumulusIface(object):
 
+
     def setup(self):
-        self.asic = asic.BroadcomAsic()
-        self.iface = cumulus_iface.Iface('swp10', swasic=self.asic)
+        self.iface = cumulus_iface.Iface('swp10')
 
     @mock.patch('netshowlib.linux.common.exec_command')
     @mock.patch('netshowlib.cumulus.iface.Iface.is_phy')
@@ -84,16 +90,33 @@ class TestCumulusIface(object):
         self.iface._name = 'swp10.100'
         assert_equals(self.iface.is_phy(), False)
 
-    @mock.patch('netshowlib.cumulus.iface.Iface.is_phy')
-    @mock.patch('netshowlib.cumulus.asic.BroadcomAsic.portspeed')
-    def test_initial_speed(self, mock_port_speed,
-                           mock_is_phy):
-        mock_port_speed.return_value = None
-        # initial speed cannot be found
-        assert_equals(self.iface.initial_speed(), None)
-        # initial speed is broadcom
-        mock_port_speed.return_value = '1000'
-        assert_equals(self.iface.initial_speed(), '1000')
+    @mock.patch('netshowlib.cumulus.asic.linux_common.exec_command')
+    def test_initial_speed(self, mock_exec):
+        mock_exec.return_value = open('tests/test_netshowlib/lspci_output.txt', 'rb').read()
+        values = {
+            ('/var/lib/cumulus/porttab',): open('tests/test_netshowlib/xe_porttab'),
+            ('/etc/bcm.d/config.bcm',): open('tests/test_netshowlib/config_xe.bcm')
+        }
+        with mock.patch(mock_open_str()) as mock_open:
+            mock_open.side_effect = mod_args_generator(values)
+            iface = cumulus_iface.Iface('swp1')
+            assert_equals(iface.initial_speed(), 10000)
+
+
+    @mock.patch('netshowlib.cumulus.asic.linux_common.exec_command')
+    def test_connector_type(self, mock_exec):
+        mock_exec.return_value = open('tests/test_netshowlib/lspci_output.txt', 'rb').read()
+        values = {
+            ('.pdbrc',): open('/etc/hosts'),
+            ('/var/lib/cumulus/porttab',): open('tests/test_netshowlib/xe_porttab'),
+            ('/etc/bcm.d/config.bcm',): open('tests/test_netshowlib/config_xe.bcm')
+        }
+        with mock.patch(mock_open_str()) as mock_open:
+            mock_open.side_effect = mod_args_generator(values)
+            iface = cumulus_iface.Iface('swp10')
+            assert_equals(iface.connector_type, 2)
+
+
 
     @mock.patch('netshowlib.linux.iface.Iface.read_from_sys')
     @mock.patch('netshowlib.cumulus.iface.Iface.initial_speed')

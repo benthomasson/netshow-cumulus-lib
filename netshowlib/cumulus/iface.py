@@ -5,8 +5,8 @@ from netshowlib import netshowlib as nn
 from netshowlib.linux import common as linux_common
 from netshowlib.cumulus import common
 from netshowlib.linux import iface as linux_iface
-from netshowlib.cumulus import asic
 from netshowlib.cumulus import counters
+from netshowlib.cumulus import asic as cumulus_asic
 import re
 
 
@@ -36,36 +36,18 @@ def iface(name, cache=None):
     return test_iface
 
 
-def switch_asic():
-    """ return class instance that matches switching asic used on the cumulus switch
-    """
-    try:
-        lspci_output = linux_common.exec_command('lspci -nn')
-    except linux_common.ExecCommandException:
-        return None
-
-    for _line in lspci_output.decode('utf-8').split('\n'):
-        _line = _line.lower()
-        if re.search(r'ethernet\s+controller.*broadcom', _line):
-            return asic.BroadcomAsic()
-
-SWITCHING_ASIC = switch_asic()
-
-
 class Iface(linux_iface.Iface):
     """ Cumulus Iface Class
     """
 
-    def __init__(self, name, cache=None, swasic=None):
+    def __init__(self, name, cache=None):
         linux_iface.Iface.__init__(self, name, cache)
         # import class that collects asic specific info
         # Not this doesn't run things like bcmcmd, just looks at flat files
-        if swasic:
-            self._asic = swasic
-        else:
-            self._asic = SWITCHING_ASIC
+        self._asic = None
         self._counters = None
-        self.orig_cache = cache
+        self._initial_speed = 0
+        self._connector_type = 0
 
     def parent_is_vlan_aware_bridge(self):
         """
@@ -75,7 +57,7 @@ class Iface(linux_iface.Iface):
         if not self.is_subint():
             return False
         parent_ifacename = self.name.split('.')[0]
-        parent_iface = Iface(parent_ifacename, swasic=self._asic)
+        parent_iface = Iface(parent_ifacename)
         if common.is_vlan_aware_bridge(parent_iface.name):
             return True
         return False
@@ -130,30 +112,48 @@ class Iface(linux_iface.Iface):
         return linux_common.check_bit(self._port_type, linux_iface.PHY_INT)
 
     @property
+    def asic(self):
+        """
+        :return: the Switching asic class on the switch. used to get
+        initial speed and port names
+        """
+        if not self._asic:
+            asicinstance = cumulus_asic.Asic(self.name, self._cache)
+            self._asic = asicinstance.run()
+        return self._asic
+
+    @property
     def connector_type(self):
         """ type of connector physical switch has
         Returns:
             int. The return code::
+                0 -- Unknown
                 1 -- RJ45 (1G/10G)
                 2 -- SFP+ (10G)
                 3 -- QSFP (40G or 4x10G)
         """
-        if not self.is_phy():
-            return ''
-
-        if self._asic:
-            return self._asic.connector_type()
+        if self._connector_type:
+            return self._connector_type
+        if self.asic:
+            if self.asic.get('asicname').startswith('ge'):
+                self._connector_type = 1
+            elif self.initial_speed() == 10000:
+                self._connector_type = 2
+            elif self.initial_speed() == 40000:
+                self._connector_type = 3
+        return self._connector_type
 
     def initial_speed(self):
         """
         returns initial speed of the physical port
         """
         # if not a physical port, return none
-        if not self.is_phy():
-            return None
-
-        if self._asic:
-            return self._asic.portspeed(self.name)
+        print("DEBUG %s" % (self._initial_speed))
+        if self._initial_speed:
+            return self._initial_speed
+        if self.asic and self.is_phy():
+            self._initial_speed = int(self.asic.get('initial_speed'))
+        return self._initial_speed
 
     @property
     def speed(self):
@@ -175,7 +175,7 @@ class Iface(linux_iface.Iface):
         if not self.is_phy():
             return None
         if self._counters is None:
-            self._counters = counters.Counters(name=self.name, cache=self.orig_cache)
+            self._counters = counters.Counters(name=self.name, cache=self._cache)
         # check counters each time this property is called
         self._counters.run()
         return self._counters

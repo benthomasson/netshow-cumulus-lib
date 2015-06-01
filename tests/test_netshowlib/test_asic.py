@@ -6,63 +6,33 @@
 # pylint: disable=W0201
 # pylint: disable=F0401
 from netshowlib.cumulus import asic
+import netshowlib.linux.common as linux_common
 import mock
-from asserts import assert_equals, mock_open_str
-from nose.tools import set_trace
+from asserts import assert_equals, mock_open_str, mod_args_generator
+
+@mock.patch('netshowlib.cumulus.asic.linux_common.exec_command')
+def test_switch_asic(mock_exec_command):
+    mock_exec_command.return_value = open(
+        'tests/test_netshowlib/lspci_output.txt', 'rb').read()
+    instance = asic.switching_asic_discovery()
+    assert_equals(isinstance(instance, asic.BroadcomAsic), True)
+    # no asic found
+    mock_exec_command.side_effect = linux_common.ExecCommandException
+    instance = asic.switching_asic_discovery()
+    assert_equals(instance, None)
 
 
-class TestBroadcomAsic(object):
+@mock.patch('netshowlib.cumulus.asic.linux_common.exec_command')
+def test_cacheinfo(mock_exec):
+    mock_exec.return_value = open(
+        'tests/test_netshowlib/lspci_output.txt', 'rb').read()
+    values = {
+        ('/var/lib/cumulus/porttab',): open('tests/test_netshowlib/xe_porttab'),
+        ('/etc/bcm.d/config.bcm',): open('tests/test_netshowlib/config_xe.bcm')
+    }
 
-    def setup(self):
-        self.asic = asic.BroadcomAsic()
-
-    def test_name(self):
-        assert_equals(self.asic.name, 'broadcom')
-
-    @mock.patch('netshowlib.cumulus.asic.BroadcomAsic.portspeed')
-    @mock.patch('netshowlib.cumulus.asic.BroadcomAsic.portname')
-    def test_connector_type(self, mock_portname, mock_portspeed):
-        # rj45
-        mock_portname.return_value = 'ge10'
-        mock_portspeed.return_value = '1000'
-        assert_equals(self.asic.connector_type('swp1'), 1)
-        # sfp+
-        mock_portname.return_value = 'xe22'
-        mock_portspeed.return_value = '10000'
-        assert_equals(self.asic.connector_type('swp2'), 2)
-        # qsfp+
-        mock_portspeed.return_value = '40000'
-        assert_equals(self.asic.connector_type('swp3'), 3)
-
-    def test_get_bcm_name_file_not_there(self):
-        with mock.patch(mock_open_str()) as mock_open:
-            mock_open.side_effect = IOError
-            assert_equals(self.asic.portname('swp10'), None)
-
-    def test_bcm_name_swp2(self):
-        porttab_file = open('tests/test_netshowlib/xe_porttab')
-        with mock.patch(mock_open_str()) as mock_open:
-            mock_open.return_value = porttab_file
-            assert_equals(self.asic.portname('swp2'), 'xe1')
-
-    def test_bcm_name_swp10(self):
-        porttab_file = open('tests/test_netshowlib/xe_porttab')
-        with mock.patch(mock_open_str()) as mock_open:
-            mock_open.return_value = porttab_file
-            assert_equals(self.asic.portname('swp10'), 'xe9')
-
-    @mock.patch('netshowlib.cumulus.asic.BroadcomAsic.portname')
-    def test_get_initial_speed_40g(self, mock_bcm_name):
-        mock_bcm_name.return_value = 'xe56'
-        xe_config_file = open('tests/test_netshowlib/config_xe.bcm')
-        with mock.patch(mock_open_str()) as mock_open:
-            mock_open.return_value = xe_config_file
-            assert_equals(self.asic.portspeed('swp52'), '40000')
-
-    @mock.patch('netshowlib.cumulus.asic.BroadcomAsic.portname')
-    def test_get_initial_speed_10g(self, mock_bcm_name):
-        mock_bcm_name.return_value = 'xe9'
-        xe_config_file = open('tests/test_netshowlib/config_xe.bcm')
-        with mock.patch(mock_open_str()) as mock_open:
-            mock_open.return_value = xe_config_file
-            assert_equals(self.asic.portspeed('swp10'), '10000')
+    with mock.patch(mock_open_str()) as mock_open:
+        mock_open.side_effect = mod_args_generator(values)
+        _output = asic.cacheinfo()
+        assert_equals(_output['kernelports']['swp1']['asicname'], 'xe0')
+        assert_equals(_output['kernelports']['swp1']['initial_speed'], '10000')
