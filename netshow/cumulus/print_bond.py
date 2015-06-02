@@ -32,6 +32,7 @@ class PrintBondMember(linux_print_bond.PrintBondMember,
         """
         return cumulus_print_iface.PrintIface.speed.fget(self)
 
+
     def bondmem_details(self):
         """
         :return: string with output shown when netshow interfaces is issued on a \
@@ -44,35 +45,17 @@ class PrintBondMember(linux_print_bond.PrintBondMember,
         _table.append([_('master_bond') + ':', _master.name])
         _table.append([_('state_in_bond') + ':', self.state_in_bond])
         _table.append([_('link_failures') + ':', self.iface.linkfailures])
-        _table.append([_('bond_members') + ':',
-                       ', '.join(_master.members.keys())])
+        _table.append([_('bond_members') + ':', ', '.join(_master.members.keys())])
         _table.append([_('bond_mode') + ':', _printbond.mode])
         _table.append([_('load_balancing') + ':', _printbond.hash_policy])
         _table.append([_('minimum_links') + ':', _master.min_links])
         _lacp_info = self.iface.master.lacp
         if _lacp_info:
-            _table.append([_('lacp_sys_priority') + ':',
-                           _master.lacp.sys_priority])
+            _table.append([_('lacp_sys_priority') + ':', _master.lacp.sys_priority])
             _table.append([_('lacp_rate') + ':', _printbond.lacp_rate()])
             _table.append([_('lacp_bypass') + ':', _printbond.lacp_bypass()])
 
         return tabulate(_table, _header)
-
-    @property
-    def summary(self):
-        """
-        :return: summary info for bonds for 'netshow interfaces'
-        """
-        _arr = []
-        _arr.append(self.print_bondmems())
-        if self.iface.is_l3():
-            _arr.append(', '.join(self.iface.ip_address.allentries))
-        elif self.iface.is_trunk():
-            _arr += self.trunk_summary()
-        elif self.iface.is_access():
-            _arr += self.access_summary()
-        return _arr
-
 
     def cli_output(self):
         """

@@ -5,10 +5,12 @@ import netshowlib.linux.bond as linux_bond
 from netshowlib.cumulus import lacp
 from netshowlib.cumulus import iface as cumulus_iface
 
+
 class BondMember(cumulus_iface.Iface, linux_bond.BondMember):
     def __init__(self, name, cache=None, master=None):
         cumulus_iface.Iface.__init__(self, name, cache)
         linux_bond.BondMember.__init__(self, name, cache)
+        self.bond_class = Bond
 
 
 class Bond(linux_bond.Bond):
