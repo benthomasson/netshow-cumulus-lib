@@ -25,4 +25,4 @@ class TestCumulusLacp(object):
         mock_file_oneline.return_value = '1'
         assert_equals(self.lacp.bypass, '1')
         mock_file_oneline.assert_called_with(
-            '/sys/class/net/bond0/bonding/lacp_bypass_allowed')
+            '/sys/class/net/bond0/bonding/lacp_bypass_allow')

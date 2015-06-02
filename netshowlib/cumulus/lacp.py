@@ -29,5 +29,5 @@ class Lacp(linux_lacp.Lacp):
         """
         if not self._lacp_bypass:
             self._lacp_bypass = linux_common.read_from_sys(
-                'bonding/lacp_bypass_allowed', self.name)
+                'bonding/lacp_bypass_allow', self.name)
         return self._lacp_bypass
