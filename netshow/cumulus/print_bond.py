@@ -140,3 +140,30 @@ class PrintBond(linux_print_bond.PrintBond):
                            _bondmem.linkfailures])
 
         return tabulate(_table, _header)
+
+    def clag_summary(self):
+        """
+        :return: clag summary details for 'netshow interface' for all ints
+        """
+        if self.iface.clag_enable == '1':
+            return _('in_clag')
+
+        return ''
+
+    @property
+    def summary(self):
+        """
+        :return: summary info for bonds for 'netshow interfaces'
+        """
+        _arr = []
+        _arr.append(self.print_bondmems())
+        if self.iface.is_l3():
+            _arr.append(', '.join(self.iface.ip_address.allentries))
+        elif self.iface.is_trunk():
+            _arr += self.trunk_summary()
+        elif self.iface.is_access():
+            _arr += self.access_summary()
+        _in_clag = self.clag_summary()
+        if _in_clag:
+            _arr += "(%s)" % (_in_clag)
+        return _arr
