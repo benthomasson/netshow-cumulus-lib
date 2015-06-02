@@ -30,6 +30,7 @@ class ShowInterfaces(linux_showint.ShowInterfaces):
         self.iface_categories = ['bond', 'bondmem', 'phy',
                                  'bridge', 'trunk', 'access', 'l3',
                                  'l2']
+        self.show_phy = kwargs.get('phy')
 
     def print_single_iface(self):
         """
