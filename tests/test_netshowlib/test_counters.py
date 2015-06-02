@@ -61,6 +61,9 @@ class TestCumulusCounters(object):
         self.counters.run()
         assert_equals(self.counters.rx.get('unicast'), 100)
         assert_equals(self.counters.tx.get('errors'), 20)
+        assert_equals(self.counters.total_rx, 600)
+        assert_equals(self.counters.total_tx, 1500)
+        assert_equals(self.counters.total_err, 30)
 
     @mock.patch('netshowlib.cumulus.counters.os.listdir')
     @mock.patch('netshowlib.linux.common.exec_command')
