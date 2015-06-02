@@ -52,7 +52,7 @@ class ShowCounters(object):
         for _piface in self.ifacelist.values():
             _rx_counters = _piface.iface.counters.rx
             _tx_counters = _piface.iface.counters.tx
-            _table.append([_piface.linkstate, _piface._piface.name,
+            _table.append([_piface.linkstate, _piface.name,
                            _piface.speed, _piface.port_category,
                            _('rx'), _rx_counters.get('unicast'),
                            _rx_counters.get('multicast'),
