@@ -9,7 +9,7 @@ Usage:
     netshow counters [--json | -j ]
     netshow system [--json | -j ]
     netshow interface [all] [ -m | --mac ] [ --oneline | -1 | -j | --json ]
-    netshow [interface] [ access | bridges | bonds | bondmems | mgmt | l2 | l3 | trunks | <iface> ] [all] [--mac | -m ] [--oneline | -1  | --json | -j]
+    netshow [interface] [ access | bridges | bonds | bondmems | mgmt | l2 | l3 | phy | trunks | <iface> ] [all] [--mac | -m ] [--oneline | -1  | --json | -j]
     netshow (--version | -v)
 
 Help:
@@ -19,10 +19,11 @@ Help:
     interface bonds           summary of bonds
     interface bondmems        summary of bond members
     interface bridges         summary of ports with bridge members
-    interface trunks          summary of trunk interfaces
     interface mgmt            summary of mgmt ports
     interface l3              summary of ports with an IP.
     interface l2              summary of access, trunk and bridge interfaces
+    interface phy             summary of physical ports
+    interface trunks          summary of trunk interfaces
     interface <interface>     list summary of a single interface
     system                    system information
     neighbors                 physical device neighbor information
@@ -57,6 +58,7 @@ def _interface_related(results):
             results.get('bridges') or \
             results.get('bonds') or \
             results.get('bondmems') or \
+            results.get('trunks') or \
             results.get('mgmt') or \
             results.get('interface'):
         return True

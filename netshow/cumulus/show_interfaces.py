@@ -8,7 +8,7 @@
 Module for printout of 'netshow interfaces' of the Cumulus provider
 """
 
-import netshow.linux.print_iface as linux_printiface
+import netshow.linux.show_interfaces as linux_showint
 import netshow.cumulus.print_iface as print_iface
 import netshow.cumulus.print_bridge as print_bridge
 import netshow.cumulus.print_bond as print_bond
@@ -21,39 +21,15 @@ from flufl.i18n import initialize
 _ = initialize('netshow-cumulus-lib')
 
 
-class ShowInterfaces(linux_printiface.PrintIface):
+class ShowInterfaces(linux_showint.ShowInterfaces):
     """ Class responsible for the 'netshow interfaces' printout for \
         the cumulus provider
     """
-
     def __init__(self, **kwargs):
-        self._ifacelist = {}
-        self.show_mac = kwargs.get('--mac') or kwargs.get('-m')
-        self.use_json = kwargs.get('--json') or kwargs.get('-j')
-        self.show_all = True
-        self.show_mgmt = kwargs.get('mgmt')
-        self.show_bridges = kwargs.get('bridges')
-        self.show_bond = kwargs.get('bond')
-        self.show_bondmem = kwargs.get('bondmem')
-        self.show_access = kwargs.get('access')
-        self.show_trunk = kwargs.get('trunk')
-        self.show_l3 = kwargs.get('l3')
-        self.show_l2 = kwargs.get('l2')
-        self.show_phy = kwargs.get('phy')
-        self.single_iface = kwargs.get('<iface>')
-        if kwargs.get('all') or self.single_iface is not None:
-            self.show_up = False
-        else:
-            self.show_up = True
-            if self.show_bond or self.show_bondmem \
-                    or self.show_access or self.show_trunk \
-                    or self.show_bridges or self.show_mgmt:
-                self.show_all = False
-
-        self.oneline = kwargs.get('--oneline') or kwargs.get('-1')
-        self.iface_categories = ['bond', 'bondmem', 'bridges',
-                                 'trunk', 'access', 'l3', 'l2']
-        self._initialize_ifacelist()
+        linux_showint.ShowInterfaces.__init__(self, **kwargs)
+        self.iface_categories = ['bond', 'bondmem', 'phy',
+                                 'bridge', 'trunk', 'access', 'l3',
+                                 'l2']
 
     def print_single_iface(self):
         """
@@ -98,23 +74,26 @@ class ShowInterfaces(linux_printiface.PrintIface):
 
             self._ifacelist['all'][_portname] = _printiface
 
+            if _printiface.iface.is_phy():
+                self._ifacelist['phy'][_portname] = _printiface
+
             # mutual exclusive bond/bridge/bondmem/bridgemem
             if isinstance(_printiface, print_bridge.PrintBridge):
                 self._ifacelist['bridges'][_portname] = _printiface
                 self._ifacelist['l2'][_portname] = _printiface
             elif isinstance(_printiface, print_bond.PrintBond):
-                self._ifacelist['bond'][_portname] = _printiface
+                self._ifacelist['bonds'][_portname] = _printiface
             elif isinstance(_printiface, print_bridge.PrintBridgeMember):
                 self._ifacelist['l2'][_portname] = _printiface
             elif isinstance(_printiface, print_bond.PrintBondMember):
-                self._ifacelist['bondmem'][_portname] = _printiface
+                self._ifacelist['bondmems'][_portname] = _printiface
                 continue
 
             # mutual exclusive - l3/trunk/access
             if _printiface.iface.is_l3():
                 self._ifacelist['l3'][_portname] = _printiface
             elif _printiface.iface.is_trunk():
-                self._ifacelist['trunk'][_portname] = _printiface
+                self._ifacelist['trunks'][_portname] = _printiface
             elif _printiface.iface.is_access():
                 self._ifacelist['access'][_portname] = _printiface
 

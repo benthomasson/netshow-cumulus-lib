@@ -15,12 +15,11 @@
 
 from asserts import assert_equals
 import netshow.cumulus.show as show
-from nose.tools import set_trace
 import mock
 
 
 def test_interface_related():
-    for _val in ['trunks', 'access', 'l3',
+    for _val in ['trunks', 'access', 'l3', 'trunks', 'phy',
                  'l2', 'bridges', 'bonds', 'bondmems',
                  'interface']:
 
@@ -53,3 +52,12 @@ def test_run_show_neighbors(mock_shownei, mock_docopt):
     mock_docopt.return_value = {'neighbors': True}
     show.run()
     assert_equals(mock_shownei.call_count, 1)
+
+
+@mock.patch('netshow.cumulus.show.docopt')
+@mock.patch('netshow.cumulus.show.ShowCounters')
+def test_run_show_counters(mock_showcounters, mock_docopt):
+    # netshow system
+    mock_docopt.return_value = {'counters': True}
+    show.run()
+    assert_equals(mock_showcounters.call_count, 1)

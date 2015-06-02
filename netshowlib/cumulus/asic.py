@@ -39,9 +39,10 @@ def cacheinfo():
           'xe11': 'swp11' }
     }
     """
-
+    cache = {}
     asic = switching_asic_discovery()
-    cache = asic.parse_speed_and_name_info()
+    if asic:
+        cache = asic.parse_speed_and_name_info()
     return cache
 
 
