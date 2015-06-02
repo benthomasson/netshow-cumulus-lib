@@ -13,6 +13,7 @@ import netshow.cumulus.print_iface as print_iface
 import netshow.cumulus.print_bridge as print_bridge
 import netshow.cumulus.print_bond as print_bond
 import netshowlib.cumulus.cache as cumulus_cache
+from netshowlib.cumulus import iface
 from netshowlib.linux import iface as linux_iface
 import json
 from netshow.linux.netjson_encoder import NetEncoder
@@ -75,26 +76,27 @@ class ShowInterfaces(linux_showint.ShowInterfaces):
 
             self._ifacelist['all'][_portname] = _printiface
 
-            if _printiface.iface.is_phy():
+            if isinstance(_printiface.iface, iface.Iface) and \
+                    _printiface.iface.is_phy():
                 self._ifacelist['phy'][_portname] = _printiface
 
             # mutual exclusive bond/bridge/bondmem/bridgemem
             if isinstance(_printiface, print_bridge.PrintBridge):
-                self._ifacelist['bridges'][_portname] = _printiface
+                self._ifacelist['bridge'][_portname] = _printiface
                 self._ifacelist['l2'][_portname] = _printiface
             elif isinstance(_printiface, print_bond.PrintBond):
-                self._ifacelist['bonds'][_portname] = _printiface
+                self._ifacelist['bond'][_portname] = _printiface
             elif isinstance(_printiface, print_bridge.PrintBridgeMember):
                 self._ifacelist['l2'][_portname] = _printiface
             elif isinstance(_printiface, print_bond.PrintBondMember):
-                self._ifacelist['bondmems'][_portname] = _printiface
+                self._ifacelist['bondmem'][_portname] = _printiface
                 continue
 
             # mutual exclusive - l3/trunk/access
             if _printiface.iface.is_l3():
                 self._ifacelist['l3'][_portname] = _printiface
             elif _printiface.iface.is_trunk():
-                self._ifacelist['trunks'][_portname] = _printiface
+                self._ifacelist['trunk'][_portname] = _printiface
             elif _printiface.iface.is_access():
                 self._ifacelist['access'][_portname] = _printiface
 

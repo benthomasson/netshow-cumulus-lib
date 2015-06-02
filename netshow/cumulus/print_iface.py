@@ -21,7 +21,6 @@ def iface(name, cache=None):
     :return: None if interface does not exist
     """
     # create test iface.
-    from nose.tools import set_trace; set_trace()
     test_iface = cumulus_iface.iface(name, cache=cache)
     if not test_iface.exists():
         return None
