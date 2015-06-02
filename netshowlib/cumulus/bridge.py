@@ -2,6 +2,7 @@
 Bridge module for the cumulus provider
 """
 
+from netshowlib.cumulus import iface as cumulus_iface
 from netshowlib.cumulus import common
 from netshowlib.linux import bridge as linux_bridge
 from netshowlib.cumulus import mstpd
@@ -206,10 +207,19 @@ class MstpctlStpBridge(object):
         return self._member_state
 
 
-class BridgeMember(linux_bridge.BridgeMember):
+class BridgeMember(linux_bridge.BridgeMember, cumulus_iface.Iface):
     """
     Class responsible for cumulus bridge member that is not a bond
     """
+    def __init__(self, name, cache=None):
+        linux_bridge.BridgeMember.__init__(self, name, cache)
+        cumulus_iface.Iface.__init__(self, name, cache)
+    @property
+    def speed(self):
+        """
+        :return: ensure speed is obtained using Cumulus provider
+        """
+        return cumulus_iface.Iface.speed.fget(self)
 
     @property
     def stp(self):

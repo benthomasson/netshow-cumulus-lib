@@ -44,6 +44,9 @@ class Iface(linux_iface.Iface):
         linux_iface.Iface.__init__(self, name, cache)
         # import class that collects asic specific info
         # Not this doesn't run things like bcmcmd, just looks at flat files
+        self.iface_initializers()
+
+    def iface_initializers(self):
         self._asic = None
         self._counters = None
         self._initial_speed = 0
@@ -168,7 +171,7 @@ class Iface(linux_iface.Iface):
         if self.linkstate == 0:
             self._speed = self.initial_speed()
         else:
-            self._speed = super(Iface, self).speed
+            self._speed = linux_iface.Iface.speed.fget(self)
 
         return self._speed
 

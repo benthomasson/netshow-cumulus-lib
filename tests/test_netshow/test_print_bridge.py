@@ -203,6 +203,16 @@ class TestPrintBridgeMember(object):
         iface = cumulus_bridge.BridgeMember('swp22')
         self.piface = print_bridge.PrintBridgeMember(iface)
 
+    @mock.patch('netshowlib.linux.iface.Iface.read_from_sys')
+    def test_speed(self, mock_read_sys):
+        values = {('speed', ): '1000',
+                  ('carrier',): '1'}
+        self.piface.iface._asic = {'asicname': 'xe2', 'initial_speed': '10000'}
+        mock_read_sys.side_effect = mod_args_generator(values)
+        from nose.tools import set_trace; set_trace()
+        assert_equals(self.piface.speed, '1G(sfp)')
+
+
     @mock.patch('netshowlib.linux.common.exec_command')
     @mock.patch('netshowlib.linux.common.read_symlink')
     @mock.patch('netshowlib.linux.iface.Iface.read_from_sys')
