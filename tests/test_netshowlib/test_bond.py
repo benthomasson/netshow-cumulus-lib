@@ -1,4 +1,4 @@
-""" Linux Bond module tests
+""" Cumulus Bond module tests
 """
 # disable docstring checking
 # pylint: disable=C0111
@@ -12,44 +12,23 @@ import netshowlib.linux.bridge as linux_bridge
 import netshowlib.cumulus.bond as cumulus_bond
 import netshowlib.cumulus.lacp as cumulus_lacp
 import mock
-from asserts import assert_equals, mod_args_generator
+from asserts import assert_equals, mod_args_generator, mock_open_str
 
 
-class TestLinuxBond(object):
-    """ Linux bond tests """
+class TestBondMember(object):
+    """ Linux bondmember tests """
 
     def setup(self):
         """ setup function """
-        self.iface = cumulus_bond.Bond('bond0')
+        self.iface = cumulus_bond.BondMember('swp1')
 
-    @mock.patch('netshowlib.linux.common.read_file_oneline')
-    def test_get_lacp_instance(self, mock_file_oneline):
-        # test that calling iface.lacp and if iface is LACP
-        # creates new Lacp instance
-        mock_file_oneline.return_value = '802.3ad 4'
-        assert_equals(isinstance(self.iface.lacp, cumulus_lacp.Lacp), True)
-        # if bond is not using lacp
-        mock_file_oneline.return_value = 'active-backup 1'
-        assert_equals(self.iface.lacp, None)
-
-    @mock.patch('netshowlib.linux.common.read_file_oneline')
-    def test_get_stp(self, mock_file_oneline):
-        # test stp call. returns mstpctl
-        values = {('/sys/class/net/bond0/bridge/stp_state',): '2'}
-        mock_file_oneline.side_effect = mod_args_generator(values)
-        assert_equals(isinstance(self.iface.stp,
-                                 cumulus_bridge.MstpctlStpBridgeMember), True)
-        mock_file_oneline.assert_called_with(
-            '/sys/class/net/bond0/bridge/stp_state')
-        # test stp call, returns kernel stp
-        self.iface._stp = None
-        values = {('/sys/class/net/bond0/bridge/stp_state',): '1'}
-        mock_file_oneline.side_effect = mod_args_generator(values)
-        assert_equals(isinstance(self.iface.stp,
-                                 linux_bridge.KernelStpBridgeMember), True)
-
-    @mock.patch('netshowlib.linux.iface.Iface.read_from_sys')
-    def test_clag_eanble(self, mock_read_from_sys):
-        mock_read_from_sys.return_value = '1'
-        assert_equals(self.iface.clag_enable, '1')
-        mock_read_from_sys.assert_called_with('bonding/clag_enable')
+    @mock.patch('netshowlib.cumulus.asic.linux_common.exec_command')
+    def test_connector_type(self, mock_exec):
+        mock_exec.return_value = open('tests/test_netshowlib/lspci_output.txt', 'rb').read()
+        values = {
+            ('/var/lib/cumulus/porttab',): open('tests/test_netshowlib/xe_porttab'),
+            ('/etc/bcm.d/config.bcm',): open('tests/test_netshowlib/config_xe.bcm')
+        }
+        with mock.patch(mock_open_str()) as mock_open:
+            mock_open.side_effect = mod_args_generator(values)
+            assert_equals(self.iface.connector_type, 2)

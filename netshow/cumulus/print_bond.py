@@ -43,46 +43,19 @@ class PrintBondMember(linux_print_bond.PrintIface):
         _table.append([_('master_bond') + ':', _master.name])
         _table.append([_('state_in_bond') + ':', self.state_in_bond])
         _table.append([_('link_failures') + ':', self.iface.linkfailures])
-        _table.append([_('bond_members') + ':', ', '.join(_master.members.keys())])
+        _table.append([_('bond_members') + ':',
+                       ', '.join(_master.members.keys())])
         _table.append([_('bond_mode') + ':', _printbond.mode])
         _table.append([_('load_balancing') + ':', _printbond.hash_policy])
         _table.append([_('minimum_links') + ':', _master.min_links])
         _lacp_info = self.iface.master.lacp
         if _lacp_info:
-            _table.append([_('lacp_sys_priority') + ':', _master.lacp.sys_priority])
+            _table.append([_('lacp_sys_priority') + ':',
+                           _master.lacp.sys_priority])
             _table.append([_('lacp_rate') + ':', _printbond.lacp_rate()])
+            _table.append([_('lacp_bypass') + ':', _printbond.lacp_bypass()])
 
         return tabulate(_table, _header)
-
-    def cli_output(self):
-        """
-        cli output of the linux bond member interface
-        :return: output for 'netshow interface <ifacename>'
-        """
-        _str = self.cli_header() + self.new_line()
-        _str += self.bondmem_details() + self.new_line()
-        _str += cumulus_print_iface.PrintIface.counters_summary(self) + self.new_line()
-        _str += self.lldp_details() + self.new_line()
-        return _str
-
-
-class PrintBond(linux_print_bond.PrintBond):
-    """
-    Print and Analysis Class for Linux bond interfaces
-    """
-    @property
-    def port_category(self):
-        """
-        :return: port category for a bond
-        """
-        if self.iface.is_l3():
-            return _('bond/l3')
-        elif self.iface.is_trunk():
-            return _('bond/trunk')
-        elif self.iface.is_access():
-            return _('bond/access')
-        else:
-            return _('bond')
 
     @property
     def summary(self):
@@ -99,79 +72,47 @@ class PrintBond(linux_print_bond.PrintBond):
             _arr += self.access_summary()
         return _arr
 
-    @property
-    def hash_policy(self):
-        """
-        :return: hash policy for bond
-        """
-        _hash_policy = self.iface.hash_policy
-        if _hash_policy == '1':
-            return _('layer3+4')
-        elif _hash_policy == '2':
-            return _('layer2+3')
-        elif _hash_policy == '0':
-            return _('layer2')
-        else:
-            return _('unknown')
 
-    @property
-    def mode(self):
+    def cli_output(self):
         """
-        :return: name of the bond mode
+        cli output of the linux bond member interface
+        :return: output for 'netshow interface <ifacename>'
         """
-        _mode = self.iface.mode
-        if _mode == '4':
-            return _('lacp')
-        elif _mode == '3':
-            return _('broadcast')
-        elif _mode == '2':
-            return _('balance-xor')
-        elif _mode == '1':
-            return _('active-backup')
-        elif _mode == '0':
-            return _('balance-rr')
-        else:
-            return _('unknown')
+        _str = self.cli_header() + self.new_line()
+        _str += self.bondmem_details() + self.new_line()
+        _str += cumulus_print_iface.PrintIface.counters_summary(self) + \
+            self.new_line()
+        _str += self.lldp_details() + self.new_line()
+        return _str
 
-    @classmethod
-    def abbrev_bondstate(cls, bondmem):
-        """
-        :param bondmem: :class:`netshowlib.linux.BondMember` instance
-        :return: 'P' if bondmem in bond
-        :return: 'D' if bondmem is not in bond
-        """
-        if bondmem.bondstate == 1:
-            return _('P')
-        else:
-            return _('D')
 
-    def print_bondmems(self):
+class PrintBond(linux_print_bond.PrintBond):
+    """
+    Print and Analysis Class for Linux bond interfaces
+    """
+    def lacp_bypass(self):
         """
-        :return: bondmember list when showing summary in netshow interfaces \
-            for the bond interface
-        """
-        _arr = []
-        for _bondmem in self.iface.members.values():
-            _arr.append("%s(%s%s)" % (_bondmem.name,
-                                      self.abbrev_linksummary(_bondmem),
-                                      self.abbrev_bondstate(_bondmem)))
-        if len(_arr) > 0:
-            return ': '.join([_('bondmems'), ', '.join(sorted(_arr))])
-        else:
-            return _('no_bond_members_found')
-
-    def lacp_rate(self):
-        """
-        :return: lacp rate in plain english
+        :return print lacp bypass status
         """
         _lacp = self.iface.lacp
         if _lacp:
-            if _lacp.rate == '1':
-                return _('fast_lacp')
-            elif _lacp.rate == '0':
-                return _('slow_lacp')
-            else:
-                return _('unknown')
+            if _lacp.bypass == '1':
+                return _('lacp_bypass_active')
+            elif _lacp.bypass == '0':
+                return _('lacp_bypass_inactive')
+
+        return _('lacp bypass not supported')
+
+    def in_clag(self):
+        """
+        :return: print clag status
+        """
+        if self.iface.clag_enable == '0':
+            return _('clag inactive')
+        elif self.iface.clag_enable == '1':
+            return _('clag active')
+        else:
+            return _('clag not supported')
 
     def bond_details(self):
         """
@@ -182,10 +123,13 @@ class PrintBond(linux_print_bond.PrintBond):
         _table.append([_('bond_mode') + ':', self.mode])
         _table.append([_('load_balancing') + ':', self.hash_policy])
         _table.append([_('minimum_links') + ':', self.iface.min_links])
+        if self.in_clag:
+            _table.append([_('in_clag') + ':', self.in_clag()])
         _lacp_info = self.iface.lacp
         if _lacp_info:
             _table.append([_('lacp_sys_priority') + ':', self.iface.lacp.sys_priority])
             _table.append([_('lacp_rate') + ':', self.lacp_rate()])
+            _table.append([_('lacp_bypass') + ':', self.lacp_bypass()])
         return tabulate(_table, _header)
 
     def bondmem_details(self):
@@ -193,7 +137,8 @@ class PrintBond(linux_print_bond.PrintBond):
         print out table with bond member summary info for netshow interface [ifacename]
         for bond interface
         """
-        _header = ['', _('port'), _('speed'), _('link_failures')]
+        _header = ['', _('port'), _('speed'),
+                   _('tx'), _('rx'), _('err'), _('link_failures')]
         _table = []
         _bondmembers = self.iface.members.values()
         if len(_bondmembers) == 0:
@@ -205,44 +150,9 @@ class PrintBond(linux_print_bond.PrintBond):
                            "%s(%s)" % (_printbondmem.name,
                                        self.abbrev_bondstate(_bondmem)),
                            _printbondmem.speed,
+                           _bondmem.counters.total_tx,
+                           _bondmem.counters.total_rx,
+                           _bondmem.counters.total_err,
                            _bondmem.linkfailures])
 
         return tabulate(_table, _header)
-
-    def lldp_details(self):
-        """
-        :return: lldp info for the bond members
-        """
-        _header = [_('lldp'), '', '']
-        _table = []
-        for _bondmem in self.iface.members.values():
-            lldp_output = _bondmem.lldp
-            if not lldp_output:
-                continue
-            _table.append(["%s(%s)" % (_bondmem.name,
-                                       self.abbrev_bondstate(_bondmem)),
-                           '====',
-                           "%s(%s)" % (lldp_output[0].get('adj_port'),
-                                       lldp_output[0].get('adj_hostname'))])
-            del lldp_output[0]
-            for _entry in lldp_output:
-                _table.append(['', '====',
-                               "%s(%s)" % (_entry.get('adj_port'),
-                                           _entry.get('adj_hostname'))])
-
-        if len(_table) > 0:
-            return tabulate(_table, _header)
-        else:
-            return _('no_lldp_entries')
-
-    def cli_output(self):
-        """
-        cli output of the linux bond interface
-        :return: output for 'netshow interface <ifacename>'
-        """
-        _str = self.cli_header() + self.new_line()
-        _str += self.bond_details() + self.new_line()
-        _str += self.ip_details() + self.new_line()
-        _str += self.bondmem_details() + self.new_line()
-        _str += self.lldp_details() + self.new_line()
-        return _str

@@ -6,6 +6,7 @@ and attributes regarding Lacp support on Bond interfaces
 import netshowlib.linux.lacp as linux_lacp
 import netshowlib.linux.common as linux_common
 
+
 class Lacp(linux_lacp.Lacp):
     """ Lacp class attributes
 
@@ -26,4 +27,7 @@ class Lacp(linux_lacp.Lacp):
         :return: '1', '0' if LACP bypass is supported. '1' means that its active
         :return: None if not supported on this Cumulus Linux release
         """
-        return linux_common.read_from_sys('bonding/lacp_bypass_allowed', self.name)
+        if not self._lacp_bypass:
+            self._lacp_bypass = linux_common.read_from_sys(
+                'bonding/lacp_bypass_allowed', self.name)
+        return self._lacp_bypass

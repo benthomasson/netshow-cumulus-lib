@@ -7,8 +7,7 @@
 # pylint: disable=F0401
 from netshowlib.cumulus import counters
 import mock
-from asserts import assert_equals, mock_open_str, mod_args_generator
-from nose.tools import set_trace
+from asserts import assert_equals
 
 
 @mock.patch('netshowlib.linux.common.exec_command')
