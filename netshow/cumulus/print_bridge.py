@@ -3,7 +3,7 @@
 """
 Print and Analysis Module for Linux bridge interfaces
 """
-from netshow.cumulus.print_iface import PrintIface
+from netshow.cumulus import print_iface as cumulus_print_iface
 from netshow.linux import print_bridge as linux_print_bridge
 from netshowlib.linux import common as linux_common
 from datetime import timedelta
@@ -13,32 +13,23 @@ from tabulate import tabulate
 _ = initialize('netshow-cumulus-lib')
 
 
-class PrintBridgeMember(PrintIface):
+class PrintBridgeMember(linux_print_bridge.PrintBridgeMember):
     """
     Print and Analysis Class for Linux bridge member interfaces
     """
     @property
-    def port_category(self):
+    def connector_type(self):
         """
-        :return: port category for bridge member
+        :return call of connector type from Cumulus PrintIface function
         """
-        return linux_print_bridge.PrintBridgeMember.port_category.fget(self)
+        return cumulus_print_iface.PrintIface.connector_type.fget(self)
 
     @property
-    def summary(self):
+    def speed(self):
         """
-        :return: summary info regarding a bridge member
+        :return: call speed from Cumulus PrintIface function
         """
-        return linux_print_bridge.PrintBridgeMember.summary.fget(self)
-
-    @classmethod
-    def _pretty_vlanlist(cls, bridgelist):
-        """
-        :return: list of vlans that match category. First list of \
-            native ports, then vlan ids of tagged bridges MODIFY
-        """
-        return linux_print_bridge.PrintBridgeMember._pretty_vlanlist(
-            bridgelist)
+        return cumulus_print_iface.PrintIface.speed.fget(self)
 
     def bridgemem_details(self):
         """

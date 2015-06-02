@@ -1,6 +1,8 @@
 # print() is required for py3 not py2. so need to disable C0325
 # pylint: disable=C0325
+# pylint: disable=W0232
 # pylint: disable=E0611
+# pylint: disable=E1101
 """
 Usage:
     netshow neighbors [--json | -j ]
