@@ -3,6 +3,48 @@ related to bond interface and bond member interfaces """
 import netshowlib.cumulus.bridge as cumulus_bridge
 import netshowlib.linux.bond as linux_bond
 from netshowlib.cumulus import lacp
+from netshowlib.cumulus import iface as cumulus_iface
+
+
+class BondMember(cumulus_iface.Iface):
+    def __init__(self, name, cache=None, master=None):
+        cumulus_iface.Iface.__init__(self, name, cache)
+        self._master = master
+        self._linkfailures = 0
+        self._bondstate = None
+
+    def _parse_proc_net_bonding(self):
+        return linux_bond.BondMember._parse_proc_net_bonding(self)
+
+    @property
+    def master(self):
+        """
+        :return: pointer to  :class:`Bond<netshowlib.linux.bond.Bond>` \
+        instance that \
+        this interface belongs to
+        """
+        return linux_bond.BondMember.master.fget(self)
+
+    @property
+    def bondstate(self):
+        """
+        :return: state of interface in the bond. can be \
+            0(inactive) or 1(active)
+        """
+        return linux_bond.BondMember.bondstate.fget(self)
+
+    @property
+    def linkfailures(self):
+        """
+        number of mii transitions bond member reports while the bond is \
+            active
+        this counter cannot be cleared. will reset when the bond is \
+            reinitialized
+        via the ifdown/ifup process
+
+        :return: number of mii transitions
+        """
+        return linux_bond.BondMember.linkfailures.fget(self)
 
 
 class Bond(linux_bond.Bond):

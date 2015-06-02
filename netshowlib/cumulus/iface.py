@@ -151,7 +151,6 @@ class Iface(linux_iface.Iface):
         returns initial speed of the physical port
         """
         # if not a physical port, return none
-        print("DEBUG %s" % (self._initial_speed))
         if self._initial_speed:
             return self._initial_speed
         if self.asic and self.is_phy():

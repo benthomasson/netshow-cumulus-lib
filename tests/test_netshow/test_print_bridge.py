@@ -31,7 +31,7 @@ class TestPrintBridge(object):
     @mock.patch('netshowlib.cumulus.mstpd.linux_common.exec_command')
     @mock.patch('netshowlib.linux.common.read_from_sys')
     def test_cli_output(self, mock_read_from_sys, mock_exec,
-                         mock_os_listdir):
+                        mock_os_listdir):
         values10 = {('/sbin/mstpctl showall',):
                     open('tests/test_netshowlib/mstpctl_showall').read()}
         mock_exec.side_effect = mod_args_generator(values10)
@@ -46,7 +46,6 @@ class TestPrintBridge(object):
             ('/sys/class/net/br1/brif',): ['swp3.1', 'swp4.1']
         }
         mock_os_listdir.side_effect = mod_args_generator(values4)
-        from nose.tools import set_trace; set_trace()
         _output = self.piface.cli_output()
         _outputtable = _output.split('\n')
         # checks to make sure stp details is there
