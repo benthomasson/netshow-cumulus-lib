@@ -32,7 +32,8 @@ class ShowCounters(object):
         feature_cache.run()
         for _ifacename in linux_iface.portname_list():
             _testiface = cumulus_iface.iface(_ifacename, feature_cache)
-            if _testiface.is_phy():
+            if isinstance(_testiface, cumulus_iface.Iface) and \
+                    _testiface.is_phy():
                 self.ifacelist[_ifacename] = print_iface.PrintIface(_testiface)
 
         if self.use_json:
@@ -48,11 +49,11 @@ class ShowCounters(object):
         _header = [_(''), _('port'), _('speed'), _('mode'), '',
                    _('ucast'), _('mcast'), _('bcast'), _('errors')]
         _table = []
-        for _iface in self.ifacelist.values():
-            _rx_counters = _iface.counters.rx
-            _tx_counters = _iface.counters.tx
-            _table.append([_iface.linkstate, _iface._iface.name,
-                           _iface.speed, _iface.port_category,
+        for _piface in self.ifacelist.values():
+            _rx_counters = _piface.iface.counters.rx
+            _tx_counters = _piface.iface.counters.tx
+            _table.append([_piface.linkstate, _piface._piface.name,
+                           _piface.speed, _piface.port_category,
                            _('rx'), _rx_counters.get('unicast'),
                            _rx_counters.get('multicast'),
                            _rx_counters.get('broadcast'),
