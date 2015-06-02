@@ -4,7 +4,6 @@ import netshowlib.cumulus.bridge as cumulus_bridge
 import netshowlib.linux.bond as linux_bond
 from netshowlib.cumulus import lacp
 from netshowlib.cumulus import iface as cumulus_iface
-from collections import OrderedDict
 
 class BondMember(cumulus_iface.Iface, linux_bond.BondMember):
     def __init__(self, name, cache=None, master=None):
@@ -18,23 +17,7 @@ class Bond(linux_bond.Bond):
         linux_bond.Bond.__init__(self, name, cache)
         self._clag_enable = 0
         self.bondmem_class = BondMember
-
-    @property
-    def members(self):
-        """
-        :return: list of bond members
-        """
-        fileoutput = self.read_from_sys('bonding/slaves')
-        # if bond member list has changed..clear the bond members hash
-        if fileoutput:
-            if set(fileoutput.split()) != set(self._members.keys()):
-                self._members = OrderedDict()
-                for i in fileoutput.split():
-                    self._members[i] = self.bondmem_class(i, master=self)
-        else:
-            self._members = {}
-
-        return self._members
+        self.lacp_class = lacp.Lacp
 
     @property
     def stp(self):
@@ -49,19 +32,6 @@ class Bond(linux_bond.Bond):
         else:
             self._stp = super(Bond, self).stp
         return self._stp
-
-    @property
-    def lacp(self):
-        """
-        :return: :class:`linux.lacp<netshowlib.cumulus.lacp.Lacp>` class instance if \
-            bond is in LACP mode
-
-        """
-        if self.mode == '4':
-            if not self._lacp:
-                self._lacp = lacp.Lacp(self.name)
-            return self._lacp
-        return None
 
     @property
     def clag_enable(self):

@@ -214,6 +214,7 @@ class BridgeMember(linux_bridge.BridgeMember, cumulus_iface.Iface):
     def __init__(self, name, cache=None):
         linux_bridge.BridgeMember.__init__(self, name, cache)
         cumulus_iface.Iface.__init__(self, name, cache)
+
     @property
     def speed(self):
         """
