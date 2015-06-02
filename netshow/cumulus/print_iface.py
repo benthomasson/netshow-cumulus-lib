@@ -9,7 +9,6 @@ from netshowlib.cumulus import iface as cumulus_iface
 from netshow.linux import print_iface as linux_printiface
 from flufl.i18n import initialize
 from tabulate import tabulate
-import re
 
 _ = initialize('netshow-cumulus-lib')
 
@@ -27,15 +26,15 @@ def iface(name, cache=None):
     if test_iface.is_bridge():
         bridge = nn.import_module('netshow.cumulus.print_bridge')
         return bridge.PrintBridge(test_iface)
-    elif test_iface.is_bridgemem():
-        bridge = nn.import_module('netshow.cumulus.print_bridge')
-        return bridge.PrintBridgeMember(test_iface)
     elif test_iface.is_bond():
         bond = nn.import_module('netshow.cumulus.print_bond')
         return bond.PrintBond(test_iface)
     elif test_iface.is_bondmem():
         bondmem = nn.import_module('netshow.cumulus.print_bond')
         return bondmem.PrintBondMember(test_iface)
+    elif test_iface.is_bridgemem():
+        bridge = nn.import_module('netshow.cumulus.print_bridge')
+        return bridge.PrintBridgeMember(test_iface)
     return PrintIface(test_iface)
 
 
