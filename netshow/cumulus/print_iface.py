@@ -90,7 +90,9 @@ class PrintIface(linux_printiface.PrintIface):
         """
         _str = self.cli_header() + self.new_line()
         _str += self.ip_details() + self.new_line()
-        _str += self.counters_summary() + self.new_line()
+        _counter_summary = self.counters_summary()
+        if _counter_summary:
+            _str += self.counters_summary() + self.new_line()
         _str += self.lldp_details() + self.new_line()
         return _str
 
