@@ -12,7 +12,8 @@ from tabulate import tabulate
 _ = initialize('netshow-cumulus-lib')
 
 
-class PrintBondMember(linux_print_bond.PrintIface):
+class PrintBondMember(linux_print_bond.PrintBondMember,
+                      cumulus_print_iface.PrintIface):
     """
     Print and Analysis Class for Linux bond member interfaces
     """

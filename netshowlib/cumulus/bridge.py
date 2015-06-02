@@ -101,7 +101,7 @@ class MstpctlStpBridge(object):
         self._root_priority = None
         self._bridge_priority = None
         if cache:
-            self._cache = cache.get('mstpd').get('bridge')
+            self._cache = cache.mstpd.get('bridge')
         else:
             self._cache = mstpd.cacheinfo().get('bridge')
         self.orig_cache = cache

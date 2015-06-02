@@ -13,7 +13,8 @@ from tabulate import tabulate
 _ = initialize('netshow-cumulus-lib')
 
 
-class PrintBridgeMember(linux_print_bridge.PrintBridgeMember):
+class PrintBridgeMember(linux_print_bridge.PrintBridgeMember,
+                        cumulus_print_iface.PrintIface):
     """
     Print and Analysis Class for Linux bridge member interfaces
     """
