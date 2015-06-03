@@ -13,25 +13,11 @@ from tabulate import tabulate
 _ = initialize('netshow-cumulus-lib')
 
 
-class PrintBridgeMember(linux_print_bridge.PrintBridgeMember,
-                        cumulus_print_iface.PrintIface):
+class PrintBridgeMember(cumulus_print_iface.PrintIface,
+                        linux_print_bridge.PrintBridgeMember):
     """
     Print and Analysis Class for Linux bridge member interfaces
     """
-    @property
-    def connector_type(self):
-        """
-        :return call of connector type from Cumulus PrintIface function
-        """
-        return cumulus_print_iface.PrintIface.connector_type.fget(self)
-
-    @property
-    def speed(self):
-        """
-        :return: call speed from Cumulus PrintIface function
-        """
-        return cumulus_print_iface.PrintIface.speed.fget(self)
-
     def bridgemem_details(self):
         """
         :return: list vlans or bridge names of various stp states MODIFY

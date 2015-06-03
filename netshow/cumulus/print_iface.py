@@ -47,6 +47,9 @@ class PrintIface(linux_printiface.PrintIface):
         """
         :return: prints out string for connector type
         """
+        if not hasattr(self.iface, 'connector_type'):
+            return None
+
         _connector = self.iface.connector_type
         if _connector == 4:
             return _('4x10g')
@@ -95,7 +98,6 @@ class PrintIface(linux_printiface.PrintIface):
             _str += self.counters_summary() + self.new_line()
         _str += self.lldp_details() + self.new_line()
         return _str
-
 
     def counters_summary(self):
         """

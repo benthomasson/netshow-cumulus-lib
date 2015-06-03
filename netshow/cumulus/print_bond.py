@@ -12,26 +12,11 @@ from tabulate import tabulate
 _ = initialize('netshow-cumulus-lib')
 
 
-class PrintBondMember(linux_print_bond.PrintBondMember,
-                      cumulus_print_iface.PrintIface):
+class PrintBondMember(cumulus_print_iface.PrintIface,
+                      linux_print_bond.PrintBondMember):
     """
     Print and Analysis Class for Linux bond member interfaces
     """
-
-    @property
-    def connector_type(self):
-        """
-        :return call of connector type from CUmulus PrintIface function
-        """
-        return cumulus_print_iface.PrintIface.connector_type.fget(self)
-
-    @property
-    def speed(self):
-        """
-        :return: call speed from Cumulus PrintIface function
-        """
-        return cumulus_print_iface.PrintIface.speed.fget(self)
-
 
     def bondmem_details(self):
         """
@@ -70,7 +55,7 @@ class PrintBondMember(linux_print_bond.PrintBondMember,
         return _str
 
 
-class PrintBond(linux_print_bond.PrintBond):
+class PrintBond(cumulus_print_iface.PrintIface, linux_print_bond.PrintBond):
     """
     Print and Analysis Class for Linux bond interfaces
     """
