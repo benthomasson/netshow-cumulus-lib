@@ -99,7 +99,7 @@ class PrintBond(cumulus_print_iface.PrintIface, linux_print_bond.PrintBond):
             _table.append([_('lacp_sys_priority') + ':', self.iface.lacp.sys_priority])
             _table.append([_('lacp_rate') + ':', self.lacp_rate()])
             _table.append([_('lacp_bypass') + ':', self.lacp_bypass()])
-        return tabulate(_table, _header)
+        return tabulate(_table, _header) + self.new_line()
 
     def bondmem_details(self):
         """
@@ -124,7 +124,7 @@ class PrintBond(cumulus_print_iface.PrintIface, linux_print_bond.PrintBond):
                            _bondmem.counters.total_err,
                            _bondmem.linkfailures])
 
-        return tabulate(_table, _header)
+        return tabulate(_table, _header) + self.new_line()
 
     def clag_summary(self):
         """
