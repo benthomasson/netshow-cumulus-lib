@@ -8,7 +8,7 @@ from netshowlib.linux import bridge as linux_bridge
 from netshowlib.cumulus import mstpd
 import re
 from collections import OrderedDict
-
+import os
 
 class MstpctlStpBridgeMember(object):
     """
@@ -247,7 +247,7 @@ class BridgeMember(linux_bridge.BridgeMember, cumulus_iface.Iface):
         """
         :return: Determines if port is vlan aware or not
         """
-        if self.read_from_sys('brport/vlans'):
+        if os.path.exists(self.sys_path('brport/vlans')):
             return True
         return False
 
@@ -270,7 +270,7 @@ class BridgeMember(linux_bridge.BridgeMember, cumulus_iface.Iface):
         """
         vlan_list = []
         attr_value = "brport/%s" % (type_of_vlan)
-        bitmap_array = self.read_from_sys(attr_value)
+        bitmap_array = self.read_from_sys(attr_value, oneline=False)
         if bitmap_array:
             vlanid = 0
             for bit32entry in bitmap_array:
