@@ -212,13 +212,16 @@ class Iface(linux_iface.Iface):
         """
         if self.vlan_filtering:
             return self.vlan_aware_vlan_list('untagged_vlans')
+        _vlanlist = self.vlan_list[0]
+        if _vlanlist and not _vlanlist[0].isdigit():
+            return [self.vlan_list[0]]
 
     @property
     def vlan_filtering(self):
         """
         :return: Determines if port is vlan aware or not
         """
-        if os.path.exists(self.sys_path('brport/vlans')):
+        if self.read_from_sys('brport/vlans'):
             return True
         return False
 
