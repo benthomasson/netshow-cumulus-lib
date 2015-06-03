@@ -152,3 +152,9 @@ class PrintBond(cumulus_print_iface.PrintIface, linux_print_bond.PrintBond):
         if _in_clag:
             _arr += "(%s)" % (_in_clag)
         return _arr
+
+    def cli_output(self):
+        """
+        point to linux provider PrintBond cli_output function
+        """
+        return linux_print_bond.PrintBond.cli_output(self)

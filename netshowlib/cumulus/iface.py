@@ -204,3 +204,62 @@ class Iface(linux_iface.Iface):
         # check counters each time this property is called
         self._counters.run()
         return self._counters
+
+    @property
+    def native_vlan(self):
+        """
+        :return: native vlan for the vlan aware bridge
+        """
+        if self.vlan_filtering:
+            return self.vlan_aware_vlan_list('untagged_vlans')
+
+    @property
+    def vlan_filtering(self):
+        """
+        :return: Determines if port is vlan aware or not
+        """
+        if os.path.exists(self.sys_path('brport/vlans')):
+            return True
+        return False
+
+    @property
+    def vlan_list(self):
+        """
+        :return: list of vlans include native vlan if vlan aware
+        :return: list of all tagged vlans if using classic driver
+        """
+        if self.vlan_filtering:
+            return self.vlan_aware_vlan_list('vlans')
+        else:
+            return super(Iface, self).vlan_list
+
+    def vlan_aware_vlan_list(self, type_of_vlan):
+        """
+        :param type_of_vlan:  can be 'untagged_vlans' or 'vlans'
+        :return: list of vlans supported on vlan aware physical/bond port
+        TODO: move to common.py because used by bond and phy bridgemem
+        """
+        vlan_list = []
+        attr_value = "brport/%s" % (type_of_vlan)
+        bitmap_array = self.read_from_sys(attr_value, oneline=False)
+        if bitmap_array:
+            vlanid = 0
+            for bit32entry in bitmap_array:
+                hex32entry = re.sub('0x', '', bit32entry).strip()
+                # convert hex entry to binary entry. Obtained from
+                # Stackoverflow
+                scale = 16
+                num_of_bits = 32
+                # converts hex string into binary string
+                mod32bit = bin(int(hex32entry, scale))[2:].zfill(num_of_bits)
+                # loop over the reverse of `range(32)` since vlans are listed
+                # from left to right
+                for i in reversed(range(32)):
+                    # If vlan bit is set to one, add it to the vlan list
+                    if mod32bit[i] == '1':
+                        vlan_list.append(str(vlanid))
+                    # increment vlan after from the list when check is done
+                    vlanid += 1
+        return vlan_list
+
+
