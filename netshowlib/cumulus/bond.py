@@ -27,7 +27,9 @@ class Bond(cumulus_iface.Iface, linux_bond.Bond):
         :run MstpctlStpMember if using mstpd
         :run KernelStpMember if using kernel stp
         """
-        stp_state = self.read_from_sys('bridge/stp_state')
+        stp_state = self.state()
+        if not stp_state:
+            return None
         if stp_state == '2':
             self._stp = cumulus_bridge.MstpctlStpBridgeMember(self,
                                                               self._cache)

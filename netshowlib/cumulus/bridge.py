@@ -229,7 +229,7 @@ class BridgeMember(linux_bridge.BridgeMember, cumulus_iface.Iface):
         :return: :class:`KernelStpBridge` instance if stp_state == 1
         :return: :class:`MstpctlStpBridge` instance if stp_state == 2
         """
-        if self.read_from_sys('bridge/stp_state') == '2':
+        if self.stp_state() == '2':
             self._stp = MstpctlStpBridgeMember(self, self._cache)
             return self._stp
         return super(BridgeMember, self).stp
@@ -239,7 +239,7 @@ class BridgeMember(linux_bridge.BridgeMember, cumulus_iface.Iface):
         """
         :return: native vlan for the vlan aware bridge
         """
-        if self.read_from_sys('bridge/stp_state') == '2':
+        if self.read_from_sys('brport/bridge/bridge/stp_state') == '2':
             return self.vlan_aware_vlan_list('untagged_vlans')
 
     @property

@@ -214,9 +214,11 @@ class TestPrintBridgeMember(object):
 
     @mock.patch('netshowlib.linux.common.exec_command')
     @mock.patch('netshowlib.linux.common.read_symlink')
-    @mock.patch('netshowlib.linux.iface.Iface.read_from_sys')
+    @mock.patch('netshowlib.linux.common.read_file')
+    @mock.patch('netshowlib.linux.common.read_file_oneline')
     def test_bridgemem_details_vlan_aware_driver(self,
-                                                 mock_read_sys,
+                                                 mock_read_oneline,
+                                                 mock_file,
                                                  mock_symlink,
                                                  mock_exec):
 
@@ -230,13 +232,14 @@ class TestPrintBridgeMember(object):
         values = {('bridge/stp_state',): '2',
                   ('brport/vlans',): open(
                       'tests/test_netshowlib/all_vlans.txt').readlines()}
-        mock_read_sys.side_effect = mod_args_generator(values)
+        mock_read_oneline.side_effect = mod_args_generator(values)
         _output = self.piface.bridgemem_details()
         _outputtable = _output.split('\n')
         assert_equals(_outputtable[0], 'vlans in disabled state')
         assert_equals(_outputtable[2], '1-10, 20-24, 29-30, 32, 64, 4092')
 
-    @mock.patch('netshowlib.linux.iface.Iface.read_from_sys')
+    @mock.patch('netshowlib.linux.common.read_file_oneline')
+    @mock.patch('netshowlib.linux.common.read_file')
     @mock.patch('netshowlib.linux.bridge.os.listdir')
     @mock.patch('netshowlib.linux.common.exec_command')
     @mock.patch('netshowlib.linux.common.read_symlink')
@@ -244,7 +247,8 @@ class TestPrintBridgeMember(object):
                                               mock_symlink,
                                               mock_exec,
                                               mock_listdir,
-                                              mock_read_sys):
+                                              mock_file,
+                                              mock_read_oneline):
         values4 = {('/sys/class/net',): ['swp3', 'swp3.1', 'swp3.2'],
                    ('/sys/class/net/br0/brif',): ['swp3'],
                    ('/sys/class/net/br1/brif',): ['swp3.1'],
@@ -256,7 +260,7 @@ class TestPrintBridgeMember(object):
         # vlans are 1-10,20-24,29-30,32,64,4092
         values = {('bridge/stp_state',): '2',
                   ('brport/vlans',): None}
-        mock_read_sys.side_effect = mod_args_generator(values)
+        mock_read_oneline.side_effect = mod_args_generator(values)
         values5 = {
             ('/sys/class/net/swp3/brport/bridge',): 'br0',
             ('/sys/class/net/swp3.1/brport/bridge',): 'br1',
