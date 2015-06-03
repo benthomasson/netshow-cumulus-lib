@@ -8,7 +8,7 @@ from netshowlib.linux import iface as linux_iface
 from netshowlib.cumulus import counters
 from netshowlib.cumulus import asic as cumulus_asic
 import re
-
+import os
 
 def iface(name, cache=None):
     """
@@ -51,6 +51,26 @@ class Iface(linux_iface.Iface):
         self._counters = None
         self._initial_speed = 0
         self._connector_type = 0
+
+    def get_bridgemem_port_type(self):
+        """
+        :return: 0 if port is not a bridge member
+        :return: 1 if  port is access port
+        :return: 2 if port is a trunk port
+        """
+        _bridgemem_type = 0
+        if os.path.exists(self.sys_path('brport/vlans')):
+            _bridgemem_type = 2
+        elif os.path.exists(self.sys_path('brport')):
+            _bridgemem_type = 1
+
+        if not self.is_subint():
+            for subint in self.get_sub_interfaces():
+                if os.path.exists(self.sys_path('brport', subint)):
+                    _bridgemem_type = 2
+                    break
+        return _bridgemem_type
+
 
     def parent_is_vlan_aware_bridge(self):
         """

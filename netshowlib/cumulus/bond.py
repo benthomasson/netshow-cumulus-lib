@@ -13,7 +13,7 @@ class BondMember(cumulus_iface.Iface, linux_bond.BondMember):
         self.bond_class = Bond
 
 
-class Bond(linux_bond.Bond):
+class Bond(cumulus_iface.Iface, linux_bond.Bond):
     """ Class for managing Bond on Cumulus Linux """
     def __init__(self, name, cache=None):
         linux_bond.Bond.__init__(self, name, cache)
