@@ -25,7 +25,8 @@ def switching_asic_discovery():
 
     for _line in lspci_output.decode('utf-8').split('\n'):
         _line = _line.lower()
-        if re.search(r'ethernet\s+controller.*broadcom', _line):
+        if re.search(r'(ethernet|network)\s+controller.*broadcom',
+                     _line):
             return BroadcomAsic()
 
 
