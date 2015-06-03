@@ -28,6 +28,9 @@ class PrintBridgeMember(cumulus_print_iface.PrintIface,
             _vlanlist = self.iface.vlan_list
         _stpstate = self.iface.stp.state
         # get the list of states by grabbing all the keys
+        _header = [_("untagged vlans")]
+        _table = [[', '.join(self.iface.native_vlan)]]
+        _str += tabulate(_table, _header, numalign='left') + self.new_line()
         for _state, _bridgelist in _stpstate.items():
             if _bridgelist:
                 _header = [_("vlans in $_state state")]
