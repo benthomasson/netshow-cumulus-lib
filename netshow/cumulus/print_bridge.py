@@ -133,18 +133,23 @@ class PrintBridge(linux_print_bridge.PrintBridge):
         _table.append([_('bridge_priority') + ':',
                        self.iface.stp.bridge_priority])
         _table.append([_('last_tcn') + ':', self.last_tcn_field()])
-        _table.append(self.vlan_id_field().split())
-        return tabulate(_table, _header)
+        if self.iface.vlan_filtering:
+            _table.append([_('bridge_type'), _('vlan_aware_bridge')])
+        else:
+            _table.append(self.vlan_id_field().split())
+        return tabulate(_table, _header) + self.new_line()
 
     def cli_output(self):
         """
         :return: output for 'netshow interface <ifacename> for a
         bridge interface for cumulus provider
         """
-        _str = self.cli_header() + self.new_line()
-        _str += self.ip_details() + self.new_line()
+        _str = self.cli_header()
+        _ip_details = self.ip_details()
+        if _ip_details:
+            _str += _ip_details
         if self.iface.stp:
-            _str += self.stp_details() + self.new_line()
+            _str += self.stp_details()
             for _state in ['discarding', 'forwarding', 'backup',
                            'oper_edge_port', 'network_port']:
                 _str += self.ports_of_some_kind_of_state(_state) + \
