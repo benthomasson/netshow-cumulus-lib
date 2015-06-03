@@ -68,7 +68,8 @@ class ShowInterfaces(linux_showint.ShowInterfaces):
         feature_cache.run()
         for _portname in list_of_ports:
             _printiface = print_iface.iface(_portname, feature_cache)
-
+            if self.show_up and _printiface.iface.linkstate < 2:
+                continue
             # if iface is a l2 subint bridgemem, then ignore
             if _printiface.iface.is_subint() and \
                     isinstance(_printiface, print_bridge.PrintBridgeMember):

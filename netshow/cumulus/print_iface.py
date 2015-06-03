@@ -92,7 +92,7 @@ class PrintIface(linux_printiface.PrintIface):
         Each PrintIface child should define their own  of this function
         :return: output for 'netshow interface <ifacename>'
         """
-        _str = self.cli_header() + self.new_line()
+        _str = self.cli_header()
         _ip_details = self.ip_details()
         if _ip_details:
             _str += _ip_details
