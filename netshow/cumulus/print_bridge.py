@@ -18,35 +18,6 @@ class PrintBridgeMember(cumulus_print_iface.PrintIface,
     """
     Print and Analysis Class for Linux bridge member interfaces
     """
-    def bridgemem_details(self):
-        """
-        :return: list vlans or bridge names of various stp states MODIFY
-        """
-        # check if port is in STP
-        _str = ''
-        if self.iface.vlan_filtering:
-            _vlanlist = self.iface.vlan_list
-        _stpstate = self.iface.stp.state
-        # get the list of states by grabbing all the keys
-        _header = [_("untagged vlans")]
-        _table = [[', '.join(self.iface.native_vlan)]]
-        _str += tabulate(_table, _header, numalign='left') + self.new_line()
-        for _state, _bridgelist in _stpstate.items():
-            if _bridgelist:
-                _header = [_("vlans in $_state state")]
-                # if vlan aware and bridgelist is not empty, then assume
-                # all vlans have that stp state
-                if self.iface.vlan_filtering:
-                    _table = [[', '.join(linux_common.create_range(
-                        '', _vlanlist))]]
-                else:
-                    _table = [self._pretty_vlanlist(_bridgelist)]
-
-                _str += tabulate(_table, _header, numalign='left') + self.new_line()
-
-
-        return _str
-
     def cli_output(self):
         """
         :return: output for 'netshow interface <ifacename> for a bridge interface' MODIFY
