@@ -10,6 +10,7 @@ import re
 from collections import OrderedDict
 import os
 
+
 class MstpctlStpBridgeMember(object):
     """
     class responsible for managing stp info gathered from mstpctl
@@ -44,7 +45,7 @@ class MstpctlStpBridgeMember(object):
         """
 
         if self.orig_cache:
-            self._cache = self.orig_cache.get('iface').get(self.bridgemem.name)
+            self._cache = self.orig_cache.mstpd.get('iface').get(self.bridgemem.name)
         else:
             self._cache = mstpd.cacheinfo().get('iface').get(self.bridgemem.name)
         # if STP is not enabled on the interface, return state as None
@@ -239,7 +240,7 @@ class BridgeMember(linux_bridge.BridgeMember, cumulus_iface.Iface):
         """
         :return: native vlan for the vlan aware bridge
         """
-        if self.read_from_sys('brport/bridge/bridge/stp_state') == '2':
+        if self.vlan_filtering:
             return self.vlan_aware_vlan_list('untagged_vlans')
 
     @property

@@ -41,6 +41,7 @@ class PrintBridgeMember(cumulus_print_iface.PrintIface,
 
                 _str += tabulate(_table, _header, numalign='left') + self.new_line()
 
+
         return _str
 
     def cli_output(self):
