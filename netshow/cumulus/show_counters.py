@@ -22,7 +22,13 @@ class ShowCounters(object):
     """
     def __init__(self, **kwargs):
         self.use_json = kwargs.get('--json') or kwargs.get('-j')
+        self.show_all = kwargs.get('all')
+        self.show_errors = kwargs.get('errors')
+        self.show_up = True
+        if self.show_all:
+            self.show_up = False
         self.ifacelist = OrderedDict()
+
 
     def run(self):
         """
@@ -34,6 +40,10 @@ class ShowCounters(object):
             _testiface = cumulus_iface.iface(_ifacename, feature_cache)
             if isinstance(_testiface, cumulus_iface.Iface) and \
                     _testiface.is_phy():
+                if self.show_up and _testiface.linkstate < 2:
+                    continue
+                if self.show_errors and _testiface.counters.total_err == 0:
+                    continue
                 self.ifacelist[_ifacename] = print_iface.PrintIface(_testiface)
 
         if self.use_json:

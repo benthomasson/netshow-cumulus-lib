@@ -6,7 +6,7 @@
 """
 Usage:
     netshow neighbors [--json | -j ]
-    netshow counters [--json | -j ]
+    netshow counters [errors] [all] [--json | -j ]
     netshow system [--json | -j ]
     netshow interface [all] [ -m | --mac ] [ --oneline | -1 | -j | --json ]
     netshow [interface] [ access | bridges | bonds | bondmems | mgmt | l2 | l3 | phy | trunks | <iface> ] [all] [--mac | -m ] [--oneline | -1  | --json | -j]
