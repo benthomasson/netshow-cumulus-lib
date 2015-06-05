@@ -61,6 +61,43 @@ class PrintIface(linux_printiface.PrintIface):
         elif _connector == 1:
             return _('rj45')
 
+    def trunk_summary_vlan_aware(self):
+        """
+        :return list of vlan trunk  info for vlan aware bridge
+        """
+        _strlist = []
+        _strlist.append(_('vlans') + ':', ','.join(
+            linux_common.create_range('', self.iface.vlan_list)))
+        _strlist.append(_('native') + ':', ','.join(
+            linux_common.create_range('', self.iface.native_vlan)))
+        return _strlist
+
+    def access_summary_vlan_aware(self):
+        """
+        :return: list of access summar port info
+        """
+        _strlist = []
+        _strlist.append(_('native') + ':', ','.join(self.iface.vlan_list))
+        return _strlist
+
+    def trunk_summary(self):
+        """
+        :return: summary info for a trunk port
+        """
+        if self.iface.vlan_filtering:
+            self.trunk_summary_vlan_aware()
+        else:
+            return linux_printiface.PrintIface.trunk_summary(self)
+
+    def access_summary(self):
+        """
+        :return: summary info for a access port
+        """
+        if self.iface.vlan_filtering:
+            self.access_summary_vlan_aware()
+        else:
+            return linux_printiface.PrintIface.access_summary(self)
+
     @property
     def port_category(self):
         """
@@ -147,7 +184,4 @@ class PrintIface(linux_printiface.PrintIface):
 
                 _str += tabulate(_table, _header, numalign='left') + self.new_line()
 
-
         return _str
-
-

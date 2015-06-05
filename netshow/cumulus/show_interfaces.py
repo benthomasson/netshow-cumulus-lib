@@ -55,6 +55,7 @@ class ShowInterfaces(linux_showint.ShowInterfaces):
         :return: hash of interface categories. each category containing a list of \
             iface pointers to interfaces that belong in that category. For example
            ifacelist['bridges'] points to a list of bridge Ifaces.
+           TODO: refactor!
         """
 
         # ifacelist is already populated..
@@ -87,6 +88,8 @@ class ShowInterfaces(linux_showint.ShowInterfaces):
                 self._ifacelist['l2'][_portname] = _printiface
             elif isinstance(_printiface, print_bond.PrintBond):
                 self._ifacelist['bond'][_portname] = _printiface
+                if _printiface.iface.is_bridgemem():
+                    self._ifacelist['l2'][_portname] = _printiface
             elif isinstance(_printiface, print_bridge.PrintBridgeMember):
                 self._ifacelist['l2'][_portname] = _printiface
             elif isinstance(_printiface, print_bond.PrintBondMember):

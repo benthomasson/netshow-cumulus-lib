@@ -36,11 +36,11 @@ class TestPrintBridge(object):
                     open('tests/test_netshowlib/mstpctl_showall').read()}
         mock_exec.side_effect = mod_args_generator(values10)
         values = {('bridge/vlan_filtering', 'br1'): None,
-                  ('bridge/stp_state', 'br1'): '2',
-                  ('carrier', 'br1'): '1',
-                  ('address', 'br1'): '11:22:33:44:55:66',
-                  ('speed', 'br1'): '10000',
-                  ('mtu', 'br1'): '1500'}
+                  ('bridge/stp_state', 'br1', True): '2',
+                  ('carrier', 'br1', True): '1',
+                  ('address', 'br1', True): '11:22:33:44:55:66',
+                  ('speed', 'br1', True): '10000',
+                  ('mtu', 'br1', True): '1500'}
         mock_read_from_sys.side_effect = mod_args_generator(values)
         values4 = {
             ('/sys/class/net/br1/brif',): ['swp3.1', 'swp4.1']
@@ -49,11 +49,11 @@ class TestPrintBridge(object):
         _output = self.piface.cli_output()
         _outputtable = _output.split('\n')
         # checks to make sure stp details is there
-        assert_equals(re.split(r'\s{3,}', _outputtable[14]),
+        assert_equals(re.split(r'\s{3,}', _outputtable[10]),
                       ['root_priority:', '32768'])
 
-        assert_equals(_outputtable[21], 'ports in forwarding state')
-        assert_equals(_outputtable[23], 'swp3-4')
+        assert_equals(_outputtable[17], 'ports in forwarding state')
+        assert_equals(_outputtable[19], 'swp3-4')
 
     @mock.patch('netshowlib.linux.bridge.os.listdir')
     @mock.patch('netshowlib.cumulus.mstpd.linux_common.exec_command')
@@ -63,7 +63,7 @@ class TestPrintBridge(object):
         mock_exec.return_value = open(
             'tests/test_netshowlib/mstpctl_showall').read()
         values = {('bridge/vlan_filtering', 'br1'): None,
-                  ('bridge/stp_state', 'br1'): '2'}
+                  ('bridge/stp_state', 'br1', True): '2'}
         mock_read_from_sys.side_effect = mod_args_generator(values)
         values4 = {
             ('/sys/class/net/br1/brif',): ['swp3.1', 'swp4.1']
@@ -95,8 +95,8 @@ class TestPrintBridge(object):
                               mock_os_listdir):
         mock_exec.return_value = open(
             'tests/test_netshowlib/mstpctl_showall').read()
-        values = {('bridge/vlan_filtering', 'br1'): None,
-                  ('bridge/stp_state', 'br1'): '2'}
+        values = {('bridge/vlan_filtering', 'br1', True): None,
+                  ('bridge/stp_state', 'br1', True): '2'}
         mock_read_from_sys.side_effect = mod_args_generator(values)
         values4 = {
             ('/sys/class/net/br1/brif',): ['swp3.1', 'swp4.1']
@@ -113,7 +113,7 @@ class TestPrintBridge(object):
         mock_exec.return_value = open(
             'tests/test_netshowlib/mstpctl_showall').read()
         values = {('bridge/vlan_filtering', 'br0'): None,
-                  ('bridge/stp_state', 'br0'): '2'}
+                  ('bridge/stp_state', 'br0', True): '2'}
         mock_read_from_sys.side_effect = mod_args_generator(values)
         values4 = {
             ('/sys/class/net/br0/brif',): ['swp3', 'swp4']
@@ -127,7 +127,7 @@ class TestPrintBridge(object):
         mock_exec.return_value = open(
             'tests/test_netshowlib/mstpctl_showall').read()
         values = {('bridge/vlan_filtering', 'br1'): None,
-                  ('bridge/stp_state', 'br1'): '2'}
+                  ('bridge/stp_state', 'br1', True): '2'}
         mock_read_from_sys.side_effect = mod_args_generator(values)
         # CIST RSTP
         assert_equals(self.piface.stp_mode(), 'RSTP / per vlan instance')
@@ -139,8 +139,8 @@ class TestPrintBridge(object):
         self.piface.iface = br0
         mock_exec.return_value = open(
             'tests/test_netshowlib/mstpctl_showall').read()
-        values = {('bridge/vlan_filtering', 'br0'): None,
-                  ('bridge/stp_state', 'br0'): '2'}
+        values = {('bridge/vlan_filtering', 'br0', True): None,
+                  ('bridge/stp_state', 'br0', True): '2'}
         read_from_sys.side_effect = mod_args_generator(values)
         assert_equals(self.piface.root_port(), ['swp3'])
 
@@ -157,7 +157,7 @@ class TestPrintBridge(object):
         }
         mock_os_listdir.side_effect = mod_args_generator(values4)
         values1 = {}
-        values2 = {('bridge/stp_state', 'br1'): '2',
+        values2 = {('bridge/stp_state', 'br1', True): '2',
                    ('bridge/vlan_filtering', 'br1'): None}
         mock_read_symlink.side_effect = mod_args_generator(values1)
         mock_read_from_sys.side_effect = mod_args_generator(values2)
@@ -216,12 +216,17 @@ class TestPrintBridgeMember(object):
     @mock.patch('netshowlib.linux.common.read_symlink')
     @mock.patch('netshowlib.linux.common.read_file')
     @mock.patch('netshowlib.linux.common.read_file_oneline')
+    @mock.patch('netshowlib.linux.iface.Iface.is_bridgemem')
+    @mock.patch('netshowlib.cumulus.iface.Iface.stp_state')
     def test_bridgemem_details_vlan_aware_driver(self,
+                                                 mock_stp_state,
+                                                 mock_is_bridgemem,
                                                  mock_read_oneline,
                                                  mock_file,
                                                  mock_symlink,
                                                  mock_exec):
-
+        mock_is_bridgemem.return_value = True
+        mock_stp_state.return_value = '2'
         values2 = {('/sbin/mstpctl showall',): open(
             'tests/test_netshowlib/mstpctl_showall').read()}
         mock_exec.side_effect = mod_args_generator(values2)
@@ -233,6 +238,7 @@ class TestPrintBridgeMember(object):
                   ('brport/vlans',): open(
                       'tests/test_netshowlib/all_vlans.txt').readlines()}
         mock_read_oneline.side_effect = mod_args_generator(values)
+        from nose.tools import set_trace; set_trace()
         _output = self.piface.bridgemem_details()
         _outputtable = _output.split('\n')
         assert_equals(_outputtable[0], 'vlans in disabled state')
@@ -243,7 +249,11 @@ class TestPrintBridgeMember(object):
     @mock.patch('netshowlib.linux.bridge.os.listdir')
     @mock.patch('netshowlib.linux.common.exec_command')
     @mock.patch('netshowlib.linux.common.read_symlink')
+    @mock.patch('netshowlib.linux.iface.Iface.is_bridgemem')
+    @mock.patch('netshowlib.cumulus.iface.Iface.stp_state')
     def test_bridgemem_details_classic_driver(self,
+                                              mock_stp_state,
+                                              mock_is_bridgemem,
                                               mock_symlink,
                                               mock_exec,
                                               mock_listdir,
@@ -254,12 +264,15 @@ class TestPrintBridgeMember(object):
                    ('/sys/class/net/br1/brif',): ['swp3.1'],
                    ('/sys/class/net/br2/brif',): ['swp3.2']
                    }
+        mock_is_bridgemem.return_value = True
+        mock_stp_state.return_value = '2'
         mock_listdir.side_effect = mod_args_generator(values4)
         mock_exec.return_value = open(
             'tests/test_netshowlib/mstpctl_showall').read()
         # vlans are 1-10,20-24,29-30,32,64,4092
         values = {('bridge/stp_state',): '2',
-                  ('brport/vlans',): None}
+                  ('brport/vlans',): None,
+                  ('/sys/class/net/swp3/brport/vlans',): None}
         mock_read_oneline.side_effect = mod_args_generator(values)
         values5 = {
             ('/sys/class/net/swp3/brport/bridge',): 'br0',
@@ -270,20 +283,22 @@ class TestPrintBridgeMember(object):
         self.piface.iface._name = 'swp3'
         _output = self.piface.bridgemem_details()
         _outputtable = _output.split('\n')
-        assert_equals(_outputtable[0], 'vlans in root state')
+        assert_equals(_outputtable[0], 'untagged vlans')
         assert_equals(_outputtable[2], 'br0')
-        assert_equals(_outputtable[4], 'vlans in designated state')
-        assert_equals(_outputtable[6], '1')
-        assert_equals(_outputtable[8], 'vlans in forwarding state')
-        assert_equals(_outputtable[10], 'br0, 1')
-        assert_equals(_outputtable[12], 'vlans in discarding state')
-        assert_equals(_outputtable[14], '2')
-        assert_equals(_outputtable[16], 'vlans in oper_edge_port state')
-        assert_equals(_outputtable[18], '1')
-        assert_equals(_outputtable[20], 'vlans in network_port state')
-        assert_equals(_outputtable[22], 'br0')
-        assert_equals(_outputtable[24], 'vlans in backup state')
-        assert_equals(_outputtable[26], '2')
+        assert_equals(_outputtable[4], 'vlans in root state')
+        assert_equals(_outputtable[6], 'br0')
+        assert_equals(_outputtable[8], 'vlans in designated state')
+        assert_equals(_outputtable[10], '1')
+        assert_equals(_outputtable[12], 'vlans in forwarding state')
+        assert_equals(_outputtable[14], 'br0, 1')
+        assert_equals(_outputtable[16], 'vlans in discarding state')
+        assert_equals(_outputtable[18], '2')
+        assert_equals(_outputtable[20], 'vlans in oper_edge_port state')
+        assert_equals(_outputtable[22], '1')
+        assert_equals(_outputtable[24], 'vlans in network_port state')
+        assert_equals(_outputtable[26], 'br0')
+        assert_equals(_outputtable[28], 'vlans in backup state')
+        assert_equals(_outputtable[30], '2')
 
     def test_port_category(self):
         # call the linux bridge member port_category function

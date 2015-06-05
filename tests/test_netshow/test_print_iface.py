@@ -86,10 +86,10 @@ class TestPrintIface(object):
     @mock.patch('netshow.cumulus.print_iface.PrintIface.counters_summary')
     def test_cli_output(self, mock_counters, mock_lldp,
                         mock_ip_details, mock_cli_header):
-        mock_counters.return_value = 'counters_output'
-        mock_lldp.return_value = 'lldp_output'
-        mock_ip_details.return_value = 'ip_details_output'
-        mock_cli_header.return_value = 'cli_header_output'
+        mock_counters.return_value = 'counters_output\n'
+        mock_lldp.return_value = 'lldp_output\n'
+        mock_ip_details.return_value = 'ip_details_output\n'
+        mock_cli_header.return_value = 'cli_header_output\n'
         assert_equals([x  for x in self.piface.cli_output().split('\n') if x != ''],
                       ['cli_header_output', 'ip_details_output',
                        'counters_output', 'lldp_output'])

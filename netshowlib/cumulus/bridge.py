@@ -6,9 +6,7 @@ from netshowlib.cumulus import iface as cumulus_iface
 from netshowlib.cumulus import common
 from netshowlib.linux import bridge as linux_bridge
 from netshowlib.cumulus import mstpd
-import re
 from collections import OrderedDict
-import os
 
 
 class MstpctlStpBridgeMember(object):
@@ -235,6 +233,12 @@ class BridgeMember(linux_bridge.BridgeMember, cumulus_iface.Iface):
             return self._stp
         return super(BridgeMember, self).stp
 
+    @property
+    def vlan_list(self):
+        """
+        use vlan_list from cumulus provider
+        """
+        return cumulus_iface.Iface.vlan_list.fget(self)
 
 class Bridge(linux_bridge.Bridge):
     """ Bridge class for the cumulus provider
