@@ -7,9 +7,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: netshow-cumulus-lib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-04-27 19:57+0000\n"
-"PO-Revision-Date: 2015-04-27 15:50-0500\n"
-"Last-Translator: Stanley Karunditu <stanleyk@cumulusnetworks.com>\n"
+"POT-Creation-Date: 2015-06-05 03:10+0000\n"
+"PO-Revision-Date: 2015-06-05 12:07-0500\n"
+"Last-Translator: stanley karunditu <stanleyk@cumulusnetworks.com>\n"
 "Language-Team: English\n"
 "Language: en\n"
 "MIME-Version: 1.0\n"
@@ -18,6 +18,86 @@ msgstr ""
 "X-Generator: Poedit 1.5.4\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../netshow/cumulus/print_iface.py:19
-msgid "myspeed"
-msgstr "myspeed"
+#: ../netshow/cumulus/print_iface.py:56
+msgid "4x10g"
+msgstr "4x10G"
+
+#: ../netshow/cumulus/print_iface.py:58
+msgid "qsfp"
+msgstr "QSFP+"
+
+#: ../netshow/cumulus/print_iface.py:60
+msgid "sfp"
+msgstr "SFP+"
+
+#: ../netshow/cumulus/print_iface.py:62
+msgid "rj45"
+msgstr "RJ-45"
+
+#: ../netshow/cumulus/print_iface.py:69
+msgid "vlans"
+msgstr "Vlans"
+
+#: ../netshow/cumulus/print_iface.py:71 ../netshow/cumulus/print_iface.py:80
+msgid "native"
+msgstr "Native"
+
+#: ../netshow/cumulus/print_iface.py:108
+msgid "mgmt"
+msgstr "Mgmt"
+
+#: ../netshow/cumulus/print_iface.py:110
+msgid "svi/l3"
+msgstr "SVI/L3"
+
+#: ../netshow/cumulus/print_iface.py:150
+msgid "counters"
+msgstr "Counters"
+
+#: ../netshow/cumulus/print_iface.py:150
+msgid "tx"
+msgstr "TX"
+
+#: ../netshow/cumulus/print_iface.py:150
+msgid "rx"
+msgstr "RX"
+
+#. get the list of states by grabbing all the keys
+#: ../netshow/cumulus/print_iface.py:171
+msgid "untagged vlans"
+msgstr "Untagged Vlans"
+
+#: ../netshow/cumulus/print_iface.py:176
+msgid "vlans in $_state state"
+msgstr "vVlans in $_state state"
+
+#: ../netshow/cumulus/show_interfaces.py:44
+msgid "interface_does_not_exist"
+msgstr "Interface does not exist"
+
+#: ../netshow/cumulus/show_system.py:36
+msgid "version"
+msgstr "Version"
+
+#: ../netshow/cumulus/show_system.py:38
+msgid "build"
+msgstr "Build"
+
+#: ../netshow/cumulus/show_system.py:39
+msgid "chipset"
+msgstr "Chipset"
+
+#: ../netshow/cumulus/show_system.py:43
+msgid "port config"
+msgstr "Port Config"
+
+#: ../netshow/cumulus/show_system.py:44
+msgid "cpu"
+msgstr "CPU"
+
+#: ../netshow/cumulus/show_system.py:50
+msgid "uptime"
+msgstr "UpTime"
+
+#~ msgid "myspeed"
+#~ msgstr "myspeed"

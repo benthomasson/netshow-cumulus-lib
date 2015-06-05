@@ -80,7 +80,8 @@ class TestCumulusBridgeMember(object):
         mock_read_from_sys.return_value = vlanlist
         assert_equals(self.iface.vlan_aware_vlan_list('untagged_vlans'),
                       ['9'])
-        mock_read_from_sys.assert_called_with('brport/untagged_vlans')
+        mock_read_from_sys.assert_called_with('brport/untagged_vlans',
+                                              oneline=False)
 
     @mock.patch('netshowlib.linux.iface.Iface.read_from_sys')
     def test_get_vlans_new_driver(self, mock_read_from_sys):
@@ -92,7 +93,8 @@ class TestCumulusBridgeMember(object):
                      '20', '21', '22', '23', '24', '29', '30', '32',
                      '64', '4092']
         assert_equals(self.iface.vlan_aware_vlan_list('vlans'), vlan_list)
-        mock_read_from_sys.assert_called_with('brport/vlans')
+        mock_read_from_sys.assert_called_with('brport/vlans',
+                                              oneline=False)
 
 
 class TestCumulusBridge(object):

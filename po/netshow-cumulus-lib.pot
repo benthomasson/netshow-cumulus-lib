@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-06-02 01:29+0000\n"
+"POT-Creation-Date: 2015-06-05 03:28+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,42 +17,83 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../netshow/cumulus/print_iface.py:53
+#: ../netshow/cumulus/print_iface.py:56
 msgid "4x10g"
 msgstr ""
 
-#: ../netshow/cumulus/print_iface.py:55
+#: ../netshow/cumulus/print_iface.py:58
 msgid "qsfp"
 msgstr ""
 
-#: ../netshow/cumulus/print_iface.py:57
+#: ../netshow/cumulus/print_iface.py:60
 msgid "sfp"
 msgstr ""
 
-#: ../netshow/cumulus/print_iface.py:59
+#: ../netshow/cumulus/print_iface.py:62
 msgid "rj45"
 msgstr ""
 
-#: ../netshow/cumulus/print_iface.py:68
+#: ../netshow/cumulus/print_iface.py:69
+msgid "vlans"
+msgstr ""
+
+#: ../netshow/cumulus/print_iface.py:71 ../netshow/cumulus/print_iface.py:80
+msgid "native"
+msgstr ""
+
+#: ../netshow/cumulus/print_iface.py:108
 msgid "mgmt"
 msgstr ""
 
-#: ../netshow/cumulus/print_iface.py:70
+#: ../netshow/cumulus/print_iface.py:110
 msgid "svi/l3"
 msgstr ""
 
-#: ../netshow/cumulus/print_iface.py:107
+#: ../netshow/cumulus/print_iface.py:150
 msgid "counters"
 msgstr ""
 
-#: ../netshow/cumulus/print_iface.py:107
+#: ../netshow/cumulus/print_iface.py:150
 msgid "tx"
 msgstr ""
 
-#: ../netshow/cumulus/print_iface.py:107
+#: ../netshow/cumulus/print_iface.py:150
 msgid "rx"
 msgstr ""
 
-#: ../netshow/cumulus/show_interfaces.py:66
+#. get the list of states by grabbing all the keys
+#: ../netshow/cumulus/print_iface.py:171
+msgid "untagged vlans"
+msgstr ""
+
+#: ../netshow/cumulus/print_iface.py:176
+msgid "vlans in $_state state"
+msgstr ""
+
+#: ../netshow/cumulus/show_interfaces.py:44
 msgid "interface_does_not_exist"
+msgstr ""
+
+#: ../netshow/cumulus/show_system.py:36
+msgid "version"
+msgstr ""
+
+#: ../netshow/cumulus/show_system.py:38
+msgid "build"
+msgstr ""
+
+#: ../netshow/cumulus/show_system.py:39
+msgid "chipset"
+msgstr ""
+
+#: ../netshow/cumulus/show_system.py:43
+msgid "port config"
+msgstr ""
+
+#: ../netshow/cumulus/show_system.py:44
+msgid "cpu"
+msgstr ""
+
+#: ../netshow/cumulus/show_system.py:50
+msgid "uptime"
 msgstr ""
