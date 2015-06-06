@@ -66,9 +66,9 @@ class PrintIface(linux_printiface.PrintIface):
         :return list of vlan trunk  info for vlan aware bridge
         """
         _strlist = []
-        _strlist.append(_('vlans') + ':', ','.join(
+        _strlist.append(_('vlans') + ': ' + ','.join(
             linux_common.create_range('', self.iface.vlan_list)))
-        _strlist.append(_('native') + ':', ','.join(
+        _strlist.append(_('native') + ': ' + ','.join(
             linux_common.create_range('', self.iface.native_vlan)))
         return _strlist
 
@@ -77,7 +77,7 @@ class PrintIface(linux_printiface.PrintIface):
         :return: list of access summar port info
         """
         _strlist = []
-        _strlist.append(_('native') + ':', ','.join(self.iface.vlan_list))
+        _strlist.append(_('native') + ': ' + ','.join(self.iface.vlan_list))
         return _strlist
 
     def trunk_summary(self):
@@ -85,7 +85,7 @@ class PrintIface(linux_printiface.PrintIface):
         :return: summary info for a trunk port
         """
         if self.iface.vlan_filtering:
-            self.trunk_summary_vlan_aware()
+            return self.trunk_summary_vlan_aware()
         else:
             return linux_printiface.PrintIface.trunk_summary(self)
 
@@ -94,7 +94,7 @@ class PrintIface(linux_printiface.PrintIface):
         :return: summary info for a access port
         """
         if self.iface.vlan_filtering:
-            self.access_summary_vlan_aware()
+            return self.access_summary_vlan_aware()
         else:
             return linux_printiface.PrintIface.access_summary(self)
 
