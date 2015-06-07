@@ -39,7 +39,7 @@ class PrintBridge(linux_print_bridge.PrintBridge):
 
     def is_vlan_aware_bridge(self):
         if self.iface.vlan_filtering:
-            return _('vlan aware bridge')
+            return _('vlan_aware_bridge')
         return ''
 
     @property

@@ -171,7 +171,7 @@ class PrintIface(linux_printiface.PrintIface):
         _str += tabulate(_table, _header, numalign='left') + self.new_line()
         for _state, _bridgelist in _stpstate.items():
             if _bridgelist:
-                _header = [_("vlans in $_state state")]
+                _header = [_("vlans in %s state") % (_state)]
                 # if vlan aware and bridgelist is not empty, then assume
                 # all vlans have that stp state
                 if self.iface.vlan_filtering:

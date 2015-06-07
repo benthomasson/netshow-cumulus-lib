@@ -8,7 +8,7 @@ terminal output code.
 
 ## Requirements
 
-* run ``pip install -r requirements.txt`` from the root of this project. This
+* run ``pip install -r requirements_develop.txt`` from the root of this project. This
 will install distutils-extra from Ubuntu which has an awesome ``build_i18n`` command
 for setup.py
 
@@ -23,7 +23,7 @@ for setup.py
 In the source code, use ``_`` keyword to define a string to be translated.
 Then run:
 ```
-xgettext --language=Python --keyword=_ --output=po/netshow-linux.pot `find
+xgettext --language=Python --keyword=_ --output=po/netshow-linux.pot -j `find
 netshow/linux/*.py`
 ```
 
