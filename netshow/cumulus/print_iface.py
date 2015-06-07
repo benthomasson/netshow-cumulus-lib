@@ -7,11 +7,9 @@ Cumulus Iface module with print functions
 from netshowlib import netshowlib as nn
 from netshowlib.cumulus import iface as cumulus_iface
 from netshow.linux import print_iface as linux_printiface
-from flufl.i18n import initialize
 from tabulate import tabulate
 from netshowlib.linux import common as linux_common
-
-_ = initialize('netshow-cumulus-lib')
+from netshow.cumulus.common import _
 
 
 def iface(name, cache=None):

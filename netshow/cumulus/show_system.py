@@ -3,10 +3,7 @@
 
 from netshowlib.cumulus.system_summary import SystemSummary
 from netshow.linux import show_system as linux_system
-from flufl.i18n import initialize
-
-_ = initialize('netshow-linux-lib')
-
+from netshow.cumulus.common import _
 
 class ShowSystem(linux_system.ShowSystem):
     """

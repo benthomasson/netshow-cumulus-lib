@@ -7,10 +7,8 @@ from netshow.cumulus import print_iface as cumulus_print_iface
 from netshow.linux import print_bridge as linux_print_bridge
 from netshowlib.linux import common as linux_common
 from datetime import timedelta
-from flufl.i18n import initialize
 from tabulate import tabulate
-
-_ = initialize('netshow-cumulus-lib')
+from netshow.cumulus.common import _
 
 
 class PrintBridgeMember(cumulus_print_iface.PrintIface,

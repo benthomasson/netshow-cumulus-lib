@@ -6,10 +6,8 @@ Print and Analysis Module for Linux bond interfaces
 
 from netshow.cumulus import print_iface as cumulus_print_iface
 import netshow.linux.print_bond as linux_print_bond
-
-from flufl.i18n import initialize
 from tabulate import tabulate
-_ = initialize('netshow-cumulus-lib')
+from netshow.cumulus.common import _
 
 
 class PrintBondMember(cumulus_print_iface.PrintIface,

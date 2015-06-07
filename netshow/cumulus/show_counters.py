@@ -10,11 +10,7 @@ import netshowlib.cumulus.cache as cumulus_cache
 from collections import OrderedDict
 import json
 from tabulate import tabulate
-from flufl.i18n import initialize
-
-
-_ = initialize('netshow-cumulus-lib')
-
+from netshow.linux.common import _
 
 class ShowCounters(object):
     """
