@@ -42,7 +42,7 @@ from netshow.cumulus._version import get_version
 from netshow.cumulus.show_counters import ShowCounters
 from netshow.cumulus.show_system import ShowSystem
 from netshow.cumulus.show_interfaces import ShowInterfaces
-from netshow.linux.show_neighbors import ShowNeighbors
+from netshow.cumulus.show_neighbors import ShowNeighbors
 
 
 def _interface_related(results):

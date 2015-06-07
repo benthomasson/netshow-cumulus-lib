@@ -3,10 +3,10 @@
 """
 
 import netshow.linux.show_neighbors as linux_showneighbors
-import netshow.cumulus.cache as cumulus_cache
+import netshowlib.cumulus.cache as cumulus_cache
 import json
 from netshow.linux.netjson_encoder import NetEncoder
-from netshow.linux import print_iface
+from netshow.cumulus import print_iface
 
 
 class ShowNeighbors(linux_showneighbors.ShowNeighbors):
