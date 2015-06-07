@@ -119,7 +119,7 @@ class PrintBridge(linux_print_bridge.PrintBridge):
         """
         :return: stp details for the bridge interface
          """
-        _header = [_(''), '']
+        _header = ['', '']
         _table = []
         _table.append([_('stp_mode') + ':', self.stp_mode()])
         _table.append([_('root_port') + ':', ', '.join(self.root_port())])

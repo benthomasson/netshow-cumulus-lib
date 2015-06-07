@@ -58,6 +58,7 @@ setup(
         'netshow',
         'docopt',
         'tabulate',
+        'inflection',
         'netshow-linux-lib'
     ],
     classifiers=[
