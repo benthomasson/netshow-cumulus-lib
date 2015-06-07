@@ -25,9 +25,7 @@ class ShowInterfaces(linux_showint.ShowInterfaces):
     """
     def __init__(self, **kwargs):
         linux_showint.ShowInterfaces.__init__(self, **kwargs)
-        self.iface_categories = ['bond', 'bondmem', 'phy',
-                                 'bridge', 'trunk', 'access', 'l3',
-                                 'l2']
+        self.iface_categories = self._iface_categories + ['phy', 'mgmt']
         self.show_phy = kwargs.get('phy')
 
     def print_single_iface(self):
@@ -75,9 +73,11 @@ class ShowInterfaces(linux_showint.ShowInterfaces):
 
             self._ifacelist['all'][_portname] = _printiface
 
-            if isinstance(_printiface.iface, iface.Iface) and \
-                    _printiface.iface.is_phy():
-                self._ifacelist['phy'][_portname] = _printiface
+            if isinstance(_printiface.iface, iface.Iface):
+                if _printiface.iface.is_phy():
+                    self._ifacelist['phy'][_portname] = _printiface
+                elif _printiface.iface.is_mgmt():
+                    self._ifacelist['mgmt'][_portname] = _printiface
 
             # mutual exclusive bond/bridge/bondmem/bridgemem
             if isinstance(_printiface, print_bridge.PrintBridge):
