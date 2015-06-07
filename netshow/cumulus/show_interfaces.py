@@ -25,7 +25,7 @@ class ShowInterfaces(linux_showint.ShowInterfaces):
     """
     def __init__(self, **kwargs):
         linux_showint.ShowInterfaces.__init__(self, **kwargs)
-        self.iface_categories = self._iface_categories + ['phy', 'mgmt']
+        self.iface_categories = self.iface_categories + ['phy', 'mgmt']
         self.show_phy = kwargs.get('phy')
 
     def print_single_iface(self):
