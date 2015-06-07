@@ -12,6 +12,7 @@ import json
 from tabulate import tabulate
 from netshow.linux.common import _
 
+
 class ShowCounters(object):
     """
     Class responsible for printing out basic linux device neighbor info
@@ -24,7 +25,6 @@ class ShowCounters(object):
         if self.show_all:
             self.show_up = False
         self.ifacelist = OrderedDict()
-
 
     def run(self):
         """
@@ -69,4 +69,4 @@ class ShowCounters(object):
                            _tx_counters.get('multicast'),
                            _tx_counters.get('broadcast'),
                            _tx_counters.get('errors')])
-        return tabulate(_table, _header)
+        return tabulate(_table, _header, floatfmt='.0f')

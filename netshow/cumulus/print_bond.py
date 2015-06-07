@@ -122,7 +122,7 @@ class PrintBond(cumulus_print_iface.PrintIface, linux_print_bond.PrintBond):
                            _bondmem.counters.total_err,
                            _bondmem.linkfailures])
 
-        return tabulate(_table, _header) + self.new_line()
+        return tabulate(_table, _header, floatfmt='.0f') + self.new_line()
 
     def clag_summary(self):
         """
