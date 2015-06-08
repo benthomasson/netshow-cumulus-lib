@@ -49,7 +49,7 @@ setup(
     packages=find_packages(),
     include_package_data=True,
     zip_safe=False,
-    license='GPLv2',
+    license='To Be Announced',
     cmdclass={"install_data": PostInstall,
               "build": BuildWithI18n},
     namespace_packages=['netshowlib', 'netshowlib.cumulus'],

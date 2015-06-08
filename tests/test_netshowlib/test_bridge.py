@@ -61,17 +61,6 @@ class TestCumulusBridgeMember(object):
         assert_equals(_results.get('discarding'), ['br2'])
         assert_equals(sorted(_results.get('forwarding')), ['br0', 'br1'])
 
-    @mock.patch('netshowlib.linux.common.read_from_sys')
-    def test_get_native_vlan(self, mock_read_from_sys):
-        # get untagged vlans. should be 9
-        _filename = 'tests/test_netshowlib/brport_untagged_vlans.txt'
-        vlanlist = open(_filename).readlines()
-        values = {('bridge/stp_state', 'swp1', True): '2',
-                  ('brport/untagged_vlans', 'swp1', False): vlanlist,
-                  ('brport/vlans', 'swp1', True): True}
-        mock_read_from_sys.side_effect = mod_args_generator(values)
-        assert_equals(self.iface.native_vlan, ['9'])
-
     @mock.patch('netshowlib.linux.iface.Iface.read_from_sys')
     def test_vlans_new_driver_untagged(self, mock_read_from_sys):
         # get untagged vlans. should be 9
