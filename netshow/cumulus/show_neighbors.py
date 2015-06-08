@@ -1,4 +1,10 @@
+# pylint: disable=R0902
+# pylint: disable=W0232
+# pylint: disable=C0325
+# pylint: disable=W0232
 # pylint: disable=E0611
+# pylint: disable=E1101
+
 """ Module for Managing switch neighbor printout for the cumulus provider
 """
 

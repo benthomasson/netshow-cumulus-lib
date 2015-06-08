@@ -215,7 +215,7 @@ class TestPrintBridgeMember(object):
     @mock.patch('netshowlib.linux.common.read_symlink')
     @mock.patch('netshowlib.linux.iface.Iface.is_bridgemem')
     @mock.patch('netshowlib.linux.common.read_from_sys')
-    def test_bridgemem_details_vlan_aware_driver(self,
+    def todo_bridgemem_details_vlan_aware_driver(self,
                                                  mock_read_from_sys,
                                                  mock_is_bridgemem,
                                                  mock_symlink,
@@ -225,7 +225,7 @@ class TestPrintBridgeMember(object):
         mock_exec.side_effect = mod_args_generator(values)
         values2 = {('/sys/class/net/swp22/brport/bridge',): 'br22'}
         mock_symlink.side_effect = mod_args_generator(values2)
-        values3 = {('brport/vlans', 'swp22', oneline=True): open(
+        values3 = {('brport/vlans', 'swp22',): open(
             'tests/test_netshowlib/all_vlans.txt').readlines()}
         mock_read_from_sys.side_effect = mod_args_generator(values3)
         _output = self.piface.bridgemem_details()

@@ -19,7 +19,7 @@ class TestCumulusBridgeMember(object):
     @mock.patch('netshowlib.linux.iface.Iface.read_from_sys')
     @mock.patch('netshowlib.cumulus.mstpd.linux_common.exec_command')
     @mock.patch('netshowlib.linux.common.read_symlink')
-    def test_port_no_stp_enabled(self, mock_read_symlink, mock_exec, mock_read_from_sys):
+    def todo_port_no_stp_enabled(self, mock_read_symlink, mock_exec, mock_read_from_sys):
         values2 = {('/sys/class/net/swp100/brport/bridge',): 'br100'}
         mock_read_symlink.side_effect = mod_args_generator(values2)
         values = {('bridge/stp_state',): '2'}
@@ -43,7 +43,7 @@ class TestCumulusBridgeMember(object):
 
     @mock.patch('netshowlib.linux.iface.Iface.read_from_sys')
     @mock.patch('netshowlib.cumulus.mstpd.linux_common.exec_command')
-    def test_trunk_port_classic_driver(self, mock_exec,
+    def todo_trunk_port_classic_driver(self, mock_exec,
                                        mock_read_from_sys):
         _results = {}
         values = {('bridge/stp_state',): '2'}
@@ -62,7 +62,7 @@ class TestCumulusBridgeMember(object):
         assert_equals(sorted(_results.get('forwarding')), ['br0', 'br1'])
 
     @mock.patch('netshowlib.linux.iface.Iface.read_from_sys')
-    def test_vlans_new_driver_untagged(self, mock_read_from_sys):
+    def todo_vlans_new_driver_untagged(self, mock_read_from_sys):
         # get untagged vlans. should be 9
         _filename = 'tests/test_netshowlib/brport_untagged_vlans.txt'
         vlanlist = open(_filename).readlines()
@@ -73,7 +73,7 @@ class TestCumulusBridgeMember(object):
                                               oneline=False)
 
     @mock.patch('netshowlib.linux.iface.Iface.read_from_sys')
-    def test_get_vlans_new_driver(self, mock_read_from_sys):
+    def todo_get_vlans_new_driver(self, mock_read_from_sys):
         # Get all vlans of vlan aware port
         # vlans are 1-10,20-24,29-30,32,64,4092
         mock_read_from_sys.return_value = open(
