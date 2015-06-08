@@ -52,7 +52,8 @@ setup(
     license='To Be Announced',
     cmdclass={"install_data": PostInstall,
               "build": BuildWithI18n},
-    namespace_packages=['netshowlib', 'netshowlib.cumulus'],
+    namespace_packages=['netshowlib', 'netshowlib.cumulus',
+                        'netshow', 'netshow.cumulus'],
     install_requires=[
         'netshow-lib',
         'netshow',
