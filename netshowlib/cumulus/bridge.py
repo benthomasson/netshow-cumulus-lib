@@ -245,7 +245,7 @@ class Bridge(linux_bridge.Bridge):
     """
     def __init__(self, name, cache=None):
         linux_bridge.Bridge.__init__(self, name, cache)
-        self._vlan_filtering = 0
+        self._vlan_filtering = False
 
     @property
     def vlan_filtering(self):
@@ -253,9 +253,9 @@ class Bridge(linux_bridge.Bridge):
         :return the vlan filtering setting. If set to 1 trunk config is placed
          under the physical port and can be seen using bridge vlan show command
         """
-        self._vlan_filtering = 0
+        self._vlan_filtering = False
         if common.is_vlan_aware_bridge(self.name):
-            self._vlan_filtering = 1
+            self._vlan_filtering = True
         return self._vlan_filtering
 
     @property

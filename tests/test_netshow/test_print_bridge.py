@@ -172,7 +172,8 @@ class TestPrintBridge(object):
     def test_is_vlan_aware_bridge(self, mock_read_from_sys):
         values = {('bridge/vlan_filtering', 'br1'): '1'}
         mock_read_from_sys.side_effect = mod_args_generator(values)
-        assert_equals(self.piface.is_vlan_aware_bridge(), 'vlan aware bridge')
+        from nose.tools import set_trace; set_trace()
+        assert_equals(self.piface.is_vlan_aware_bridge(), 'vlan_aware_bridge')
 
         values = {('bridge/vlan_filtering', 'br1'): None}
         mock_read_from_sys.side_effect = mod_args_generator(values)
