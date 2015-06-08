@@ -59,10 +59,11 @@ class Iface(linux_iface.Iface):
         :return: 2 if port is a trunk port
         """
         _bridgemem_type = 0
-        if os.path.exists(self.sys_path('brport/vlans')):
-            _bridgemem_type = 2
-        elif os.path.exists(self.sys_path('brport')):
-            _bridgemem_type = 1
+        if self.vlan_filtering:
+            if len(self.vlan_list) > 1:
+                _bridgemem_type = 2
+            else:
+                _bridgemem_type = 1
 
         if not self.is_subint():
             for subint in self.get_sub_interfaces():
@@ -234,7 +235,10 @@ class Iface(linux_iface.Iface):
         if self.vlan_filtering:
             return self.vlan_aware_vlan_list('vlans')
         else:
-            return super(Iface, self).vlan_list
+            try:
+                return super(Iface, self).vlan_list
+            except AttributeError:
+                return ['']
 
     def vlan_aware_vlan_list(self, type_of_vlan):
         """
