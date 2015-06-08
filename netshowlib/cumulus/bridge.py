@@ -238,7 +238,21 @@ class BridgeMember(linux_bridge.BridgeMember, cumulus_iface.Iface):
         """
         use vlan_list from cumulus provider
         """
-        return cumulus_iface.Iface.vlan_list.fget(self)
+        if self.vlan_filtering:
+            return common.vlan_aware_vlan_list(self.name, 'vlans')
+        else:
+            return linux_bridge.BridgeMember.vlan_list.fget(self)
+
+    @property
+    def native_vlan(self):
+        """
+        get native vlan when vlan filtering is enabled, else use linux provider native vlan call
+        """
+        if self.vlan_filtering:
+            return common.vlan_aware_vlan_list(self.name, 'untagged_vlans')
+        else:
+            return linux_bridge.BridgeMember.native_vlan.fget(self)
+
 
 class Bridge(linux_bridge.Bridge):
     """ Bridge class for the cumulus provider
