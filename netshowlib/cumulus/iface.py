@@ -60,7 +60,7 @@ class Iface(linux_iface.Iface):
         """
         _bridgemem_type = 0
         if self.vlan_filtering:
-            if len(self.vlan_list) > 1:
+            if len(common.vlan_aware_vlan_list(self.name, 'vlans')) > 1:
                 _bridgemem_type = 2
             else:
                 _bridgemem_type = 1
