@@ -141,6 +141,9 @@ class Iface(linux_iface.Iface):
         :return: the Switching asic class on the switch. used to get
         initial speed and port names
         """
+        if not hasattr(self, '_asic'):
+            return None
+
         if not self._asic:
             asicinstance = cumulus_asic.Asic(self.name, self._cache)
             self._asic = asicinstance.run()
@@ -157,6 +160,9 @@ class Iface(linux_iface.Iface):
                 3 -- QSFP (40G)
                 4 -- QSFP (4x10G)
         """
+        if not hasattr(self, '_connector_type'):
+            return None
+
         if self._connector_type:
             return self._connector_type
         if re.match('swp\d+s\d+', self.name):
