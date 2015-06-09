@@ -1,0 +1,16 @@
+# For testing netshow linux provider
+# TODO eventually only use test branches not devel
+docopt
+mock
+nose
+setuptools
+pylint
+wheel
+tabulate
+inflection
+pip>=7.0.3
+https://launchpad.net/python-distutils-extra/trunk/2.38/+download/python-distutils-extra-2.38.tar.gz
+git+ssh://git@github.com/CumulusNetworks/netshow-lib.git@test
+git+ssh://git@github.com/CumulusNetworks/netshow@devel
+git+ssh://git@github.com/CumulusNetworks/netshow-linux-lib@devel
+git+ssh://git@github.com/CumulusNetworks/netshow-cumulus-lib@devel
