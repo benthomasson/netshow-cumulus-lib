@@ -33,14 +33,13 @@ class ShowCounters(object):
         feature_cache = cumulus_cache.Cache()
         feature_cache.run()
         for _ifacename in linux_iface.portname_list():
-            _testiface = cumulus_iface.iface(_ifacename, feature_cache)
-            if isinstance(_testiface, cumulus_iface.Iface) and \
-                    _testiface.is_phy():
-                if self.show_up and _testiface.linkstate < 2:
+            _piface = print_iface.iface(_ifacename, feature_cache)
+            if hasattr(_piface.iface, 'is_phy') and _piface.iface.is_phy():
+                if self.show_up and _piface.iface.linkstate < 2:
                     continue
-                if self.show_errors and _testiface.counters.total_err == 0:
+                if self.show_errors and _piface.iface.counters.total_err == 0:
                     continue
-                self.ifacelist[_ifacename] = print_iface.PrintIface(_testiface)
+                self.ifacelist[_ifacename] = _piface
 
         if self.use_json:
             return json.dumps(self.ifacelist,
