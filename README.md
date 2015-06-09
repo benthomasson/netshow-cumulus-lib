@@ -30,9 +30,11 @@ Please try and develop using the latest stable Python3. Example:
 ```
 $ virtualenv ~/netshow_dev /usr/local/bin/python3
 ```
-4. Run ``setup.py develop to install development dependencies in virtualenv
-   instance.
+4. Run ``pip install -r requirements_develop.txt``
 5. Write some cool code and _relevant nose tests too_
+6. Run ``tox`` to run the tests. You can interact with the code by going to
+   ``.tox/py27`` and running the relative path of ``./bin/netshow`` or use the
+``./bin/python`` interpreter.
 6. Commit your changes: `git commit -am 'Add some feature'`
 4. Push to the branch: `git push origin my-new-feature`
 5. Submit a pull request :D
@@ -44,4 +46,4 @@ Stanley Karunditu [@skamithi](http://github.com/skamithi)
 
 ## License
 
-GPLv2
+TBD

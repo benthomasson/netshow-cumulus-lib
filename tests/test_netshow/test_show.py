@@ -15,14 +15,13 @@
 
 from asserts import assert_equals
 import netshow.cumulus.show as show
-from nose.tools import set_trace
 import mock
 
 
 def test_interface_related():
-    for _val in ['trunk', 'access', 'l3',
-                 'l2', 'bridge', 'bond', 'bondmem',
-                 'bridgemem', 'interface']:
+    for _val in ['trunks', 'access', 'l3', 'trunks', 'phy',
+                 'l2', 'bridges', 'bonds', 'bondmems',
+                 'interface']:
 
         results = {_val: True}
         assert_equals(show._interface_related(results), True)
@@ -32,7 +31,7 @@ def test_interface_related():
 @mock.patch('netshow.cumulus.show.ShowInterfaces')
 def test_run_show_interfaces(mock_showint, mock_docopt):
     # netshow interfaces
-    mock_docopt.return_value = {'trunk': True}
+    mock_docopt.return_value = {'trunks': True}
     show.run()
     assert_equals(mock_showint.call_count, 1)
 
@@ -53,3 +52,12 @@ def test_run_show_neighbors(mock_shownei, mock_docopt):
     mock_docopt.return_value = {'neighbors': True}
     show.run()
     assert_equals(mock_shownei.call_count, 1)
+
+
+@mock.patch('netshow.cumulus.show.docopt')
+@mock.patch('netshow.cumulus.show.ShowCounters')
+def test_run_show_counters(mock_showcounters, mock_docopt):
+    # netshow system
+    mock_docopt.return_value = {'counters': True}
+    show.run()
+    assert_equals(mock_showcounters.call_count, 1)

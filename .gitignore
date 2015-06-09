@@ -1,3 +1,4 @@
+*.swo
 venv
 *.egg
 *.zip

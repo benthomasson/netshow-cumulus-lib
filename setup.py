@@ -11,7 +11,7 @@ except ImportError:
 from distutils.command.install_data import install_data
 from distutils.command.build import build
 from distutils import log
-
+from setuptools import setup, find_packages
 
 class BuildWithI18n(build):
     sub_commands = build.sub_commands + [('build_i18n', None)]
@@ -25,7 +25,6 @@ class PostInstall(install_data):
         # run through the regular install data
         # now install the translation stuff
         # run "setup.py build_i18n -m" first first before executing
-
         install_data.run(self)
         # not sure why this is only required for stdeb..
         # when doing python setup.py bdist_wheel it just grabs the mo files
@@ -41,25 +40,34 @@ class PostInstall(install_data):
             except OSError as _exception:
                 log.info("Directory failed to copy. Error: %s" % _exception)
 
-from setuptools import setup, find_packages
 setup(
     name='netshow-cumulus-lib',
     version=get_version(),
-    url="http://github.com/CumulusNetworks/netshow-lib",
-    description="Python Library to Abstract Linux Networking Data",
+    description="Cumulus Linux Provider for Netshow - Linux Network Abstraction Library",
     author='Cumulus Networks',
     author_email='ce-ceng@cumulusnetworks.com',
     packages=find_packages(),
+    include_package_data=True,
     zip_safe=False,
-    license='GPLv2',
+    license='To Be Announced',
     cmdclass={"install_data": PostInstall,
               "build": BuildWithI18n},
-    namespace_packages=['netshowlib', 'netshowlib.cumulus'],
+    namespace_packages=['netshowlib', 'netshowlib.cumulus',
+                        'netshow', 'netshow.cumulus'],
+    install_requires=[
+        'netshow-lib',
+        'netshow',
+        'docopt',
+        'tabulate',
+        'inflection',
+        'netshow-linux-lib'
+    ],
     classifiers=[
         'Topic :: System :: Networking',
         'Intended Audience :: Developers',
         'Intended Audience :: System Administrators',
         'Operating System :: POSIX :: Linux'
     ],
-    data_files=[('share/netshow-lib/providers', ['data/provider/cumulus'])]
+    data_files=[('share/netshow-lib/providers', ['data/provider/cumulus'])],
+    use_2to3=True
 )

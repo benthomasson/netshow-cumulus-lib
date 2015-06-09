@@ -10,5 +10,5 @@ if [ ! -d "venv" ]; then
 fi
 . venv/bin/activate
 
-pip install -r requirements_test.txt --download-cache=/tmp/$JOB_NAME
+pip install -r requirements_develop.txt --download-cache=/tmp/$JOB_NAME
 tox

@@ -3,13 +3,15 @@
 # This file is distributed under the same license as the netshow-cumulus-lib package.
 # Stanley Karunditu <stanleyk@stanleyk-pc>, 2015.
 #
+#: ../netshow/cumulus/print_bridge.py:122
+#: ../netshow/cumulus/show_counters.py:55
 msgid ""
 msgstr ""
 "Project-Id-Version: netshow-cumulus-lib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-04-27 19:57+0000\n"
-"PO-Revision-Date: 2015-04-27 15:50-0500\n"
-"Last-Translator: Stanley Karunditu <stanleyk@cumulusnetworks.com>\n"
+"POT-Creation-Date: 2015-06-07 11:12+0000\n"
+"PO-Revision-Date: 2015-06-07 07:12-0500\n"
+"Last-Translator: stanley karunditu <stanleyk@cumulusnetworks.com>\n"
 "Language-Team: English\n"
 "Language: en\n"
 "MIME-Version: 1.0\n"
@@ -18,6 +20,255 @@ msgstr ""
 "X-Generator: Poedit 1.5.4\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../netshow/cumulus/print_iface.py:19
-msgid "myspeed"
-msgstr "myspeed"
+#: ../netshow/cumulus/print_bond.py:24 ../netshow/cumulus/print_bond.py:88
+msgid "bond_details"
+msgstr "Bond Details"
+
+#: ../netshow/cumulus/print_bond.py:28
+msgid "master_bond"
+msgstr "Master Bond"
+
+#: ../netshow/cumulus/print_bond.py:29
+msgid "state_in_bond"
+msgstr "State In Bond"
+
+#: ../netshow/cumulus/print_bond.py:30 ../netshow/cumulus/print_bond.py:108
+msgid "link_failures"
+msgstr "Link Failures"
+
+#: ../netshow/cumulus/print_bond.py:31
+msgid "bond_members"
+msgstr "Bond Members"
+
+#: ../netshow/cumulus/print_bond.py:32 ../netshow/cumulus/print_bond.py:90
+msgid "bond_mode"
+msgstr "Bond Mode"
+
+#: ../netshow/cumulus/print_bond.py:33 ../netshow/cumulus/print_bond.py:91
+msgid "load_balancing"
+msgstr "Load Balancing"
+
+#: ../netshow/cumulus/print_bond.py:34 ../netshow/cumulus/print_bond.py:92
+msgid "minimum_links"
+msgstr "Minimum Links"
+
+#: ../netshow/cumulus/print_bond.py:37 ../netshow/cumulus/print_bond.py:97
+msgid "lacp_sys_priority"
+msgstr "LACP Sys Priority"
+
+#: ../netshow/cumulus/print_bond.py:38 ../netshow/cumulus/print_bond.py:98
+msgid "lacp_rate"
+msgstr "LACP Rate"
+
+#: ../netshow/cumulus/print_bond.py:39 ../netshow/cumulus/print_bond.py:99
+msgid "lacp_bypass"
+msgstr "LACP Bypass"
+
+#: ../netshow/cumulus/print_bond.py:67
+msgid "lacp_bypass_active"
+msgstr "Active"
+
+#: ../netshow/cumulus/print_bond.py:69
+msgid "lacp_bypass_inactive"
+msgstr "Disabled"
+
+#: ../netshow/cumulus/print_bond.py:71
+msgid "lacp bypass not supported"
+msgstr "Not Supported"
+
+#: ../netshow/cumulus/print_bond.py:78
+msgid "clag inactive"
+msgstr "Disabled"
+
+#: ../netshow/cumulus/print_bond.py:80
+msgid "clag active"
+msgstr "Active"
+
+#: ../netshow/cumulus/print_bond.py:82
+msgid "clag not supported"
+msgstr "Not Support"
+
+#: ../netshow/cumulus/print_bond.py:94 ../netshow/cumulus/print_bond.py:132
+msgid "in_clag"
+msgstr "InCLAG"
+
+#: ../netshow/cumulus/print_bond.py:107 ../netshow/cumulus/show_counters.py:55
+msgid "port"
+msgstr "Port"
+
+#: ../netshow/cumulus/print_bond.py:107 ../netshow/cumulus/show_counters.py:55
+msgid "speed"
+msgstr "Speed"
+
+#: ../netshow/cumulus/print_bond.py:108 ../netshow/cumulus/print_iface.py:148
+#: ../netshow/cumulus/show_counters.py:67
+msgid "tx"
+msgstr "TX"
+
+#: ../netshow/cumulus/print_bond.py:108 ../netshow/cumulus/print_iface.py:148
+#: ../netshow/cumulus/show_counters.py:63
+msgid "rx"
+msgstr "RX"
+
+#: ../netshow/cumulus/print_bond.py:108
+msgid "err"
+msgstr "Errs"
+
+#: ../netshow/cumulus/print_bond.py:112
+msgid "no_bond_members_found"
+msgstr "No Bond Member Found"
+
+#: ../netshow/cumulus/print_bridge.py:42
+#: ../netshow/cumulus/print_bridge.py:135
+msgid "vlan_aware_bridge"
+msgstr "Vlan Aware Bridge"
+
+#: ../netshow/cumulus/print_bridge.py:62
+msgid "802.1d / per vlan instance"
+msgstr "802.1d / Per Vlan Instance"
+
+#: ../netshow/cumulus/print_bridge.py:64
+msgid "802.1d / single instance"
+msgstr "802.1d/ Per Vlan Instance"
+
+#: ../netshow/cumulus/print_bridge.py:66
+msgid "RSTP / per vlan instance"
+msgstr "RSTP / Per Vlan Instance"
+
+#: ../netshow/cumulus/print_bridge.py:68
+msgid "RSTP / single instance"
+msgstr "RSTP / Single Instance"
+
+#: ../netshow/cumulus/print_bridge.py:78
+msgid "root_switch"
+msgstr "RootSwitch"
+
+#: ../netshow/cumulus/print_bridge.py:86 ../netshow/cumulus/print_bridge.py:94
+msgid "none"
+msgstr "None"
+
+#: ../netshow/cumulus/print_bridge.py:124
+msgid "stp_mode"
+msgstr "STP Mode"
+
+#: ../netshow/cumulus/print_bridge.py:125
+msgid "root_port"
+msgstr "Root Port"
+
+#: ../netshow/cumulus/print_bridge.py:126
+msgid "ports_in_designated_role"
+msgstr "Ports in Designated Role"
+
+#: ../netshow/cumulus/print_bridge.py:128
+msgid "ports_in_alternate_role"
+msgstr "Ports in Alternate Role"
+
+#: ../netshow/cumulus/print_bridge.py:130
+msgid "root_priority"
+msgstr "Root Priority"
+
+#: ../netshow/cumulus/print_bridge.py:131
+msgid "bridge_priority"
+msgstr "Bridge Priority"
+
+#: ../netshow/cumulus/print_bridge.py:133
+msgid "last_tcn"
+msgstr "Last TCN"
+
+#: ../netshow/cumulus/print_bridge.py:135
+msgid "bridge_type"
+msgstr "Bridge Type"
+
+#: ../netshow/cumulus/print_iface.py:54
+msgid "4x10g"
+msgstr "4x10G"
+
+#: ../netshow/cumulus/print_iface.py:56
+msgid "qsfp"
+msgstr "QSFP+"
+
+#: ../netshow/cumulus/print_iface.py:58
+msgid "sfp"
+msgstr "SFP+"
+
+#: ../netshow/cumulus/print_iface.py:60
+msgid "rj45"
+msgstr "RJ-45"
+
+#: ../netshow/cumulus/print_iface.py:67
+msgid "vlans"
+msgstr "Vlans"
+
+#: ../netshow/cumulus/print_iface.py:69 ../netshow/cumulus/print_iface.py:78
+msgid "native"
+msgstr "Native"
+
+#: ../netshow/cumulus/print_iface.py:106
+msgid "mgmt"
+msgstr "Mgmt"
+
+#: ../netshow/cumulus/print_iface.py:108
+msgid "svi/l3"
+msgstr "SVI/L3"
+
+#: ../netshow/cumulus/print_iface.py:148
+msgid "counters"
+msgstr "Counters"
+
+#. get the list of states by grabbing all the keys
+#: ../netshow/cumulus/print_iface.py:169
+msgid "untagged vlans"
+msgstr "Untagged Vlans"
+
+#: ../netshow/cumulus/print_iface.py:174
+#, python-format
+msgid "vlans in %s state"
+msgstr "Vlans In %s State"
+
+#: ../netshow/cumulus/show_counters.py:55
+msgid "mode"
+msgstr "Mode"
+
+#: ../netshow/cumulus/show_counters.py:56
+msgid "ucast"
+msgstr "Ucast"
+
+#: ../netshow/cumulus/show_counters.py:56
+msgid "mcast"
+msgstr "Mcast"
+
+#: ../netshow/cumulus/show_counters.py:56
+msgid "bcast"
+msgstr "Bcast"
+
+#: ../netshow/cumulus/show_counters.py:56
+msgid "errors"
+msgstr "Errors"
+
+#: ../netshow/cumulus/show_interfaces.py:41
+msgid "interface_does_not_exist"
+msgstr "Interface does not exist"
+
+#: ../netshow/cumulus/show_system.py:33
+msgid "version"
+msgstr "Version"
+
+#: ../netshow/cumulus/show_system.py:35
+msgid "build"
+msgstr "Build"
+
+#: ../netshow/cumulus/show_system.py:36
+msgid "chipset"
+msgstr "Chipset"
+
+#: ../netshow/cumulus/show_system.py:40
+msgid "port config"
+msgstr "Port Config"
+
+#: ../netshow/cumulus/show_system.py:41
+msgid "cpu"
+msgstr "CPU"
+
+#: ../netshow/cumulus/show_system.py:47
+msgid "uptime"
+msgstr "UpTime"
