@@ -52,7 +52,7 @@ class ShowCounters(object):
         """
         :return: cli output of netshow counters
         """
-        _header = [_(''), _('port'), _('speed'), _('mode'), '',
+        _header = ['', _('port'), _('speed'), _('mode'), '',
                    _('ucast'), _('mcast'), _('bcast'), _('errors')]
         _table = []
         for _piface in self.ifacelist.values():
