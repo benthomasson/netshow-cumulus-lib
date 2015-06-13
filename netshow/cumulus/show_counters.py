@@ -3,7 +3,6 @@
 """
 
 import netshowlib.linux.iface as linux_iface
-import netshowlib.cumulus.iface as cumulus_iface
 from netshow.linux.netjson_encoder import NetEncoder
 from netshow.cumulus import print_iface
 import netshowlib.cumulus.cache as cumulus_cache
@@ -17,10 +16,10 @@ class ShowCounters(object):
     """
     Class responsible for printing out basic linux device neighbor info
     """
-    def __init__(self, **kwargs):
-        self.use_json = kwargs.get('--json') or kwargs.get('-j')
-        self.show_all = kwargs.get('all')
-        self.show_errors = kwargs.get('errors')
+    def __init__(self, cl):
+        self.use_json = cl.get('--json') or cl.get('-j')
+        self.show_all = cl.get('all')
+        self.show_errors = cl.get('errors')
         self.show_up = True
         if self.show_all:
             self.show_up = False

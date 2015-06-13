@@ -57,7 +57,7 @@ setup(
     install_requires=[
         'netshow-lib',
         'netshow',
-        'docopt',
+        'network-docopt',
         'tabulate',
         'inflection',
         'netshow-linux-lib'

@@ -19,14 +19,15 @@ from netshow.linux.netjson_encoder import NetEncoder
 import json
 from netshow.cumulus.common import _
 
+
 class ShowInterfaces(linux_showint.ShowInterfaces):
     """ Class responsible for the 'netshow interfaces' printout for \
         the cumulus provider
     """
-    def __init__(self, **kwargs):
-        linux_showint.ShowInterfaces.__init__(self, **kwargs)
+    def __init__(self, cl):
+        linux_showint.ShowInterfaces.__init__(self, cl)
         self.iface_categories = self.iface_categories + ['phy', 'mgmt']
-        self.show_phy = kwargs.get('phy')
+        self.show_phy = cl.get('phy')
 
     def print_single_iface(self):
         """

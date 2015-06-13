@@ -8,7 +8,6 @@ Usage:
     netshow neighbors [--json | -j ]
     netshow counters [errors] [all] [--json | -j ]
     netshow system [--json | -j ]
-    netshow interface [all] [ -m | --mac ] [ --oneline | -1 | -j | --json ]
     netshow [interface] [ access | bridges | bonds | bondmems | mgmt | l2 | l3 | phy | trunks | <iface> ] [all] [--mac | -m ] [--oneline | -1  | --json | -j]
     netshow (--version | -v)
 
@@ -36,8 +35,8 @@ Options:
     -1         alias for --oneline
     --json     print output in json
 """
-
-from docopt import docopt, printable_usage
+import sys
+from network_docopt import NetworkDocopt
 from netshow.cumulus._version import get_version
 from netshow.cumulus.show_counters import ShowCounters
 from netshow.cumulus.show_system import ShowSystem
@@ -46,41 +45,42 @@ from netshow.cumulus.show_neighbors import ShowNeighbors
 
 
 def _interface_related(results):
-    """ give user ability to issue `show bridges` and other
+    """ give user ability to issue `show bridge` and other
     interface related commands without the interface keyword
-    """
-
-    if results.get('trunks') or \
-            results.get('access') or \
-            results.get('l3') or \
-            results.get('l2') or \
-            results.get('phy') or \
-            results.get('bridges') or \
-            results.get('bonds') or \
-            results.get('bondmems') or \
-            results.get('trunks') or \
-            results.get('mgmt') or \
-            results.get('interface'):
-        return True
+     """
+    for _result in ('access', 'bondmems', 'bonds', 'phy',
+                    'bridges', 'interface', 'l2',
+                    'l3', 'mgmt', 'phy', 'trunks'):
+        if results.get(_result):
+            return True
     return False
 
 
 def run():
     """ run cumulus netshow version """
-    _results = docopt(__doc__)
-    if _interface_related(_results):
-        _showint = ShowInterfaces(**_results)
-        print(_showint.run())
-    elif _results.get('system'):
-        _showsys = ShowSystem(**_results)
-        print(_showsys.run())
-    elif _results.get('neighbors'):
-        _shownei = ShowNeighbors(**_results)
-        print(_shownei.run())
-    elif _results.get('counters'):
-        _showcounters = ShowCounters(**_results)
-        print(_showcounters.run())
-    elif _results.get('--version') or _results.get('-v'):
-        print(get_version())
+    if sys.argv[-1] == 'options':
+        print_options = True
+        sys.argv = sys.argv[0:-1]
     else:
-        print(printable_usage(__doc__))
+        print_options = False
+
+    cl = NetworkDocopt(__doc__)
+    if print_options:
+        cl.print_options()
+    else:
+        if _interface_related(cl):
+            _showint = ShowInterfaces(cl)
+            print(_showint.run())
+        elif cl.get('system'):
+            _showsys = ShowSystem(cl)
+            print(_showsys.run())
+        elif cl.get('neighbors'):
+            _shownei = ShowNeighbors(cl)
+            print(_shownei.run())
+        elif cl.get('counters'):
+            _showcounters = ShowCounters(cl)
+            print(_showcounters.run())
+        elif cl.get('--version') or cl.get('-v'):
+            print(get_version())
+        else:
+            print(__doc__)
