@@ -148,7 +148,8 @@ class PrintBond(cumulus_print_iface.PrintIface, linux_print_bond.PrintBond):
             _arr += self.access_summary()
         _in_clag = self.clag_summary()
         if _in_clag:
-            _arr += "(%s)" % (_in_clag)
+            _clag_output = "(%s)" % (_in_clag)
+            _arr += [_clag_output]
         return _arr
 
     def cli_output(self):
