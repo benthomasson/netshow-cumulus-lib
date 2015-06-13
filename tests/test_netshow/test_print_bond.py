@@ -39,6 +39,28 @@ class TestPrintBond(object):
        iface = cumulus_bond.Bond('bond0')
        self.piface = print_bond.PrintBond(iface)
 
+    @mock.patch('netshowlib.linux.iface.Iface.read_from_sys')
+    @mock.patch('netshowlib.linux.iface.Iface.is_access')
+    @mock.patch('netshowlib.linux.iface.Iface.is_trunk')
+    @mock.patch('netshowlib.linux.iface.Iface.is_l3')
+    def test_summary_in_clag(self, mock_is_l3, mock_is_trunk,
+                     mock_is_access, mock_from_sys):
+        values = {('carrier',): '1',
+                  ('speed',): '1000',
+                  ('bonding/mode',): '802.3ad 4',
+                  ('bonding/slaves',): 'swp2 swp3',
+                  ('bonding/xmit_hash_policy',): 'layer3+4 1',
+                  ('bonding/min_links',): '2',
+                  ('bonding/clag_enable',): '1'}
+
+        mock_from_sys.side_effect = mod_args_generator(values)
+        mock_is_l3.return_value = False
+        mock_is_access.return_value = False
+        mock_is_trunk.return_value = False
+        _output = self.piface.summary
+        assert_equals(_output[1], '(in_clag)')
+
+
     # GORY mess of a test..but very helpful
     @mock.patch('netshowlib.cumulus.asic.linux_common.exec_command')
     @mock.patch('netshowlib.linux.lldp.interface')
