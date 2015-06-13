@@ -17,8 +17,8 @@ class ShowSystem(linux_system.ShowSystem):
     Class responsible for printing out basic switch summary info
     for the cumulus provider
     """
-    def __init__(self, **kwargs):
-        self.use_json = kwargs.get('--json') or kwargs.get('-j')
+    def __init__(self, cl):
+        self.use_json = cl.get('--json') or cl.get('-j')
         self.system = SystemSummary()
 
     def cli_output(self):

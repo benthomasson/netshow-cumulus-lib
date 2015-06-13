@@ -16,48 +16,44 @@
 from asserts import assert_equals
 import netshow.cumulus.show as show
 import mock
+import sys
 
 
 def test_interface_related():
-    for _val in ['trunks', 'access', 'l3', 'trunks', 'phy',
+    for _val in ['trunks', 'access', 'l3', 'phy',
                  'l2', 'bridges', 'bonds', 'bondmems',
                  'interface']:
-
         results = {_val: True}
         assert_equals(show._interface_related(results), True)
 
 
-@mock.patch('netshow.cumulus.show.docopt')
 @mock.patch('netshow.cumulus.show.ShowInterfaces')
-def test_run_show_interfaces(mock_showint, mock_docopt):
+def test_run_show_interfaces(mock_showint):
     # netshow interfaces
-    mock_docopt.return_value = {'trunks': True}
+    sys.argv = ['netshow', 'trunks']
     show.run()
     assert_equals(mock_showint.call_count, 1)
 
 
-@mock.patch('netshow.cumulus.show.docopt')
 @mock.patch('netshow.cumulus.show.ShowSystem')
-def test_run_show_system(mock_showsys, mock_docopt):
+def test_run_show_system(mock_showsys):
     # netshow system
-    mock_docopt.return_value = {'system': True}
+    sys.argv = ['netshow', 'system']
     show.run()
     assert_equals(mock_showsys.call_count, 1)
 
 
-@mock.patch('netshow.cumulus.show.docopt')
 @mock.patch('netshow.cumulus.show.ShowNeighbors')
-def test_run_show_neighbors(mock_shownei, mock_docopt):
+def test_run_show_neighbors(mock_shownei):
     # netshow system
-    mock_docopt.return_value = {'neighbors': True}
+    sys.argv = ['netshow', 'neighbors']
     show.run()
     assert_equals(mock_shownei.call_count, 1)
 
 
-@mock.patch('netshow.cumulus.show.docopt')
 @mock.patch('netshow.cumulus.show.ShowCounters')
-def test_run_show_counters(mock_showcounters, mock_docopt):
+def test_run_show_counters(mock_showcounters):
     # netshow system
-    mock_docopt.return_value = {'counters': True}
+    sys.argv = ['netshow', 'counters']
     show.run()
     assert_equals(mock_showcounters.call_count, 1)
