@@ -55,8 +55,8 @@ setup(
     namespace_packages=['netshowlib', 'netshowlib.cumulus',
                         'netshow', 'netshow.cumulus'],
     install_requires=[
-        'netshow-lib',
-        'netshow',
+        'netshow-core-lib',
+        'netshow-core',
         'network-docopt',
         'tabulate',
         'inflection',
