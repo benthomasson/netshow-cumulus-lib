@@ -108,4 +108,4 @@ class TestPrintBond(object):
                           ['up', 'swp2(P)', '1G(sfp)', '1500',
                            '600', '30', '11'])
             assert_equals(outputtable[3].split(),
-                          ['up', 'swp3(D)', '1G', '1500', '600', '30', '0'])
+                          ['up', 'swp3(N)', '1G', '1500', '600', '30', '0'])
