@@ -37,7 +37,6 @@ cd .temp
 
 echo "Install netshow-core repo"
 git clone ssh://git@github.com/CumulusNetworks/netshow-core.git netshow-core
-
 echo " Install netshow-core-lib"
 cd netshow-core/netshow-lib
 
@@ -54,8 +53,16 @@ python setup.py bdist_wheel
 echo "Install wheel in wheel directory"
 cp dist/* ../../../wheel_dir/
 
+echo "clone cumulus-platform-info and create wheel"
+cd  ../../
+git clone ssh://git@github.com/CumulusNetworks/cumulus-platform-info
+cd cumulus-platform-info
+git checkout devel
+python setup.py bdist_wheel
+cp dist/* ../../wheel_dir/
+
 echo "Return back to the directory with test.sh"
-cd ../../../
+cd ../../
 
 echo "Run Tox"
 tox
