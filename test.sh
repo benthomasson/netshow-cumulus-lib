@@ -16,6 +16,11 @@ pip install --upgrade -r requirements_develop.txt
 ## All of this will go away when netshow-core is in PyPI
 
 # Delete working directories
+if [ -d .tox ]; then
+  echo "Delete tox directories"
+  rm -rf .tox
+fi
+
 if [ -d wheel_dir ]; then
   echo "Delete wheel directory"
   rm -rf wheel_dir
