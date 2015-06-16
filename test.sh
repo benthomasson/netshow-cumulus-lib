@@ -36,12 +36,10 @@ echo "Go into temp install directory"
 cd .temp
 
 echo "Install netshow-core repo"
-git clone ssh://git@github.com/CumulusNetworks/netshow-core.git netshow-core
+git clone -b devel ssh://git@github.com/CumulusNetworks/netshow-core.git netshow-core
 echo " Install netshow-core-lib"
 cd netshow-core/netshow-lib
 
-echo "Move into devel branch"
-git checkout devel
 echo "Create wheel for netshow-core-lib"
 python setup.py bdist_wheel
 echo "Install wheel in wheel directory"
@@ -55,9 +53,15 @@ cp dist/* ../../../wheel_dir/
 
 echo "clone cumulus-platform-info and create wheel"
 cd  ../../
-git clone ssh://git@github.com/CumulusNetworks/cumulus-platform-info
+git clone -b devel ssh://git@github.com/CumulusNetworks/cumulus-platform-info
 cd cumulus-platform-info
-git checkout devel
+python setup.py bdist_wheel
+cp dist/* ../../wheel_dir/
+
+echo "clone netshow-linux-lib and create wheel"
+cd ../
+git clone -b devel ssh://git@github.com/CumulusNetworks/netshow-linux-lib
+cd netshow-linux-lib
 python setup.py bdist_wheel
 cp dist/* ../../wheel_dir/
 
