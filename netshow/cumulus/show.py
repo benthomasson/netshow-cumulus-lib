@@ -37,7 +37,7 @@ Options:
 """
 import sys
 from network_docopt import NetworkDocopt
-from netshow.cumulus._version import get_version
+from netshowlib._version import get_version
 from netshow.cumulus.show_counters import ShowCounters
 from netshow.cumulus.show_system import ShowSystem
 from netshow.cumulus.show_interfaces import ShowInterfaces

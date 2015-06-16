@@ -3,14 +3,12 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#: ../netshow/cumulus/print_bridge.py:122
-#: ../netshow/cumulus/show_counters.py:55
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-06-07 11:12+0000\n"
+"POT-Creation-Date: 2015-06-16 21:51+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -91,21 +89,21 @@ msgstr ""
 msgid "in_clag"
 msgstr ""
 
-#: ../netshow/cumulus/print_bond.py:107 ../netshow/cumulus/show_counters.py:55
+#: ../netshow/cumulus/print_bond.py:107 ../netshow/cumulus/show_counters.py:53
 msgid "port"
 msgstr ""
 
-#: ../netshow/cumulus/print_bond.py:107 ../netshow/cumulus/show_counters.py:55
+#: ../netshow/cumulus/print_bond.py:107 ../netshow/cumulus/show_counters.py:53
 msgid "speed"
 msgstr ""
 
 #: ../netshow/cumulus/print_bond.py:108 ../netshow/cumulus/print_iface.py:148
-#: ../netshow/cumulus/show_counters.py:67
+#: ../netshow/cumulus/show_counters.py:65
 msgid "tx"
 msgstr ""
 
 #: ../netshow/cumulus/print_bond.py:108 ../netshow/cumulus/print_iface.py:148
-#: ../netshow/cumulus/show_counters.py:63
+#: ../netshow/cumulus/show_counters.py:61
 msgid "rx"
 msgstr ""
 
@@ -224,50 +222,50 @@ msgstr ""
 msgid "vlans in %s state"
 msgstr ""
 
-#: ../netshow/cumulus/show_counters.py:55
+#: ../netshow/cumulus/show_counters.py:53
 msgid "mode"
 msgstr ""
 
-#: ../netshow/cumulus/show_counters.py:56
+#: ../netshow/cumulus/show_counters.py:54
 msgid "ucast"
 msgstr ""
 
-#: ../netshow/cumulus/show_counters.py:56
+#: ../netshow/cumulus/show_counters.py:54
 msgid "mcast"
 msgstr ""
 
-#: ../netshow/cumulus/show_counters.py:56
+#: ../netshow/cumulus/show_counters.py:54
 msgid "bcast"
 msgstr ""
 
-#: ../netshow/cumulus/show_counters.py:56
+#: ../netshow/cumulus/show_counters.py:54
 msgid "errors"
 msgstr ""
 
-#: ../netshow/cumulus/show_interfaces.py:41
+#: ../netshow/cumulus/show_interfaces.py:40
 msgid "interface_does_not_exist"
 msgstr ""
 
-#: ../netshow/cumulus/show_system.py:33
+#: ../netshow/cumulus/show_system.py:39
 msgid "version"
 msgstr ""
 
-#: ../netshow/cumulus/show_system.py:35
+#: ../netshow/cumulus/show_system.py:41
 msgid "build"
 msgstr ""
 
-#: ../netshow/cumulus/show_system.py:36
+#: ../netshow/cumulus/show_system.py:42
 msgid "chipset"
 msgstr ""
 
-#: ../netshow/cumulus/show_system.py:40
+#: ../netshow/cumulus/show_system.py:46
 msgid "port config"
 msgstr ""
 
-#: ../netshow/cumulus/show_system.py:41
+#: ../netshow/cumulus/show_system.py:47
 msgid "cpu"
 msgstr ""
 
-#: ../netshow/cumulus/show_system.py:47
+#: ../netshow/cumulus/show_system.py:53
 msgid "uptime"
 msgstr ""
