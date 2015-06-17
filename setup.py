@@ -1,6 +1,6 @@
 # pylint: disable=c0111
 
-from netshowlib.cumulus._version import get_version
+from _gitversion import get_version
 import os
 import shutil
 try:
@@ -60,7 +60,8 @@ setup(
         'network-docopt',
         'tabulate',
         'inflection',
-        'netshow-linux-lib'
+        'netshow-linux-lib',
+        'cumulus-platform-info'
     ],
     classifiers=[
         'Development Status :: 4 - Beta',
