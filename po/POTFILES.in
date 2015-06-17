@@ -1,0 +1,8 @@
+netshow/cumulus/print_bond.py
+netshow/cumulus/print_bridge.py
+netshow/cumulus/print_iface.py
+netshow/cumulus/show_counters.py
+netshow/cumulus/show_interfaces.py
+netshow/cumulus/show_neighbors.py
+netshow/cumulus/show.py
+netshow/cumulus/show_system.py

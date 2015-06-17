@@ -1,0 +1,26 @@
+NIC statistics:
+     HwIfInOctets: 0
+     HwIfInUcastPkts: 100
+     HwIfInBcastPkts: 200
+     HwIfInMcastPkts: 300
+     HwIfOutOctets: 0
+     HwIfOutUcastPkts: 400
+     HwIfOutMcastPkts: 500
+     HwIfOutBcastPkts: 600
+     HwIfInDiscards: 0
+     HwIfInL3Drops: 0
+     HwIfInBufferDrops: 0
+     HwIfInAclDrops: 0
+     HwIfInDot3LengthErrors: 0
+     HwIfInErrors: 10
+     SoftInErrors: 0
+     SoftInDrops: 0
+     SoftInFrameErrors: 0
+     HwIfOutDiscards: 0
+     HwIfOutErrors: 20
+     HwIfOutQDrops: 0
+     HwIfOutNonQDrops: 0
+     SoftOutErrors: 0
+     SoftOutDrops: 0
+     SoftOutTxFifoFull: 0
+     HwIfOutQLen: 0

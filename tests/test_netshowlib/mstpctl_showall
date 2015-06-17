@@ -1,0 +1,298 @@
+
+BRIDGE: br0, Br_index: 8
+br0 CIST info
+  enabled         yes
+  bridge id       8.000.00:02:00:00:00:0F
+  designated root 8.000.00:02:00:00:00:02
+  regional root   8.000.00:02:00:00:00:0F
+  root port       swp3 (#1)
+  path cost     2000       internal path cost   0
+  max age       20         bridge max age       20
+  forward delay 15         bridge forward delay 15
+  tx hold count 6          max hops             20
+  hello time    2          ageing time          300
+  force protocol version     rstp
+  time since topology change 1370472s
+  topology change count      2
+  topology change            no
+  topology change port       swp3
+  last topology change port  swp4
+  migrate_time: 3, uptime: 1371532, PRSSM_state: role_selection
+  if_index: 8, name: br0, up: yes, vlan_filter: no
+br0:swp3 CIST info
+  enabled            yes                     role                 Root
+  port id            8.001                   state                forwarding
+  external port cost 2000                    admin external cost  0
+  internal port cost 2000                    admin internal cost  0
+  designated root    8.000.00:02:00:00:00:02 dsgn external cost   0
+  dsgn regional root 8.000.00:02:00:00:00:02 dsgn internal cost   0
+  designated bridge  8.000.00:02:00:00:00:02 designated port      8.001
+  admin edge port    no                      auto edge port       yes
+  oper edge port     no                      topology change ack  no
+  point-to-point     yes                     admin point-to-point auto
+  restricted role    no                      restricted TCN       no
+  port hello time    2                       disputed             no
+  bpdu guard port    no                      bpdu guard error     no
+  network port       yes                     BA inconsistent      no
+  Num TX BPDU        10                      Num TX TCN           8
+  Num RX BPDU        685772                  Num RX TCN           6
+  Num Transition FWD 1                       Num Transition BLK   1
+  bpdufilter port    no                     
+  clag ISL           no                      clag ISL Oper UP     no
+  clag role          unknown                 clag dual conn mac   0:0:0:0:0:0
+  clag remote portID F.FFF                   clag system mac      0:0:0:0:0:0
+  agree: yes, agreed: yes, forward: yes, forwarding: yes
+  learn: yes, learning: yes, proposed: no, proposing: no
+  rcvdMsg: no, rcvdTc: no, reRoot: no, reselect: no
+  selected: yes, fdbFlush: no, tcProp: no, updtInfo: no
+  sync: no, synced: yes, master: no, mastered: no brAssuRcvdInfoWhile: 5s
+  calledFromFlushRoutine: no, infoInternal: no, rcvdTcAck: no
+  rcvdInternal: no, mcheck: no, rcvdBpdu: no, rcvdSTP: no, rcvdRSTP: yes
+  rcvdTcn: no, sendRSTP: yes, newInfo: no, newInfoMsti: no, up: yes
+  fdWhile: 0s, rrWhile: 15s, rbWhile: 0, tcwhile: 0s, rcvdInfoWhile: 5s
+  rcvdInfo: SuperiorDesignatedInfo, infoIs: ioReceived, selectedRole: Root
+  edgeDelayWhile: 2s, txCount: 0, rapidAgeingWhile: 0s, speed: 10000, duplex: 1
+  Port Info SM: current, Port Role Transitition SM: root_port
+  Port State Transition SM: forwarding, Topo Change SM: active
+  Port Receive SM: receivd, Port Transmit SM: idle
+  Port Protocol Migration SM: sensing, Bridge Detection SM: not_edge
+  if_index: 5, name: swp3, mdelayWhile: 0s, helloWhen: 1s, vlan_bond: 
+
+br0:swp4 CIST info
+  enabled            yes                     role                 Alternate
+  port id            8.002                   state                discarding
+  external port cost 2000                    admin external cost  0
+  internal port cost 2000                    admin internal cost  0
+  designated root    8.000.00:02:00:00:00:02 dsgn external cost   1000
+  dsgn regional root 8.000.00:02:00:00:00:07 dsgn internal cost   0
+  designated bridge  8.000.00:02:00:00:00:07 designated port      8.003
+  admin edge port    no                      auto edge port       yes
+  oper edge port     no                      topology change ack  no
+  point-to-point     yes                     admin point-to-point auto
+  restricted role    no                      restricted TCN       no
+  port hello time    2                       disputed             no
+  bpdu guard port    no                      bpdu guard error     no
+  network port       no                      BA inconsistent      no
+  Num TX BPDU        10                      Num TX TCN           3
+  Num RX BPDU        685774                  Num RX TCN           8
+  Num Transition FWD 2                       Num Transition BLK   4
+  bpdufilter port    no                     
+  clag ISL           no                      clag ISL Oper UP     no
+  clag role          unknown                 clag dual conn mac   0:0:0:0:0:0
+  clag remote portID F.FFF                   clag system mac      0:0:0:0:0:0
+  agree: yes, agreed: yes, forward: no, forwarding: no
+  learn: no, learning: no, proposed: no, proposing: no
+  rcvdMsg: no, rcvdTc: yes, reRoot: no, reselect: no
+  selected: yes, fdbFlush: no, tcProp: yes, updtInfo: no
+  sync: no, synced: yes, master: no, mastered: no brAssuRcvdInfoWhile: 5s
+  calledFromFlushRoutine: no, infoInternal: no, rcvdTcAck: no
+  rcvdInternal: no, mcheck: no, rcvdBpdu: no, rcvdSTP: no, rcvdRSTP: yes
+  rcvdTcn: no, sendRSTP: yes, newInfo: no, newInfoMsti: no, up: yes
+  fdWhile: 2s, rrWhile: 0s, rbWhile: 0, tcwhile: 0s, rcvdInfoWhile: 5s
+  rcvdInfo: SuperiorDesignatedInfo, infoIs: ioReceived, selectedRole: Alternate
+  edgeDelayWhile: 2s, txCount: 0, rapidAgeingWhile: 0s, speed: 10000, duplex: 1
+  Port Info SM: current, Port Role Transitition SM: alternate_port
+  Port State Transition SM: discarding, Topo Change SM: inactive
+  Port Receive SM: receivd, Port Transmit SM: idle
+  Port Protocol Migration SM: sensing, Bridge Detection SM: not_edge
+  if_index: 6, name: swp4, mdelayWhile: 0s, helloWhen: 1s, vlan_bond: 
+
+
+BRIDGE: br1, Br_index: 14
+br1 CIST info
+  enabled         yes
+  bridge id       8.000.00:02:00:00:00:0F
+  designated root 8.000.00:02:00:00:00:0F
+  regional root   8.000.00:02:00:00:00:0F
+  root port       none
+  path cost     0          internal path cost   0
+  max age       20         bridge max age       20
+  forward delay 15         bridge forward delay 15
+  tx hold count 6          max hops             20
+  hello time    2          ageing time          300
+  force protocol version     rstp
+  time since topology change 1370064s
+  topology change count      1
+  topology change            no
+  topology change port       swp4.1
+  last topology change port  swp3.1
+  migrate_time: 3, uptime: 1370069, PRSSM_state: role_selection
+  if_index: 14, name: br1, up: yes, vlan_filter: no
+br1:swp3.1 CIST info
+  enabled            yes                     role                 Designated
+  port id            8.001                   state                forwarding
+  external port cost 2000                    admin external cost  0
+  internal port cost 2000                    admin internal cost  0
+  designated root    8.000.00:02:00:00:00:0F dsgn external cost   0
+  dsgn regional root 8.000.00:02:00:00:00:0F dsgn internal cost   0
+  designated bridge  8.000.00:02:00:00:00:0F designated port      8.001
+  admin edge port    no                      auto edge port       yes
+  oper edge port     yes                     topology change ack  no
+  point-to-point     yes                     admin point-to-point auto
+  restricted role    no                      restricted TCN       no
+  port hello time    2                       disputed             no
+  bpdu guard port    no                      bpdu guard error     no
+  network port       no                      BA inconsistent      no
+  Num TX BPDU        685037                  Num TX TCN           2
+  Num RX BPDU        0                       Num RX TCN           0
+  Num Transition FWD 1                       Num Transition BLK   1
+  bpdufilter port    no                     
+  clag ISL           no                      clag ISL Oper UP     no
+  clag role          unknown                 clag dual conn mac   0:0:0:0:0:0
+  clag remote portID F.FFF                   clag system mac      0:0:0:0:0:0
+  agree: yes, agreed: yes, forward: yes, forwarding: yes
+  learn: yes, learning: yes, proposed: no, proposing: yes
+  rcvdMsg: no, rcvdTc: no, reRoot: no, reselect: no
+  selected: yes, fdbFlush: no, tcProp: no, updtInfo: no
+  sync: no, synced: yes, master: no, mastered: no brAssuRcvdInfoWhile: 0s
+  calledFromFlushRoutine: no, infoInternal: no, rcvdTcAck: no
+  rcvdInternal: no, mcheck: no, rcvdBpdu: no, rcvdSTP: no, rcvdRSTP: no
+  rcvdTcn: no, sendRSTP: yes, newInfo: no, newInfoMsti: no, up: yes
+  fdWhile: 0s, rrWhile: 0s, rbWhile: 0, tcwhile: 0s, rcvdInfoWhile: 0s
+  rcvdInfo: OtherInfo, infoIs: ioMine, selectedRole: Designated
+  edgeDelayWhile: 0s, txCount: 0, rapidAgeingWhile: 0s, speed: 10000, duplex: 1
+  Port Info SM: current, Port Role Transitition SM: designated_port
+  Port State Transition SM: forwarding, Topo Change SM: learning
+  Port Receive SM: discard, Port Transmit SM: idle
+  Port Protocol Migration SM: sensing, Bridge Detection SM: edge
+  if_index: 12, name: swp3.1, mdelayWhile: 0s, helloWhen: 1s, vlan_bond: swp3
+
+br1:swp4.1 CIST info
+  enabled            yes                     role                 Designated
+  port id            8.002                   state                forwarding
+  external port cost 2000                    admin external cost  0
+  internal port cost 2000                    admin internal cost  0
+  designated root    8.000.00:02:00:00:00:0F dsgn external cost   0
+  dsgn regional root 8.000.00:02:00:00:00:0F dsgn internal cost   0
+  designated bridge  8.000.00:02:00:00:00:0F designated port      8.002
+  admin edge port    no                      auto edge port       yes
+  oper edge port     yes                     topology change ack  no
+  point-to-point     yes                     admin point-to-point auto
+  restricted role    no                      restricted TCN       no
+  port hello time    2                       disputed             no
+  bpdu guard port    no                      bpdu guard error     no
+  network port       no                      BA inconsistent      no
+  Num TX BPDU        685036                  Num TX TCN           2
+  Num RX BPDU        0                       Num RX TCN           0
+  Num Transition FWD 1                       Num Transition BLK   1
+  bpdufilter port    no                     
+  clag ISL           no                      clag ISL Oper UP     no
+  clag role          unknown                 clag dual conn mac   0:0:0:0:0:0
+  clag remote portID F.FFF                   clag system mac      0:0:0:0:0:0
+  agree: yes, agreed: yes, forward: yes, forwarding: yes
+  learn: yes, learning: yes, proposed: no, proposing: yes
+  rcvdMsg: no, rcvdTc: no, reRoot: no, reselect: no
+  selected: yes, fdbFlush: no, tcProp: no, updtInfo: no
+  sync: no, synced: yes, master: no, mastered: no brAssuRcvdInfoWhile: 0s
+  calledFromFlushRoutine: no, infoInternal: no, rcvdTcAck: no
+  rcvdInternal: no, mcheck: no, rcvdBpdu: no, rcvdSTP: no, rcvdRSTP: no
+  rcvdTcn: no, sendRSTP: yes, newInfo: no, newInfoMsti: no, up: yes
+  fdWhile: 0s, rrWhile: 0s, rbWhile: 0, tcwhile: 0s, rcvdInfoWhile: 0s
+  rcvdInfo: OtherInfo, infoIs: ioMine, selectedRole: Designated
+  edgeDelayWhile: 0s, txCount: 0, rapidAgeingWhile: 0s, speed: 10000, duplex: 1
+  Port Info SM: current, Port Role Transitition SM: designated_port
+  Port State Transition SM: forwarding, Topo Change SM: learning
+  Port Receive SM: discard, Port Transmit SM: idle
+  Port Protocol Migration SM: sensing, Bridge Detection SM: edge
+  if_index: 13, name: swp4.1, mdelayWhile: 0s, helloWhen: 1s, vlan_bond: swp4
+
+
+BRIDGE: br2, Br_index: 11
+br2 CIST info
+  enabled         yes
+  bridge id       8.000.00:02:00:00:00:0F
+  designated root 8.000.00:02:00:00:00:0F
+  regional root   8.000.00:02:00:00:00:0F
+  root port       none
+  path cost     0          internal path cost   0
+  max age       20         bridge max age       20
+  forward delay 15         bridge forward delay 15
+  tx hold count 6          max hops             20
+  hello time    2          ageing time          300
+  force protocol version     rstp
+  time since topology change 1370065s
+  topology change count      1
+  topology change            no
+  topology change port       swp4.2
+  last topology change port  None
+  migrate_time: 3, uptime: 1370070, PRSSM_state: role_selection
+  if_index: 11, name: br2, up: yes, vlan_filter: no
+br2:swp3.2 CIST info
+  enabled            yes                     role                 Backup
+  port id            8.002                   state                discarding
+  external port cost 2000                    admin external cost  0
+  internal port cost 2000                    admin internal cost  0
+  designated root    8.000.00:02:00:00:00:0F dsgn external cost   0
+  dsgn regional root 8.000.00:02:00:00:00:0F dsgn internal cost   0
+  designated bridge  8.000.00:02:00:00:00:0F designated port      8.001
+  admin edge port    no                      auto edge port       yes
+  oper edge port     no                      topology change ack  no
+  point-to-point     yes                     admin point-to-point auto
+  restricted role    no                      restricted TCN       no
+  port hello time    2                       disputed             yes
+  bpdu guard port    no                      bpdu guard error     no
+  network port       no                      BA inconsistent      no
+  Num TX BPDU        2                       Num TX TCN           0
+  Num RX BPDU        685044                  Num RX TCN           4
+  Num Transition FWD 0                       Num Transition BLK   2
+  bpdufilter port    no                     
+  clag ISL           no                      clag ISL Oper UP     no
+  clag role          unknown                 clag dual conn mac   0:0:0:0:0:0
+  clag remote portID F.FFF                   clag system mac      0:0:0:0:0:0
+  agree: no, agreed: yes, forward: no, forwarding: no
+  learn: no, learning: no, proposed: no, proposing: no
+  rcvdMsg: no, rcvdTc: yes, reRoot: no, reselect: no
+  selected: yes, fdbFlush: no, tcProp: yes, updtInfo: no
+  sync: no, synced: yes, master: no, mastered: no brAssuRcvdInfoWhile: 6s
+  calledFromFlushRoutine: no, infoInternal: no, rcvdTcAck: no
+  rcvdInternal: no, mcheck: no, rcvdBpdu: no, rcvdSTP: no, rcvdRSTP: yes
+  rcvdTcn: no, sendRSTP: yes, newInfo: no, newInfoMsti: no, up: yes
+  fdWhile: 2s, rrWhile: 0s, rbWhile: 4, tcwhile: 0s, rcvdInfoWhile: 6s
+  rcvdInfo: SuperiorDesignatedInfo, infoIs: ioReceived, selectedRole: Backup
+  edgeDelayWhile: 3s, txCount: 0, rapidAgeingWhile: 0s, speed: 10000, duplex: 1
+  Port Info SM: current, Port Role Transitition SM: alternate_port
+  Port State Transition SM: discarding, Topo Change SM: inactive
+  Port Receive SM: receivd, Port Transmit SM: idle
+  Port Protocol Migration SM: sensing, Bridge Detection SM: not_edge
+  if_index: 10, name: swp3.2, mdelayWhile: 0s, helloWhen: 2s, vlan_bond: swp3
+
+br2:swp4.2 CIST info
+  enabled            yes                     role                 Designated
+  port id            8.001                   state                forwarding
+  external port cost 2000                    admin external cost  0
+  internal port cost 2000                    admin internal cost  0
+  designated root    8.000.00:02:00:00:00:0F dsgn external cost   0
+  dsgn regional root 8.000.00:02:00:00:00:0F dsgn internal cost   0
+  designated bridge  8.000.00:02:00:00:00:0F designated port      8.001
+  admin edge port    no                      auto edge port       yes
+  oper edge port     no                      topology change ack  no
+  point-to-point     yes                     admin point-to-point auto
+  restricted role    no                      restricted TCN       no
+  port hello time    2                       disputed             no
+  bpdu guard port    no                      bpdu guard error     no
+  network port       no                      BA inconsistent      no
+  Num TX BPDU        685037                  Num TX TCN           2
+  Num RX BPDU        9                       Num RX TCN           2
+  Num Transition FWD 1                       Num Transition BLK   2
+  bpdufilter port    no                     
+  clag ISL           no                      clag ISL Oper UP     no
+  clag role          unknown                 clag dual conn mac   0:0:0:0:0:0
+  clag remote portID F.FFF                   clag system mac      0:0:0:0:0:0
+  agree: yes, agreed: yes, forward: yes, forwarding: yes
+  learn: yes, learning: yes, proposed: no, proposing: no
+  rcvdMsg: no, rcvdTc: no, reRoot: no, reselect: no
+  selected: yes, fdbFlush: no, tcProp: no, updtInfo: no
+  sync: no, synced: yes, master: no, mastered: no brAssuRcvdInfoWhile: 0s
+  calledFromFlushRoutine: no, infoInternal: no, rcvdTcAck: no
+  rcvdInternal: no, mcheck: no, rcvdBpdu: no, rcvdSTP: no, rcvdRSTP: yes
+  rcvdTcn: no, sendRSTP: yes, newInfo: no, newInfoMsti: no, up: yes
+  fdWhile: 0s, rrWhile: 0s, rbWhile: 0, tcwhile: 0s, rcvdInfoWhile: 0s
+  rcvdInfo: InferiorRootAlternateInfo, infoIs: ioMine, selectedRole: Designated
+  edgeDelayWhile: 0s, txCount: 1, rapidAgeingWhile: 0s, speed: 10000, duplex: 1
+  Port Info SM: current, Port Role Transitition SM: designated_port
+  Port State Transition SM: forwarding, Topo Change SM: active
+  Port Receive SM: receivd, Port Transmit SM: idle
+  Port Protocol Migration SM: sensing, Bridge Detection SM: not_edge
+  if_index: 9, name: swp4.2, mdelayWhile: 0s, helloWhen: 2s, vlan_bond: swp4
+
+
