@@ -63,6 +63,7 @@ setup(
         'netshow-linux-lib'
     ],
     classifiers=[
+        'Development Status :: 4 - Beta',
         'Topic :: System :: Networking',
         'Intended Audience :: Developers',
         'Intended Audience :: System Administrators',

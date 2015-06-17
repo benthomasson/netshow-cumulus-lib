@@ -1,3 +1,4 @@
+.temp
 *.swo
 venv
 *.egg
