@@ -20,26 +20,6 @@ class BuildWithI18n(build):
         build.run(self)
 
 
-class PostInstall(install_data):
-    def run(self):
-        # run through the regular install data
-        # now install the translation stuff
-        # run "setup.py build_i18n -m" first first before executing
-        install_data.run(self)
-        # not sure why this is only required for stdeb..
-        # when doing python setup.py bdist_wheel it just grabs the mo files
-        # from build with no issues.
-        if isinstance(self.root, str) and os.environ.get('DEB_BUILD_GNU_SYSTEM'):
-            _dest = os.path.join(self.install_dir, 'share', 'locale')
-            _src = '../../build/mo'
-            try:
-                log.info("copying files from %s to %s" % (_src, _dest))
-                shutil.copytree(_src, _dest)
-            except shutil.Error as _exception:
-                log.info("Directory failed to copy. Error: %s" % _exception)
-            except OSError as _exception:
-                log.info("Directory failed to copy. Error: %s" % _exception)
-
 setup(
     name='netshow-cumulus-lib',
     version=get_version(),
@@ -47,11 +27,8 @@ setup(
     author='Cumulus Networks',
     author_email='ce-ceng@cumulusnetworks.com',
     packages=find_packages(),
-    include_package_data=True,
     zip_safe=False,
-    license='To Be Announced',
-    cmdclass={"install_data": PostInstall,
-              "build": BuildWithI18n},
+    cmdclass={"build": BuildWithI18n},
     namespace_packages=['netshowlib', 'netshowlib.cumulus',
                         'netshow', 'netshow.cumulus'],
     install_requires=[
@@ -64,6 +41,7 @@ setup(
         'cumulus-platform-info'
     ],
     classifiers=[
+        'Development Status :: 4 - Beta',
         'Topic :: System :: Networking',
         'Intended Audience :: Developers',
         'Intended Audience :: System Administrators',

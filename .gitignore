@@ -1,3 +1,4 @@
+*.swo
 wheel_dir
 .temp/
 RELEASE-VERSION
