@@ -172,8 +172,9 @@ def get_version(abbrev=0, filename="RELEASE-VERSION".encode(ENCODING)):
     """
 
     release_version = _read_release_version(filename)
+    if release_version:
+        return release_version
     version = _call_git_describe(abbrev)
-
     if version is None:
         version = release_version
     if version is None:
