@@ -28,8 +28,7 @@ setup(
     author_email='ce-ceng@cumulusnetworks.com',
     packages=find_packages(),
     zip_safe=False,
-    cmdclass={"install_data": PostInstall,
-              "build": BuildWithI18n},
+    cmdclass={"build": BuildWithI18n},
     namespace_packages=['netshowlib', 'netshowlib.cumulus',
                         'netshow', 'netshow.cumulus'],
     install_requires=[
