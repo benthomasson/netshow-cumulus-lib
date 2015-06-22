@@ -4,13 +4,14 @@ set -e
 
 echo "starting up"
 
+git clean -xdf
+
 PATH=$WORKSPACE/venv/bin:/usr/local/bin:$PATH
 if [ ! -d "venv" ]; then
         virtualenv venv
 fi
 . venv/bin/activate
 
-git clean -xdf
 # install test requirements like tox
 pip install --upgrade -r requirements_develop.txt
 
