@@ -36,3 +36,14 @@ def test_cacheinfo(mock_exec):
         _output = asic.cacheinfo()
         assert_equals(_output['kernelports']['swp1']['asicname'], 'xe0')
         assert_equals(_output['kernelports']['swp1']['initial_speed'], '10000')
+
+
+@mock.patch('netshowlib.cumulus.asic.linux_common.exec_command')
+def test_cacheinfo_ports_not_initialized(mock_exec):
+    mock_exec.return_value = open(
+        'tests/test_netshowlib/lspci_output.txt', 'rb').read()
+
+    with mock.patch(mock_open_str()) as mock_open:
+        mock_open.side_effect = IOError
+        _output = asic.cacheinfo()
+        assert_equals(_output,  {'name': 'broadcom', 'asicports': {}, 'kernelports': {}})
