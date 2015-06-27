@@ -213,6 +213,7 @@ class BridgeMember(linux_bridge.BridgeMember, cumulus_iface.Iface):
     def __init__(self, name, cache=None):
         linux_bridge.BridgeMember.__init__(self, name, cache)
         cumulus_iface.Iface.__init__(self, name, cache)
+        self.common = common
 
     @property
     def speed(self):
@@ -239,7 +240,8 @@ class BridgeMember(linux_bridge.BridgeMember, cumulus_iface.Iface):
         use vlan_list from cumulus provider
         """
         if self.vlan_filtering:
-            return common.vlan_aware_vlan_list(self.name, 'vlans')
+            return self.common.vlan_aware_vlan_list(
+                self.name, 'vlans')
         else:
             return linux_bridge.BridgeMember.vlan_list.fget(self)
 
@@ -249,7 +251,8 @@ class BridgeMember(linux_bridge.BridgeMember, cumulus_iface.Iface):
         get native vlan when vlan filtering is enabled, else use linux provider native vlan call
         """
         if self.vlan_filtering:
-            return common.vlan_aware_vlan_list(self.name, 'untagged_vlans')
+            return self.common.vlan_aware_vlan_list(
+                self.name, 'untagged_vlans')
         else:
             return linux_bridge.BridgeMember.native_vlan.fget(self)
 
