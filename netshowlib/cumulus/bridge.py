@@ -18,6 +18,7 @@ class MstpctlStpBridgeMember(object):
         self._cache = None
         self.orig_cache = cache
         self._initialize_state()
+        self.mstpd = mstpd
 
     def _initialize_state(self):
         """ initialize state attribute that keeps interesting
@@ -45,7 +46,7 @@ class MstpctlStpBridgeMember(object):
         if self.orig_cache:
             self._cache = self.orig_cache.mstpd.get('iface').get(self.bridgemem.name)
         else:
-            self._cache = mstpd.cacheinfo().get('iface').get(self.bridgemem.name)
+            self._cache = self.mstpd.cacheinfo().get('iface').get(self.bridgemem.name)
         # if STP is not enabled on the interface, return state as None
         # sub interfaces
         _allbridges = set(self.bridgemem.bridge_masters.keys())
@@ -248,7 +249,8 @@ class BridgeMember(linux_bridge.BridgeMember, cumulus_iface.Iface):
     @property
     def native_vlan(self):
         """
-        get native vlan when vlan filtering is enabled, else use linux provider native vlan call
+        get native vlan when vlan filtering is enabled, else use
+        linux provider native vlan call
         """
         if self.vlan_filtering:
             return self.common.vlan_aware_vlan_list(
@@ -263,6 +265,7 @@ class Bridge(linux_bridge.Bridge):
     def __init__(self, name, cache=None):
         linux_bridge.Bridge.__init__(self, name, cache)
         self._vlan_filtering = False
+        self.common = common
 
     @property
     def vlan_filtering(self):
@@ -271,7 +274,7 @@ class Bridge(linux_bridge.Bridge):
          under the physical port and can be seen using bridge vlan show command
         """
         self._vlan_filtering = False
-        if common.is_vlan_aware_bridge(self.name):
+        if self.common.is_vlan_aware_bridge(self.name):
             self._vlan_filtering = True
         return self._vlan_filtering
 
