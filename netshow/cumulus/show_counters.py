@@ -25,6 +25,7 @@ class ShowCounters(object):
             self.show_up = False
         self.ifacelist = OrderedDict()
         self.cache = cumulus_cache
+        self.print_iface = print_iface
 
     def run(self):
         """
@@ -33,7 +34,7 @@ class ShowCounters(object):
         feature_cache = self.cache.Cache()
         feature_cache.run()
         for _ifacename in nn.portname_list():
-            _piface = print_iface.iface(_ifacename, feature_cache)
+            _piface = self.print_iface.iface(_ifacename, feature_cache)
             if hasattr(_piface.iface, 'is_phy') and _piface.iface.is_phy():
                 if self.show_up and _piface.iface.linkstate < 2:
                     continue
