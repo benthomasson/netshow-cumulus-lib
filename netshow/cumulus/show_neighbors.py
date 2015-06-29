@@ -10,6 +10,7 @@
 
 import netshow.linux.show_neighbors as linux_showneighbors
 import netshowlib.cumulus.cache as cumulus_cache
+import netshow.cumulus.print_iface as print_iface
 
 
 class ShowNeighbors(linux_showneighbors.ShowNeighbors):
@@ -19,3 +20,4 @@ class ShowNeighbors(linux_showneighbors.ShowNeighbors):
     def __init__(self, cl):
         linux_showneighbors.ShowNeighbors.__init__(self, cl)
         self.cache = cumulus_cache
+        self.print_iface = print_iface
