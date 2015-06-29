@@ -41,7 +41,7 @@ def get_physical_port_counters(ethtool_output):
         splitline = line.split()
         rx_tx_hash = {'in': 'rx',
                       'out': 'tx'}
-        for _dir, _pkt_dir in rx_tx_hash.iteritems():
+        for _dir, _pkt_dir in rx_tx_hash.items():
             if splitline[0] == 'hwif' + _dir + 'ucastpkts:':
                 counters_hash[_pkt_dir]['unicast'] = int(splitline[1])
             elif splitline[0] == 'hwif' + _dir + 'bcastpkts:':
