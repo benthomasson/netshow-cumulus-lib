@@ -25,12 +25,12 @@ def get_ethtool_output(ifacename):
     return ethtool_output
 
 
-def get_physical_port_counters(ifacename):
+def get_physical_port_counters(ethtool_output):
     """
+    :param: array of ethtool output of a specific interface.
     :return: hash of broadcast, unicast, multicast and
     error counters of a specific interface
     """
-    ethtool_output = get_ethtool_output(ifacename)
     counters_hash = {'tx': {}, 'rx': {}}
     fileio = StringIO(ethtool_output)
     for line in fileio:
@@ -77,12 +77,14 @@ def cacheinfo(ifacename=None):
     """
     counters_hash = {}
     if ifacename:
-        counters_hash[ifacename] = get_physical_port_counters(ifacename)
+        counters_hash[ifacename] = get_physical_port_counters(
+            get_ethtool_output(ifacename))
         return counters_hash
 
     for _iface in os.listdir(linux_common.SYS_PATH_ROOT):
         if common.is_phy(_iface):
-            counters_hash[_iface] = get_physical_port_counters(_iface)
+            counters_hash[_iface] = get_physical_port_counters(
+                get_ethtool_output(_iface))
 
     return counters_hash
 
