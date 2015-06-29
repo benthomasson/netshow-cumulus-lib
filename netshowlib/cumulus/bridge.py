@@ -65,7 +65,7 @@ class MstpctlStpBridgeMember(object):
         if not self._cache:
             return self._state
         self._initialize_state()
-        for _bridgename, _stpinfo in self._cache.iteritems():
+        for _bridgename, _stpinfo in self._cache.items():
             _bridge = linux_bridge.BRIDGE_CACHE.get(_bridgename)
             if not _bridge:
                 _bridge = Bridge(_bridgename, self.orig_cache)
@@ -198,7 +198,7 @@ class MstpctlStpBridge(object):
         :return: stp state of iface members of the bridge
         """
         self.initialize_member_state()
-        for _ifacename, _stpinfo in self.stpdetails.get('ifaces').iteritems():
+        for _ifacename, _stpinfo in self.stpdetails.get('ifaces').items():
             _iface_to_add = self.bridge.members.get(_ifacename)
             self.append_member_state_from_roles(_iface_to_add, _stpinfo)
             self.append_member_state_from_state(_iface_to_add, _stpinfo)
@@ -215,6 +215,7 @@ class BridgeMember(linux_bridge.BridgeMember, cumulus_iface.Iface):
         linux_bridge.BridgeMember.__init__(self, name, cache)
         cumulus_iface.Iface.__init__(self, name, cache)
         self.common = common
+        self.bridgemem_class = MstpctlStpBridgeMember
 
     @property
     def speed(self):
@@ -231,7 +232,7 @@ class BridgeMember(linux_bridge.BridgeMember, cumulus_iface.Iface):
         :return: :class:`MstpctlStpBridge` instance if stp_state == 2
         """
         if self.stp_state() == '2':
-            self._stp = MstpctlStpBridgeMember(self, self._cache)
+            self._stp = self.bridgemem_class(self, self._cache)
             return self._stp
         return super(BridgeMember, self).stp
 
@@ -266,6 +267,7 @@ class Bridge(linux_bridge.Bridge):
         linux_bridge.Bridge.__init__(self, name, cache)
         self._vlan_filtering = False
         self.common = common
+        self.bridge_class = MstpctlStpBridge
 
     @property
     def vlan_filtering(self):
@@ -286,7 +288,7 @@ class Bridge(linux_bridge.Bridge):
         :return: :class:`MstpctlStpBridge` instance if stp_state == 2
         """
         if self.read_from_sys('bridge/stp_state') == '2':
-            self._stp = MstpctlStpBridge(self, self._cache)
+            self._stp = self.bridge_class(self, self._cache)
             return self._stp
         return super(Bridge, self).stp
 

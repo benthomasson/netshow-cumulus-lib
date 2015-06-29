@@ -48,6 +48,6 @@ setup(
         'Operating System :: POSIX :: Linux'
     ],
     data_files=[('share/netshow-lib/providers', ['data/provider/cumulus'])],
-# universal wheel built. ignores this option
+# using universal wheel. not needed
 #    use_2to3=True
 )
