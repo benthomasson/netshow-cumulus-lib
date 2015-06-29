@@ -7,13 +7,11 @@
 # pylint: disable=W0212
 # pylint: disable=W0201
 # pylint: disable=F0401
-from netshowlib.linux.common import ExecCommandException
 from netshowlib.cumulus import provider_discovery
 import mock
 import os
 import sys
-from asserts import assert_equals
-from nose.tools import set_trace
+from asserts import assert_equals, mock_open_str, mod_args_generator
 
 
 def test_provider_check_file_exists():
@@ -22,16 +20,15 @@ def test_provider_check_file_exists():
         sys.prefix + '/share/netshow-lib/providers/cumulus'), True)
 
 
-@mock.patch('netshowlib.cumulus.provider_discovery.common_mod.distro_info')
-def test_check(mock_command):
+def test_check():
     # Found cumulus OS
     # test with encoded string like in Python3 to ensure it gets decoded
     # properly
-    mock_command.return_value = {'ID': 'Cumulus Networks'}
-    assert_equals(provider_discovery.check(), 'cumulus')
-    # if for whatever reason provider check exec command fails
-    mock_command.side_effect = ExecCommandException
-    assert_equals(provider_discovery.check(), None)
+    values = {('/etc/lsb-release', 'r'):
+              open('tests/test_netshowlib/lsb-release.example')}
+    with mock.patch(mock_open_str()) as mock_open:
+        mock_open.side_effect = mod_args_generator(values)
+        assert_equals(provider_discovery.check(), 'cumulus')
 
 
 @mock.patch('netshowlib.cumulus.provider_discovery.check')
