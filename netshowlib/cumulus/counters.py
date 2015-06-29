@@ -13,17 +13,24 @@ except ImportError:
     from io import StringIO
 
 
-def get_physical_port_counters(ifacename):
+def get_ethtool_output(ifacename):
     """
-    :return: hash of broadcast, unicast, multicast and
-    error counters of a specific interface
+    :return: ethtool output method used by cumulus provider to get ethtool output of a single interface.
     """
     cmd = '/sbin/ethtool -S %s' % (ifacename)
     try:
         ethtool_output = linux_common.exec_command(cmd)
     except linux_common.ExecCommandException:
         return {}
+    return ethtool_output
 
+
+def get_physical_port_counters(ifacename):
+    """
+    :return: hash of broadcast, unicast, multicast and
+    error counters of a specific interface
+    """
+    ethtool_output = get_ethtool_output(ifacename)
     counters_hash = {'tx': {}, 'rx': {}}
     fileio = StringIO(ethtool_output)
     for line in fileio:
