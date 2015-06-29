@@ -1,7 +1,7 @@
 # pylint: disable=E0611
 """ Module for printing show counter information
 """
-
+import netshowlib.netshowlib as nn
 import netshowlib.linux.iface as linux_iface
 from netshow.linux.netjson_encoder import NetEncoder
 from netshow.cumulus import print_iface
@@ -24,14 +24,15 @@ class ShowCounters(object):
         if self.show_all:
             self.show_up = False
         self.ifacelist = OrderedDict()
+        self.cache = cumulus_cache
 
     def run(self):
         """
         :return: basic neighbor information based on data obtained on netshow-lib
         """
-        feature_cache = cumulus_cache.Cache()
+        feature_cache = self.cache.Cache()
         feature_cache.run()
-        for _ifacename in linux_iface.portname_list():
+        for _ifacename in nn.portname_list():
             _piface = print_iface.iface(_ifacename, feature_cache)
             if hasattr(_piface.iface, 'is_phy') and _piface.iface.is_phy():
                 if self.show_up and _piface.iface.linkstate < 2:
