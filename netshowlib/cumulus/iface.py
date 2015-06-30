@@ -45,6 +45,9 @@ class Iface(linux_iface.Iface):
         # import class that collects asic specific info
         # Not this doesn't run things like bcmcmd, just looks at flat files
         self.iface_initializers()
+        self.common = common
+        self.iface_class = Iface
+
 
     def iface_initializers(self):
         self._asic = None
@@ -60,10 +63,12 @@ class Iface(linux_iface.Iface):
         """
         _bridgemem_type = 0
         if self.vlan_filtering:
-            if len(common.vlan_aware_vlan_list(self.name, 'vlans')) > 1:
+            if len(self.common.vlan_aware_vlan_list(self.name, 'vlans')) > 1:
                 _bridgemem_type = 2
             else:
                 _bridgemem_type = 1
+        elif os.path.exists(self.sys_path('brport')):
+            _bridgemem_type = 1
 
         if not self.is_subint():
             for subint in self.get_sub_interfaces():
@@ -71,6 +76,7 @@ class Iface(linux_iface.Iface):
                     _bridgemem_type = 2
                     break
         return _bridgemem_type
+
 
 
     def parent_is_vlan_aware_bridge(self):
@@ -81,10 +87,11 @@ class Iface(linux_iface.Iface):
         if not self.is_subint():
             return False
         parent_ifacename = self.name.split('.')[0]
-        parent_iface = Iface(parent_ifacename)
-        if common.is_vlan_aware_bridge(parent_iface.name):
+        parent_iface = self.iface_class(parent_ifacename)
+        if self.common.is_vlan_aware_bridge(parent_iface.name):
             return True
         return False
+
 
     def is_svi_initial_test(self):
         """
