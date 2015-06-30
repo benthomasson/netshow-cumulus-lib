@@ -152,7 +152,7 @@ class PrintIface(linux_printiface.PrintIface):
                            _counters_all.get('tx').get(_countername),
                            _counters_all.get('rx').get(_countername)])
         # keep return in the right place please!
-        return tabulate(_table, _header)
+        return tabulate(_table, _header) + self.new_line()
 
     def bridgemem_details(self):
         """
