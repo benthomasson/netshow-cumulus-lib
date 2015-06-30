@@ -14,6 +14,7 @@ import netshow.cumulus.print_bridge as print_bridge
 import netshow.cumulus.print_bond as print_bond
 import netshowlib.cumulus.cache as cumulus_cache
 from netshowlib.cumulus import iface
+from netshowlib.linux import common as linux_common
 from netshow.linux.netjson_encoder import NetEncoder
 import json
 from netshow.cumulus.common import _
@@ -65,7 +66,7 @@ class ShowInterfaces(linux_showint.ShowInterfaces):
             return self._ifacelist
 
         self._initialize_ifacelist()
-        list_of_ports = nn.portname_list()
+        list_of_ports = linux_common.sort_ports(nn.portname_list())
         feature_cache = self.cache.Cache()
         feature_cache.run()
         for _portname in list_of_ports:
