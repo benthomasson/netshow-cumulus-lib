@@ -16,6 +16,7 @@ fi
 pip install --upgrade -r requirements_develop.txt
 
 ## All of this will go away when netshow-core is in PyPI
+GIT_BRANCH=devel
 
 # Delete working directories
 # TODO: make it an array and iterate over that
@@ -49,7 +50,7 @@ echo "Go into temp install directory"
 cd .temp
 
 echo "Install netshow-core repo"
-git clone -b devel ssh://git@github.com/CumulusNetworks/netshow-core.git netshow-core
+git clone -b $GIT_BRANCH ssh://git@github.com/CumulusNetworks/netshow-core.git netshow-core
 echo " Install netshow-core-lib"
 cd netshow-core/netshow-lib
 
@@ -66,14 +67,14 @@ cp dist/* ../../../wheel_dir/
 
 echo "clone cumulus-platform-info and create wheel"
 cd  ../../
-git clone -b devel ssh://git@github.com/CumulusNetworks/cumulus-platform-info
+git clone -b $GIT_BRANCH ssh://git@github.com/CumulusNetworks/cumulus-platform-info
 cd cumulus-platform-info
 python setup.py bdist_wheel
 cp dist/* ../../wheel_dir/
 
 echo "clone netshow-linux-lib and create wheel"
 cd ../
-git clone -b devel ssh://git@github.com/CumulusNetworks/netshow-linux-lib
+git clone -b $GIT_BRANCH ssh://git@github.com/CumulusNetworks/netshow-linux-lib
 cd netshow-linux-lib
 python setup.py bdist_wheel
 cp dist/* ../../wheel_dir/
