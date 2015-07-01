@@ -74,7 +74,7 @@ class PrintBridge(linux_print_bridge.PrintBridge):
         if self.iface.stp:
             _stproot = self.iface.stp.root_port
             if _stproot != 'none':
-                return [_stproot]
+                return [str(_stproot)]
         return [_('root_switch')]
 
     def designated_ports(self):

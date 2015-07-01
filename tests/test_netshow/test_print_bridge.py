@@ -40,6 +40,7 @@ class TestPrintBridge(object):
                   ('carrier', 'br1', True): '1',
                   ('address', 'br1', True): '11:22:33:44:55:66',
                   ('speed', 'br1', True): '10000',
+                  ('ifalias', 'br1', True): None,
                   ('mtu', 'br1', True): '1500'}
         mock_read_from_sys.side_effect = mod_args_generator(values)
         values4 = {
@@ -162,7 +163,8 @@ class TestPrintBridge(object):
         mock_read_symlink.side_effect = mod_args_generator(values1)
         mock_read_from_sys.side_effect = mod_args_generator(values2)
         values3 = {('/sbin/mstpctl showall',): open(
-            'tests/test_netshowlib/mstpctl_showall').read()}
+            'tests/test_netshowlib/mstpctl_showall').read(),
+            ('/usr/sbin/lldpctl -f xml',): None}
         mock_exec.side_effect = mod_args_generator(values3)
         assert_equals(self.piface.summary,
                       ['tagged: swp3-4', '802.1q_tag: 1',

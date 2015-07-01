@@ -9,7 +9,7 @@ from netshowlib.cumulus import common
 class BondMember(cumulus_iface.Iface, linux_bond.BondMember):
     def __init__(self, name, cache=None, master=None):
         cumulus_iface.Iface.__init__(self, name, cache)
-        linux_bond.BondMember.__init__(self, name, cache)
+        linux_bond.BondMember.__init__(self, name, cache, master)
         self.bond_class = Bond
 
 
@@ -20,6 +20,8 @@ class Bond(cumulus_iface.Iface, linux_bond.Bond):
         self._clag_enable = 0
         self.bondmem_class = BondMember
         self.lacp_class = lacp.Lacp
+        self.bridge = cumulus_bridge
+        self.common = common
 
     @property
     def stp(self):
@@ -31,8 +33,8 @@ class Bond(cumulus_iface.Iface, linux_bond.Bond):
         if not stp_state:
             return None
         if stp_state == '2':
-            self._stp = cumulus_bridge.MstpctlStpBridgeMember(self,
-                                                              self._cache)
+            self._stp = self.bridge.MstpctlStpBridgeMember(self,
+                                                           self._cache)
         else:
             self._stp = super(Bond, self).stp
         return self._stp
@@ -52,7 +54,7 @@ class Bond(cumulus_iface.Iface, linux_bond.Bond):
         use vlan_list from cumulus provider
         """
         if self.vlan_filtering:
-            return common.vlan_aware_vlan_list(self.name, 'vlans')
+            return self.common.vlan_aware_vlan_list(self.name, 'vlans')
         else:
             return linux_bond.Bond.vlan_list.fget(self)
 
@@ -63,6 +65,6 @@ class Bond(cumulus_iface.Iface, linux_bond.Bond):
         otherwise use linux provider native vlan function to get native vlan.
         """
         if self.vlan_filtering:
-            return common.vlan_aware_vlan_list(self.name, 'untagged_vlans')
+            return self.common.vlan_aware_vlan_list(self.name, 'untagged_vlans')
         else:
             return linux_bond.Bond.native_vlan.fget(self)

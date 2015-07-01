@@ -15,7 +15,16 @@ class SystemSummary(linux_system_summary.SystemSummary):
 
     def __init__(self):
         linux_system_summary.SystemSummary.__init__(self)
-        self.platform_detect = None
+        self._platform_detect = None
+
+    @property
+    def platform_detect(self):
+        """
+        :return platform detect string
+        """
+        self._platform_detect = linux_common.exec_command(
+            '/usr/bin/platform-detect').strip()
+        return self._platform_detect
 
     @property
     def platform_info(self):
@@ -23,8 +32,6 @@ class SystemSummary(linux_system_summary.SystemSummary):
         :return hash of platform information based
         on the platform detect string
         """
-        self.platform_detect = linux_common.exec_command(
-            '/usr/bin/platform-detect').strip()
         _platform_info = CumulusPlatformInfo(self.platform_detect)
         if _platform_info:
             return _platform_info.run()

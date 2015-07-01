@@ -13,17 +13,24 @@ except ImportError:
     from io import StringIO
 
 
-def get_physical_port_counters(ifacename):
+def get_ethtool_output(ifacename):
     """
-    :return: hash of broadcast, unicast, multicast and
-    error counters of a specific interface
+    :return: ethtool output method used by cumulus provider to get ethtool output of a single interface.
     """
     cmd = '/sbin/ethtool -S %s' % (ifacename)
     try:
         ethtool_output = linux_common.exec_command(cmd)
     except linux_common.ExecCommandException:
         return {}
+    return ethtool_output
 
+
+def get_physical_port_counters(ethtool_output):
+    """
+    :param: array of ethtool output of a specific interface.
+    :return: hash of broadcast, unicast, multicast and
+    error counters of a specific interface
+    """
     counters_hash = {'tx': {}, 'rx': {}}
     fileio = StringIO(ethtool_output)
     for line in fileio:
@@ -34,7 +41,7 @@ def get_physical_port_counters(ifacename):
         splitline = line.split()
         rx_tx_hash = {'in': 'rx',
                       'out': 'tx'}
-        for _dir, _pkt_dir in rx_tx_hash.iteritems():
+        for _dir, _pkt_dir in rx_tx_hash.items():
             if splitline[0] == 'hwif' + _dir + 'ucastpkts:':
                 counters_hash[_pkt_dir]['unicast'] = int(splitline[1])
             elif splitline[0] == 'hwif' + _dir + 'bcastpkts:':
@@ -70,12 +77,14 @@ def cacheinfo(ifacename=None):
     """
     counters_hash = {}
     if ifacename:
-        counters_hash[ifacename] = get_physical_port_counters(ifacename)
+        counters_hash[ifacename] = get_physical_port_counters(
+            get_ethtool_output(ifacename))
         return counters_hash
 
     for _iface in os.listdir(linux_common.SYS_PATH_ROOT):
         if common.is_phy(_iface):
-            counters_hash[_iface] = get_physical_port_counters(_iface)
+            counters_hash[_iface] = get_physical_port_counters(
+                get_ethtool_output(_iface))
 
     return counters_hash
 

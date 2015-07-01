@@ -17,8 +17,7 @@ from nose.tools import set_trace
 
 class TestSystemSummary(object):
 
-    @mock.patch('netshowlib.linux.system_summary.common.distro_info')
-    def setup(self, mock_distro_info):
+    def setup(self):
         self.systemsummary = system_summary.SystemSummary()
 
     @mock.patch('netshowlib.cumulus.system_summary.linux_common.exec_command')
