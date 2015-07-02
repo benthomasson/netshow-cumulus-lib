@@ -10,12 +10,9 @@ import mock
 from asserts import assert_equals
 
 
-@mock.patch('netshowlib.linux.common.exec_command')
-def test_get_physical_port_counters(mock_exec_command):
+def test_get_physical_port_counters():
     mock_file = 'tests/test_netshowlib/ethtool_swp.txt'
-    mock_exec_command.return_value = open(mock_file).read()
-    _output = counters.get_physical_port_counters('swp10')
-    mock_exec_command.assert_called_with('/sbin/ethtool -S swp10')
+    _output = counters.get_physical_port_counters(open(mock_file).read())
     assert_equals(_output, {
         'rx': {
             'errors': 10, 'unicast': 100,

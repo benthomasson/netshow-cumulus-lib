@@ -17,6 +17,7 @@ GIT_BRANCH=test
 pip install --upgrade -r requirements_develop.txt
 
 ## All of this will go away when netshow-core is in PyPI
+GIT_BRANCH=devel
 
 # Delete working directories
 # TODO: make it an array and iterate over that

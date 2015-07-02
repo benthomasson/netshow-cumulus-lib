@@ -63,12 +63,11 @@ class TestPrintBond(object):
 
     # GORY mess of a test..but very helpful
     @mock.patch('netshowlib.cumulus.asic.linux_common.exec_command')
-    @mock.patch('netshowlib.linux.lldp.interface')
     @mock.patch('netshowlib.linux.common.read_file_oneline')
     @mock.patch('netshowlib.linux.iface.Iface.read_from_sys')
     @mock.patch('netshowlib.linux.iface.Iface.read_symlink')
     def test_bondmem_details(self, mock_symlink, mock_read_from_sys, mock_file_oneline,
-                             mock_lldp, mock_exec):
+                             mock_exec):
         values3 = {
             ('/sbin/ethtool -S swp3',): open('tests/test_netshowlib/ethtool_swp.txt').read(),
             ('/sbin/ethtool -S swp2',): open('tests/test_netshowlib/ethtool_swp.txt').read(),
@@ -85,7 +84,8 @@ class TestPrintBond(object):
                    ('bonding/mode',): '802.3ad 4',
                    ('bonding/slaves',): 'swp2 swp3',
                    ('bonding/xmit_hash_policy',): 'layer3+4 1',
-                   ('bonding/min_links',): '2'}
+                   ('bonding/min_links',): '2',
+                   ('ifalias',): None}
         values2 = {'/sys/class/net/bond0/bonding/ad_sys_priority': '65535',
                    '/sys/class/net/bond0/bonding/lacp_rate': 'slow 0'}
         values6 = [{'adj_port': 'eth2',
@@ -94,7 +94,6 @@ class TestPrintBond(object):
                     'adj_hostname': 'switch2'}]
         values5 = {('master',): 'bond0'}
         mock_symlink.side_effect = mod_args_generator(values5)
-        mock_lldp.return_value = values6
         mock_read_from_sys.side_effect = mod_args_generator(values1)
         mock_file_oneline.side_effect = mod_args_generator(values2)
         with mock.patch(mock_open_str()) as mock_open:

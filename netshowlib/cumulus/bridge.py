@@ -18,6 +18,7 @@ class MstpctlStpBridgeMember(object):
         self._cache = None
         self.orig_cache = cache
         self._initialize_state()
+        self.mstpd = mstpd
 
     def _initialize_state(self):
         """ initialize state attribute that keeps interesting
@@ -45,7 +46,7 @@ class MstpctlStpBridgeMember(object):
         if self.orig_cache:
             self._cache = self.orig_cache.mstpd.get('iface').get(self.bridgemem.name)
         else:
-            self._cache = mstpd.cacheinfo().get('iface').get(self.bridgemem.name)
+            self._cache = self.mstpd.cacheinfo().get('iface').get(self.bridgemem.name)
         # if STP is not enabled on the interface, return state as None
         # sub interfaces
         _allbridges = set(self.bridgemem.bridge_masters.keys())
@@ -64,7 +65,7 @@ class MstpctlStpBridgeMember(object):
         if not self._cache:
             return self._state
         self._initialize_state()
-        for _bridgename, _stpinfo in self._cache.iteritems():
+        for _bridgename, _stpinfo in self._cache.items():
             _bridge = linux_bridge.BRIDGE_CACHE.get(_bridgename)
             if not _bridge:
                 _bridge = Bridge(_bridgename, self.orig_cache)
@@ -197,7 +198,7 @@ class MstpctlStpBridge(object):
         :return: stp state of iface members of the bridge
         """
         self.initialize_member_state()
-        for _ifacename, _stpinfo in self.stpdetails.get('ifaces').iteritems():
+        for _ifacename, _stpinfo in self.stpdetails.get('ifaces').items():
             _iface_to_add = self.bridge.members.get(_ifacename)
             self.append_member_state_from_roles(_iface_to_add, _stpinfo)
             self.append_member_state_from_state(_iface_to_add, _stpinfo)
@@ -213,6 +214,11 @@ class BridgeMember(linux_bridge.BridgeMember, cumulus_iface.Iface):
     def __init__(self, name, cache=None):
         linux_bridge.BridgeMember.__init__(self, name, cache)
         cumulus_iface.Iface.__init__(self, name, cache)
+        self.common = common
+        self.bridgemem_class = MstpctlStpBridgeMember
+        self.iface_mod = cumulus_iface
+        self.bridge_class = Bridge
+
 
     @property
     def speed(self):
@@ -229,7 +235,7 @@ class BridgeMember(linux_bridge.BridgeMember, cumulus_iface.Iface):
         :return: :class:`MstpctlStpBridge` instance if stp_state == 2
         """
         if self.stp_state() == '2':
-            self._stp = MstpctlStpBridgeMember(self, self._cache)
+            self._stp = self.bridgemem_class(self, self._cache)
             return self._stp
         return super(BridgeMember, self).stp
 
@@ -239,17 +245,20 @@ class BridgeMember(linux_bridge.BridgeMember, cumulus_iface.Iface):
         use vlan_list from cumulus provider
         """
         if self.vlan_filtering:
-            return common.vlan_aware_vlan_list(self.name, 'vlans')
+            return self.common.vlan_aware_vlan_list(
+                self.name, 'vlans')
         else:
             return linux_bridge.BridgeMember.vlan_list.fget(self)
 
     @property
     def native_vlan(self):
         """
-        get native vlan when vlan filtering is enabled, else use linux provider native vlan call
+        get native vlan when vlan filtering is enabled, else use
+        linux provider native vlan call
         """
         if self.vlan_filtering:
-            return common.vlan_aware_vlan_list(self.name, 'untagged_vlans')
+            return self.common.vlan_aware_vlan_list(
+                self.name, 'untagged_vlans')
         else:
             return linux_bridge.BridgeMember.native_vlan.fget(self)
 
@@ -260,6 +269,8 @@ class Bridge(linux_bridge.Bridge):
     def __init__(self, name, cache=None):
         linux_bridge.Bridge.__init__(self, name, cache)
         self._vlan_filtering = False
+        self.common = common
+        self.bridge_class = MstpctlStpBridge
 
     @property
     def vlan_filtering(self):
@@ -268,7 +279,7 @@ class Bridge(linux_bridge.Bridge):
          under the physical port and can be seen using bridge vlan show command
         """
         self._vlan_filtering = False
-        if common.is_vlan_aware_bridge(self.name):
+        if self.common.is_vlan_aware_bridge(self.name):
             self._vlan_filtering = True
         return self._vlan_filtering
 
@@ -280,7 +291,7 @@ class Bridge(linux_bridge.Bridge):
         :return: :class:`MstpctlStpBridge` instance if stp_state == 2
         """
         if self.read_from_sys('bridge/stp_state') == '2':
-            self._stp = MstpctlStpBridge(self, self._cache)
+            self._stp = self.bridge_class(self, self._cache)
             return self._stp
         return super(Bridge, self).stp
 

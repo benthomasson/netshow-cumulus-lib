@@ -6,7 +6,7 @@ try:
     import netshowlib.linux.common as common_mod
 except ImportError:
     common_mod = None
-
+import re
 
 def check():
     """
@@ -18,11 +18,13 @@ def check():
     if not common_mod:
         return None
     try:
-        _distro_info = common_mod.distro_info()
-        vendor_name = _distro_info.get('ID')
-        if vendor_name and vendor_name.lower() == 'cumulus networks':
+        _distro_info = open('/etc/lsb-release', 'r').readlines()
+        for _line in _distro_info:
+            if _line.startswith('DISTRIB_ID'):
+                vendor_name = _line.split('=')[1]
+        if vendor_name and re.search('cumulus networks', vendor_name.lower()):
             return 'cumulus'
-    except common_mod.ExecCommandException:
+    except IOError:
         return None
     return None
 

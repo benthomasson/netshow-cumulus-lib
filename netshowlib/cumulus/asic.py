@@ -84,7 +84,11 @@ class BroadcomAsic(object):
         parses porttabs file to generate mapping between kernel
         port name and asic port name
         """
-        porttab = open(self.porttab).read()
+        try:
+            porttab = open(self.porttab).read()
+        except IOError:
+            return None
+
         textio = StringIO(porttab)
         for line in textio:
             if line.startswith('swp'):
@@ -98,7 +102,11 @@ class BroadcomAsic(object):
         """
         parses initial speed info from broadcom initialization files
         """
-        bcmdfile = open(self.bcmd).read()
+        try:
+            bcmdfile = open(self.bcmd).read()
+        except IOError:
+            return None
+
         textio = StringIO(bcmdfile)
         for line in textio:
             if line.startswith('port_init_speed'):
