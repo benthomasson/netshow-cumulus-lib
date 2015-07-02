@@ -30,6 +30,12 @@ def test_cacheinfo(mock_exec):
 
 """
 
+@mock.patch('netshowlib.linux.iface.portname_list')
+def test_portname_list(mock_portnamelist):
+    mock_portnamelist.return_value = ['swp1', 'swp2']
+    assert_equals(cumulus_iface.portname_list(), ['swp1', 'swp2'])
+
+
 class TestCumulusIface(object):
 
 
