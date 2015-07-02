@@ -22,7 +22,7 @@ import sys
 @mock.patch('netshow.cumulus.show.ShowInterfaces')
 def test_run_show_interfaces(mock_showint):
     # netshow interfaces
-    sys.argv = ['netshow', 'interface', 'trunks']
+    sys.argv = ['netshow', 'trunks']
     show.run()
     assert_equals(mock_showint.call_count, 1)
 
@@ -36,9 +36,9 @@ def test_run_show_system(mock_showsys):
 
 
 @mock.patch('netshow.cumulus.show.ShowNeighbors')
-def test_run_show_neighbors(mock_shownei):
-    # netshow system
-    sys.argv = ['netshow', 'neighbors']
+def test_run_lldp(mock_shownei):
+    # netshow lldp
+    sys.argv = ['netshow', 'lldp']
     show.run()
     assert_equals(mock_shownei.call_count, 1)
 
