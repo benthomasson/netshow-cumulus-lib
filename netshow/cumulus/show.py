@@ -36,7 +36,7 @@ Options:
 """
 import sys
 from network_docopt import NetworkDocopt
-from netshowlib._version import get_version
+from netshow.netshow import print_version
 from netshow.cumulus.show_counters import ShowCounters
 from netshow.cumulus.show_system import ShowSystem
 from netshow.cumulus.show_interfaces import ShowInterfaces
@@ -69,6 +69,6 @@ def run():
             _showcounters = ShowCounters(_nd)
             print(_showcounters.run())
         elif _nd.get('--version') or _nd.get('-v'):
-            print(get_version())
+            print(print_version())
         else:
             print(__doc__)
