@@ -10,6 +10,12 @@ from netshowlib.cumulus import asic as cumulus_asic
 import re
 import os
 
+def portname_list():
+    """
+    :return: list of interfaces configured on the switch
+    """
+    return linux_iface.portname_list()
+
 def iface(name, cache=None):
     """
     calls on checks to determine best interface type match for the named interface
