@@ -8,7 +8,9 @@
 from netshowlib.cumulus import asic
 import netshowlib.linux.common as linux_common
 import mock
+import io
 from asserts import assert_equals, mock_open_str, mod_args_generator
+
 
 @mock.patch('netshowlib.cumulus.asic.linux_common.exec_command')
 def test_switch_asic(mock_exec_command):
@@ -24,14 +26,14 @@ def test_switch_asic(mock_exec_command):
 
 @mock.patch('netshowlib.cumulus.asic.linux_common.exec_command')
 def test_cacheinfo(mock_exec):
-    mock_exec.return_value = open(
+    mock_exec.return_value = io.open(
         'tests/test_netshowlib/lspci_output.txt', 'rb').read()
     values = {
-        ('/var/lib/cumulus/porttab',): open('tests/test_netshowlib/xe_porttab'),
-        ('/etc/bcm.d/config.bcm',): open('tests/test_netshowlib/config_xe.bcm')
+        ('/var/lib/cumulus/porttab',): io.open('tests/test_netshowlib/xe_porttab'),
+        ('/etc/bcm.d/config.bcm',): io.open('tests/test_netshowlib/config_xe.bcm')
     }
 
-    with mock.patch(mock_open_str()) as mock_open:
+    with mock.patch('io.open') as mock_open:
         mock_open.side_effect = mod_args_generator(values)
         _output = asic.cacheinfo()
         assert_equals(_output['kernelports']['swp1']['asicname'], 'xe0')

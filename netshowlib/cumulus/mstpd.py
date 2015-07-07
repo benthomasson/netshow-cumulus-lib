@@ -2,11 +2,7 @@
 module for mstpd functions
 """
 from netshowlib.linux import common as linux_common
-try:
-    from StringIO import StringIO
-except ImportError:
-    from io import StringIO
-
+import io
 import re
 
 
@@ -60,7 +56,7 @@ class MstpdInfo(object):
         execute mstpctl and parse it. return hash of most of the mstpctl output.
         mstpctl needs to have JSON output. would do away with this class.
         """
-        self.textio = StringIO(self.mstpctl_output)
+        self.textio = io.StringIO(self.mstpctl_output)
         for line in self.textio:
             if len(line.strip()) <= 0:
                 continue

@@ -3,10 +3,7 @@ Module for running asic specific tasks
 """
 
 from netshowlib.linux import common as linux_common
-try:
-    from StringIO import StringIO
-except ImportError:
-    from io import StringIO
+import io
 import re
 
 
@@ -85,11 +82,11 @@ class BroadcomAsic(object):
         port name and asic port name
         """
         try:
-            porttab = open(self.porttab).read()
+            porttab = io.open(self.porttab).read()
         except IOError:
             return None
 
-        textio = StringIO(porttab)
+        textio = io.StringIO(porttab)
         for line in textio:
             if line.startswith('swp'):
                 linesplit = line.split()
@@ -103,11 +100,11 @@ class BroadcomAsic(object):
         parses initial speed info from broadcom initialization files
         """
         try:
-            bcmdfile = open(self.bcmd).read()
+            bcmdfile = io.open(self.bcmd).read()
         except IOError:
             return None
 
-        textio = StringIO(bcmdfile)
+        textio = io.StringIO(bcmdfile)
         for line in textio:
             if line.startswith('port_init_speed'):
                 (portnamepart, speed) = line.split('=')

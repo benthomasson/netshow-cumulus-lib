@@ -19,6 +19,7 @@ import netshow.cumulus.print_bond as print_bond
 import netshowlib.cumulus.bond as cumulus_bond
 import mock
 from asserts import assert_equals, mod_args_generator, mock_open_str
+import io
 
 
 class TestPrintBondMember(object):
@@ -34,17 +35,18 @@ class TestPrintBondMember(object):
         mock_read_sys.side_effect = mod_args_generator(values)
         assert_equals(self.piface.speed, '1G(sfp)')
 
+
 class TestPrintBond(object):
     def setup(self):
-       iface = cumulus_bond.Bond('bond0')
-       self.piface = print_bond.PrintBond(iface)
+        iface = cumulus_bond.Bond('bond0')
+        self.piface = print_bond.PrintBond(iface)
 
     @mock.patch('netshowlib.linux.iface.Iface.read_from_sys')
     @mock.patch('netshowlib.linux.iface.Iface.is_access')
     @mock.patch('netshowlib.linux.iface.Iface.is_trunk')
     @mock.patch('netshowlib.linux.iface.Iface.is_l3')
     def test_summary_in_clag(self, mock_is_l3, mock_is_trunk,
-                     mock_is_access, mock_from_sys):
+                             mock_is_access, mock_from_sys):
         values = {('carrier',): '1',
                   ('speed',): '1000',
                   ('bonding/mode',): '802.3ad 4',
@@ -60,7 +62,6 @@ class TestPrintBond(object):
         _output = self.piface.summary
         assert_equals(_output[1], '(in_clag)')
 
-
     # GORY mess of a test..but very helpful
     @mock.patch('netshowlib.cumulus.asic.linux_common.exec_command')
     @mock.patch('netshowlib.linux.common.read_file_oneline')
@@ -69,15 +70,19 @@ class TestPrintBond(object):
     def test_bondmem_details(self, mock_symlink, mock_read_from_sys, mock_file_oneline,
                              mock_exec):
         values3 = {
-            ('/sbin/ethtool -S swp3',): open('tests/test_netshowlib/ethtool_swp.txt').read(),
-            ('/sbin/ethtool -S swp2',): open('tests/test_netshowlib/ethtool_swp.txt').read(),
-            ('lspci -nn',): open('tests/test_netshowlib/lspci_output.txt', 'rb').read()}
+            ('/sbin/ethtool -S swp2',): io.open('tests/test_netshowlib/ethtool_swp.txt').read(),
+            ('/sbin/ethtool -S swp3',): io.open('tests/test_netshowlib/ethtool_swp.txt').read(),
+            ('lspci -nn',): io.open('tests/test_netshowlib/lspci_output.txt', 'rb').read()
+        }
 
         mock_exec.side_effect = mod_args_generator(values3)
+        values10 = {
+            ('/proc/net/bonding/bond0',): io.open('tests/test_netshow/proc_net_bonding.txt'),
+            ('/var/lib/cumulus/porttab',): io.open('tests/test_netshowlib/xe_porttab'),
+            ('/etc/bcm.d/config.bcm',): io.open('tests/test_netshowlib/config_xe.bcm')
+        }
+
         values = {
-            ('/proc/net/bonding/bond0',): open('tests/test_netshow/proc_net_bonding.txt'),
-            ('/var/lib/cumulus/porttab',): open('tests/test_netshowlib/xe_porttab'),
-            ('/etc/bcm.d/config.bcm',): open('tests/test_netshowlib/config_xe.bcm')
         }
         values1 = {('carrier',): '1',
                    ('speed',): '1000',
@@ -88,23 +93,22 @@ class TestPrintBond(object):
                    ('ifalias',): None}
         values2 = {'/sys/class/net/bond0/bonding/ad_sys_priority': '65535',
                    '/sys/class/net/bond0/bonding/lacp_rate': 'slow 0'}
-        values6 = [{'adj_port': 'eth2',
-                    'adj_hostname': 'switch1'},
-                   {'adj_port': 'eth10',
-                    'adj_hostname': 'switch2'}]
         values5 = {('master',): 'bond0'}
         mock_symlink.side_effect = mod_args_generator(values5)
         mock_read_from_sys.side_effect = mod_args_generator(values1)
         mock_file_oneline.side_effect = mod_args_generator(values2)
+
         with mock.patch(mock_open_str()) as mock_open:
-            mock_open.side_effect = mod_args_generator(values)
-            _output = self.piface.bondmem_details()
-            outputtable = _output.split('\n')
-            assert_equals(outputtable[0].split(),
-                          ['port', 'speed', 'tx', 'rx', 'err',
-                           'link_failures'])
-            assert_equals(outputtable[2].split(),
-                          ['up', 'swp2(P)', '1G(sfp)', '1500',
-                           '600', '30', '11'])
-            assert_equals(outputtable[3].split(),
-                          ['up', 'swp3(N)', '1G', '1500', '600', '30', '0'])
+            with mock.patch('io.open') as mock_open2:
+                mock_open2.side_effect = mod_args_generator(values10)
+                mock_open.side_effect = mod_args_generator(values)
+                _output = self.piface.bondmem_details()
+                outputtable = _output.split('\n')
+                assert_equals(outputtable[0].split(),
+                              ['port', 'speed', 'tx', 'rx', 'err',
+                               'link_failures'])
+                assert_equals(outputtable[2].split(),
+                              ['up', 'swp2(P)', '1G(sfp)', '1500',
+                               '600', '30', '11'])
+                assert_equals(outputtable[3].split(),
+                              ['up', 'swp3(N)', '1G', '1500', '600', '30', '0'])

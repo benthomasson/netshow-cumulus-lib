@@ -6,11 +6,7 @@ Module responsible for printing countes for the cumulus provider
 from netshowlib.cumulus import common
 from netshowlib.linux import common as linux_common
 import os
-
-try:
-    from StringIO import StringIO
-except ImportError:
-    from io import StringIO
+import io
 
 
 def get_ethtool_output(ifacename):
@@ -32,7 +28,7 @@ def get_physical_port_counters(ethtool_output):
     error counters of a specific interface
     """
     counters_hash = {'tx': {}, 'rx': {}}
-    fileio = StringIO(ethtool_output)
+    fileio = io.StringIO(ethtool_output)
     for line in fileio:
         if len(line.strip()) <= 0:
             continue

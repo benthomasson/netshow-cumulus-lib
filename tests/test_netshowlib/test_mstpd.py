@@ -9,11 +9,11 @@ from netshowlib.cumulus import mstpd
 import mock
 from asserts import assert_equals
 from nose.tools import set_trace
-
+import io
 
 @mock.patch('netshowlib.cumulus.mstpd.linux_common.exec_command')
 def test_cacheinfo(mock_exec):
-    mock_exec.return_value = open('tests/test_netshowlib/mstpctl_showall').read()
+    mock_exec.return_value = io.open('tests/test_netshowlib/mstpctl_showall').read()
     _output = mstpd.cacheinfo()
     assert_equals(sorted(_output.get('bridge').keys()), ['br0', 'br1', 'br2'])
     assert_equals(sorted(_output.get('bridge').get('br0').get('ifaces').keys()),
@@ -33,7 +33,7 @@ def test_cacheinfo(mock_exec):
 
 @mock.patch('netshowlib.cumulus.mstpd.linux_common.exec_command')
 def test_cacheinfo_no_stp(mock_exec):
-    mock_exec.return_value = ''
+    mock_exec.return_value = u''
     _output = mstpd.cacheinfo()
     assert_equals(_output.get('bridge'), {})
     assert_equals(_output.get('iface'), {})
