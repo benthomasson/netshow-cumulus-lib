@@ -18,6 +18,7 @@
 import netshow.cumulus.print_iface as print_iface
 import netshowlib.cumulus.iface as cumulus_iface
 import mock
+import io
 from asserts import assert_equals, mod_args_generator
 
 
@@ -71,7 +72,7 @@ class TestPrintIface(object):
 
         mock_is_phy.return_value = True
         mock_file = 'tests/test_netshowlib/ethtool_swp.txt'
-        mock_exec_command.return_value = open(mock_file).read()
+        mock_exec_command.return_value = io.open(mock_file).read()
         _output = self.piface.counters_summary()
         _outputtable = _output.split('\n')
         assert_equals(_outputtable[0].split(), ['counters', 'tx', 'rx'])

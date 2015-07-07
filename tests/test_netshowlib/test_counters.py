@@ -7,12 +7,13 @@
 # pylint: disable=F0401
 from netshowlib.cumulus import counters
 import mock
+import io
 from asserts import assert_equals
 
 
 def test_get_physical_port_counters():
     mock_file = 'tests/test_netshowlib/ethtool_swp.txt'
-    _output = counters.get_physical_port_counters(open(mock_file).read())
+    _output = counters.get_physical_port_counters(io.open(mock_file).read())
     assert_equals(_output, {
         'rx': {
             'errors': 10, 'unicast': 100,
@@ -30,7 +31,7 @@ def test_get_physical_port_counters():
 def test_cacheinfo(mock_exec_command,
                    mock_os_listdir):
     mock_file = 'tests/test_netshowlib/ethtool_swp.txt'
-    mock_exec_command.return_value = open(mock_file).read()
+    mock_exec_command.return_value = io.open(mock_file).read()
     mock_os_listdir.return_value = ['swp1', 'swp2s0',
                                     'swp2.2', 'swp3',
                                     'br0']
@@ -50,7 +51,7 @@ class TestCumulusCounters(object):
     @mock.patch('netshowlib.linux.common.exec_command')
     def test_run(self, mock_exec, mock_listdir):
         mock_file = 'tests/test_netshowlib/ethtool_swp.txt'
-        mock_exec.return_value = open(mock_file).read()
+        mock_exec.return_value = io.open(mock_file).read()
         mock_listdir.return_value = ['swp1', 'swp2s0',
                                      'swp2.2', 'swp3', 'swp10',
                                      'br0']
@@ -65,7 +66,7 @@ class TestCumulusCounters(object):
     @mock.patch('netshowlib.linux.common.exec_command')
     def test_all(self, mock_exec, mock_listdir):
         mock_file = 'tests/test_netshowlib/ethtool_swp.txt'
-        mock_exec.return_value = open(mock_file).read()
+        mock_exec.return_value = io.open(mock_file).read()
         mock_listdir.return_value = ['swp1', 'swp2s0',
                                      'swp2.2', 'swp3', 'swp10',
                                      'br0']

@@ -6,12 +6,9 @@
 # pylint: disable=W0201
 # pylint: disable=F0401
 import netshowlib.cumulus.iface as cumulus_iface
-from netshowlib.cumulus import asic
-from netshowlib.linux import common as linux_common
 import mock
-from asserts import assert_equals, mod_args_generator, mock_open_str
-from nose.tools import set_trace
-
+from asserts import assert_equals, mod_args_generator
+import io
 """
 @mock.patch('netshowlib.cumulus.asic.linux_common.exec_command')
 def test_cacheinfo(mock_exec):
@@ -30,6 +27,7 @@ def test_cacheinfo(mock_exec):
 
 """
 
+
 @mock.patch('netshowlib.linux.iface.portname_list')
 def test_portname_list(mock_portnamelist):
     mock_portnamelist.return_value = ['swp1', 'swp2']
@@ -37,7 +35,6 @@ def test_portname_list(mock_portnamelist):
 
 
 class TestCumulusIface(object):
-
 
     def setup(self):
         self.iface = cumulus_iface.Iface('swp10')
@@ -50,7 +47,7 @@ class TestCumulusIface(object):
         assert_equals(self.iface.counters, None)
         mock_is_phy.return_value = True
         mock_file = 'tests/test_netshowlib/ethtool_swp.txt'
-        mock_exec_command.return_value = open(mock_file).read()
+        mock_exec_command.return_value = io.open(mock_file).read()
         _output = self.iface.counters.rx
         assert_equals(_output, {'unicast': 100, 'multicast': 300,
                                 'errors': 10, 'broadcast': 200})
@@ -98,30 +95,27 @@ class TestCumulusIface(object):
 
     @mock.patch('netshowlib.cumulus.asic.linux_common.exec_command')
     def test_initial_speed(self, mock_exec):
-        mock_exec.return_value = open('tests/test_netshowlib/lspci_output.txt', 'rb').read()
+        mock_exec.return_value = io.open('tests/test_netshowlib/lspci_output.txt', 'rb').read()
         values = {
-            ('/var/lib/cumulus/porttab',): open('tests/test_netshowlib/xe_porttab'),
-            ('/etc/bcm.d/config.bcm',): open('tests/test_netshowlib/config_xe.bcm')
+            ('/var/lib/cumulus/porttab',): io.open('tests/test_netshowlib/xe_porttab'),
+            ('/etc/bcm.d/config.bcm',): io.open('tests/test_netshowlib/config_xe.bcm')
         }
-        with mock.patch(mock_open_str()) as mock_open:
+        with mock.patch('io.open') as mock_open:
             mock_open.side_effect = mod_args_generator(values)
             iface = cumulus_iface.Iface('swp1')
             assert_equals(iface.initial_speed(), 10000)
 
-
     @mock.patch('netshowlib.cumulus.asic.linux_common.exec_command')
     def test_connector_type(self, mock_exec):
-        mock_exec.return_value = open('tests/test_netshowlib/lspci_output.txt', 'rb').read()
+        mock_exec.return_value = io.open('tests/test_netshowlib/lspci_output.txt', 'rb').read()
         values = {
-            ('/var/lib/cumulus/porttab',): open('tests/test_netshowlib/xe_porttab'),
-            ('/etc/bcm.d/config.bcm',): open('tests/test_netshowlib/config_xe.bcm')
+            ('/var/lib/cumulus/porttab',): io.open('tests/test_netshowlib/xe_porttab'),
+            ('/etc/bcm.d/config.bcm',): io.open('tests/test_netshowlib/config_xe.bcm')
         }
-        with mock.patch(mock_open_str()) as mock_open:
+        with mock.patch('io.open') as mock_open:
             mock_open.side_effect = mod_args_generator(values)
             iface = cumulus_iface.Iface('swp10')
             assert_equals(iface.connector_type, 2)
-
-
 
     @mock.patch('netshowlib.linux.iface.Iface.read_from_sys')
     @mock.patch('netshowlib.cumulus.iface.Iface.initial_speed')
