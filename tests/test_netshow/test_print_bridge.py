@@ -20,6 +20,7 @@ import netshowlib.cumulus.bridge as cumulus_bridge
 import mock
 from asserts import assert_equals, mod_args_generator
 import re
+import io
 
 
 class TestPrintBridge(object):
@@ -33,7 +34,7 @@ class TestPrintBridge(object):
     def test_cli_output(self, mock_read_from_sys, mock_exec,
                         mock_os_listdir):
         values10 = {('/sbin/mstpctl showall',):
-                    open('tests/test_netshowlib/mstpctl_showall').read()}
+                    io.open('tests/test_netshowlib/mstpctl_showall').read()}
         mock_exec.side_effect = mod_args_generator(values10)
         values = {('bridge/vlan_filtering', 'br1'): None,
                   ('bridge/stp_state', 'br1', True): '2',
@@ -61,7 +62,7 @@ class TestPrintBridge(object):
     @mock.patch('netshowlib.linux.common.read_from_sys')
     def test_stp_details(self, mock_read_from_sys, mock_exec,
                          mock_os_listdir):
-        mock_exec.return_value = open(
+        mock_exec.return_value = io.open(
             'tests/test_netshowlib/mstpctl_showall').read()
         values = {('bridge/vlan_filtering', 'br1'): None,
                   ('bridge/stp_state', 'br1', True): '2'}
@@ -94,7 +95,7 @@ class TestPrintBridge(object):
     @mock.patch('netshowlib.linux.common.read_from_sys')
     def test_designated_ports(self, mock_read_from_sys, mock_exec,
                               mock_os_listdir):
-        mock_exec.return_value = open(
+        mock_exec.return_value = io.open(
             'tests/test_netshowlib/mstpctl_showall').read()
         values = {('bridge/vlan_filtering', 'br1', True): None,
                   ('bridge/stp_state', 'br1', True): '2'}
@@ -111,7 +112,7 @@ class TestPrintBridge(object):
     def test_alternate_ports(self, mock_read_from_sys, mock_exec,
                              mock_os_listdir):
         self.piface.iface = cumulus_bridge.Bridge('br0')
-        mock_exec.return_value = open(
+        mock_exec.return_value = io.open(
             'tests/test_netshowlib/mstpctl_showall').read()
         values = {('bridge/vlan_filtering', 'br0'): None,
                   ('bridge/stp_state', 'br0', True): '2'}
@@ -125,7 +126,7 @@ class TestPrintBridge(object):
     @mock.patch('netshowlib.cumulus.mstpd.linux_common.exec_command')
     @mock.patch('netshowlib.linux.common.read_from_sys')
     def test_stp_mode(self, mock_read_from_sys, mock_exec):
-        mock_exec.return_value = open(
+        mock_exec.return_value = io.open(
             'tests/test_netshowlib/mstpctl_showall').read()
         values = {('bridge/vlan_filtering', 'br1'): None,
                   ('bridge/stp_state', 'br1', True): '2'}
@@ -138,7 +139,7 @@ class TestPrintBridge(object):
     def test_stp_root_port(self, read_from_sys, mock_exec):
         br0 = cumulus_bridge.Bridge('br0')
         self.piface.iface = br0
-        mock_exec.return_value = open(
+        mock_exec.return_value = io.open(
             'tests/test_netshowlib/mstpctl_showall').read()
         values = {('bridge/vlan_filtering', 'br0', True): None,
                   ('bridge/stp_state', 'br0', True): '2'}
@@ -162,7 +163,7 @@ class TestPrintBridge(object):
                    ('bridge/vlan_filtering', 'br1'): None}
         mock_read_symlink.side_effect = mod_args_generator(values1)
         mock_read_from_sys.side_effect = mod_args_generator(values2)
-        values3 = {('/sbin/mstpctl showall',): open(
+        values3 = {('/sbin/mstpctl showall',): io.open(
             'tests/test_netshowlib/mstpctl_showall').read(),
             ('/usr/sbin/lldpctl -f xml',): None}
         mock_exec.side_effect = mod_args_generator(values3)
@@ -188,7 +189,7 @@ class TestPrintBridge(object):
                          mock_symlink,
                          mock_exec):
 
-        values2 = {('/sbin/mstpctl showall',): open(
+        values2 = {('/sbin/mstpctl showall',): io.open(
             'tests/test_netshowlib/mstpctl_showall').read()}
         mock_exec.side_effect = mod_args_generator(values2)
 
@@ -258,7 +259,7 @@ class TestPrintBridgeMember(object):
         mock_is_bridgemem.return_value = True
         mock_stp_state.return_value = '2'
         mock_listdir.side_effect = mod_args_generator(values4)
-        mock_exec.return_value = open(
+        mock_exec.return_value = io.open(
             'tests/test_netshowlib/mstpctl_showall').read()
         # vlans are 1-10,20-24,29-30,32,64,4092
         values = {('bridge/stp_state',): '2',

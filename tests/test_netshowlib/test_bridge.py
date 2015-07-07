@@ -9,7 +9,7 @@ import netshowlib.cumulus.bridge as cumulus_bridge
 from netshowlib.linux import bridge as linux_bridge
 import mock
 from asserts import assert_equals, mod_args_generator
-
+import io
 
 class TestCumulusBridgeMember(object):
 
@@ -24,7 +24,7 @@ class TestCumulusBridgeMember(object):
         mock_read_symlink.side_effect = mod_args_generator(values2)
         values = {('bridge/stp_state',): '2'}
         mock_read_from_sys.side_effect = mod_args_generator(values)
-        mock_exec.return_value = open('tests/test_netshowlib/mstpctl_showall').read()
+        mock_exec.return_value = io.open('tests/test_netshowlib/mstpctl_showall').read()
         self.iface = cumulus_bridge.BridgeMember('swp100')
         values = {
             'alternate': [],
@@ -48,7 +48,7 @@ class TestCumulusBridgeMember(object):
         _results = {}
         values = {('bridge/stp_state',): '2'}
         mock_read_from_sys.side_effect = mod_args_generator(values)
-        mock_exec.return_value = open('tests/test_netshowlib/mstpctl_showall').read()
+        mock_exec.return_value = io.open('tests/test_netshowlib/mstpctl_showall').read()
         self.iface = cumulus_bridge.BridgeMember('swp3')
         for i in ['root', 'backup', 'alternate', 'oper_edge_port',
                   'network_port', 'discarding', 'forwarding']:
@@ -94,7 +94,7 @@ class TestCumulusBridge(object):
     @mock.patch('netshowlib.cumulus.mstpd.linux_common.exec_command')
     @mock.patch('netshowlib.linux.common.read_from_sys')
     def test_stp_mode(self, mock_read_from_sys, mock_exec):
-        mock_exec.return_value = open(
+        mock_exec.return_value = io.open(
             'tests/test_netshowlib/mstpctl_showall').read()
         values = {('bridge/vlan_filtering', 'br0'): '1',
                   ('bridge/stp_state', 'br0', True): '2'}
@@ -119,7 +119,7 @@ class TestCumulusBridge(object):
     @mock.patch('netshowlib.cumulus.mstpd.linux_common.exec_command')
     @mock.patch('netshowlib.linux.common.read_from_sys')
     def test_root_port(self, mock_read_from_sys, mock_exec):
-        mock_exec.return_value = open(
+        mock_exec.return_value = io.open(
             'tests/test_netshowlib/mstpctl_showall').read()
         values = {('bridge/stp_state', 'br0', True): '2'}
         mock_read_from_sys.side_effect = mod_args_generator(values)
@@ -128,7 +128,7 @@ class TestCumulusBridge(object):
     @mock.patch('netshowlib.cumulus.mstpd.linux_common.exec_command')
     @mock.patch('netshowlib.linux.common.read_from_sys')
     def test_is_root(self, mock_read_from_sys, mock_exec):
-        mock_exec.return_value = open(
+        mock_exec.return_value = io.open(
             'tests/test_netshowlib/mstpctl_showall').read()
         values = {('bridge/stp_state', 'br0', True): '2'}
         mock_read_from_sys.side_effect = mod_args_generator(values)
@@ -137,7 +137,7 @@ class TestCumulusBridge(object):
     @mock.patch('netshowlib.cumulus.mstpd.linux_common.exec_command')
     @mock.patch('netshowlib.linux.common.read_from_sys')
     def test_root_priority(self, mock_read_from_sys, mock_exec):
-        mock_exec.return_value = open('tests/test_netshowlib/mstpctl_showall').read()
+        mock_exec.return_value = io.open('tests/test_netshowlib/mstpctl_showall').read()
         values = {('bridge/stp_state', 'br0', True): '2'}
         mock_read_from_sys.side_effect = mod_args_generator(values)
         assert_equals(self.iface.stp.root_priority, 32768)
@@ -145,7 +145,7 @@ class TestCumulusBridge(object):
     @mock.patch('netshowlib.cumulus.mstpd.linux_common.exec_command')
     @mock.patch('netshowlib.linux.common.read_from_sys')
     def test_bridge_priority(self, mock_read_from_sys, mock_exec):
-        mock_exec.return_value = open('tests/test_netshowlib/mstpctl_showall').read()
+        mock_exec.return_value = io.open('tests/test_netshowlib/mstpctl_showall').read()
         values = {('bridge/stp_state', 'br0', True): '2'}
         mock_read_from_sys.side_effect = mod_args_generator(values)
         assert_equals(self.iface.stp.bridge_priority, 32768)
@@ -157,7 +157,7 @@ class TestCumulusBridge(object):
         assert_equals(isinstance(self.iface.stp, linux_bridge.KernelStpBridge), True)
 
         # if stp_state == 2
-        mock_exec.return_value = open('tests/test_netshowlib/mstpctl_showall').read()
+        mock_exec.return_value = io.open('tests/test_netshowlib/mstpctl_showall').read()
         values = {('bridge/stp_state', 'br0', True): '2'}
         mock_read_from_sys.side_effect = mod_args_generator(values)
         assert_equals(isinstance(self.iface.stp, cumulus_bridge.MstpctlStpBridge), True)
@@ -168,7 +168,7 @@ class TestCumulusBridge(object):
     def test_member_state(self, mock_listdir,
                           mock_read_from_sys, mock_exec):
         mock_listdir.return_value = ['swp3', 'swp4']
-        mock_exec.return_value = open('tests/test_netshowlib/mstpctl_showall').read()
+        mock_exec.return_value = io.open('tests/test_netshowlib/mstpctl_showall').read()
         values = {('bridge/stp_state', 'br0', True): '2'}
         mock_read_from_sys.side_effect = mod_args_generator(values)
         _output = self.iface.stp.member_state
