@@ -5,15 +5,24 @@
 # pylint: disable=E1101
 """
 Usage:
-    netshow lldp [--json | -j ]
     netshow counters [errors] [all] [--json | -j ]
+    netshow lldp [--json | -j ]
     netshow system [--json | -j ]
-    netshow [ access | bridges | bonds | bondmems | mgmt | l2 | l3 | phy | trunks ] [all] [--mac | -m ] [--oneline | -1  | --json | -j]
     netshow interface [<iface>] [all] [--mac | -m ] [--oneline | -1 | --json | -j ]
-    netshow (--version | -v)
+    netshow access [all] [--mac | -m ] [--oneline | -1  | --json | -j]
+    netshow bridges [all] [--mac | -m ] [--oneline | -1  | --json | -j]
+    netshow bondmems [all] [--mac | -m ] [--oneline | -1  | --json | -j]
+    netshow mgmt [all] [--mac | -m ] [--oneline | -1  | --json | -j]
+    netshow l2 [all] [--mac | -m ] [--oneline | -1  | --json | -j]
+    netshow l3 [all] [--mac | -m ] [--oneline | -1  | --json | -j]
+    netshow phy [all] [--mac | -m ] [--oneline | -1  | --json | -j]
+    netshow trunks [all] [--mac | -m ] [--oneline | -1  | --json | -j]
+    netshow (--version | -V)
+
 
 Help:
     * default is to show intefaces only in the UP state.
+    counters                  summary of physical port counters.
     interface                 summary info of all interfaces
     access                    summary of physical ports with l2 or l3 config
     bonds                     summary of bonds
@@ -24,9 +33,9 @@ Help:
     l2                        summary of access, trunk and bridge interfaces
     phy                       summary of physical ports
     trunks                    summary of trunk interfaces
-    interface <interface>     list summary of a single interface
-    system                    system information
     lldp                      physical device neighbor information
+    interface <iface>         list summary of a single interface
+    system                    system information
 
 Options:
     all        show all ports include those are down or admin down
