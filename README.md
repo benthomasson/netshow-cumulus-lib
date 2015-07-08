@@ -1,49 +1,39 @@
-# netshow-cumulus-lib
+# netshow-cumulus
 
-# Cumulus netshow library
+Netshow-cumulus is a Provider for Netshow, a Network Abstraction Software. It is optimized to collect core networking data from Cumulus Linux devices.
 
-Abstracts network related information such as L2 info, LLDP, Network services
-(ntp, dhcp, dhcrelay) into Iface Objects.
-This covers, physical ports, bonds and bridges only. Designed to
-work with a linux device that is configured as a switch, but can work on a
-server.
+Netshow-cumulus has 2 main modules.
 
-pynetlinux and python-netiface doesn't quite do what I want.
+### netshowlib
+This module contains other modules that are responsible for retrieving  network information from the Linux kernel and associated components. This information is abstracted in mainly into interface types, like bonds, bridges, bondmembers and so on.
 
-## Installation
+###netshow
 
-```
-pip install https://github.com/skamithi/linux-netshow-lib/archive/master.tar.gz
-```
+Netshow modules are responsible for printing the network information collected from the ``netshowlib`` modules. For example, the ``print_iface`` netshow module takes interface information retrieved by ``netshowlib`` modules and abstracted in python objects and prints the information in a human readable form.
 
+##Contributing
 
-## Usage
+1. Fork it.
+2. Create your feature branch (`git checkout -b my-new-feature`).
+3. Commit your changes (`git commit -am 'Add some feature'`).
+4. Push to the branch (`git push origin my-new-feature`).
+5. Create new Pull Request.
 
-TODO: Write usage instructions
+## License and Authors
+Author:: Cumulus Networks Inc.
 
-## Contributing
+Copyright:: 2015 Cumulus Networks Inc.
 
-1. Fork it!
-2. Create your feature branch: `git checkout -b my-new-feature`
-3. Create a [virtualenv](https://pypi.python.org/pypi/virtualenv/) instance.
-Please try and develop using the latest stable Python3. Example:
-```
-$ virtualenv ~/netshow_dev /usr/local/bin/python3
-```
-4. Run ``pip install -r requirements_develop.txt``
-5. Write some cool code and _relevant nose tests too_
-6. Run ``tox`` to run the tests. You can interact with the code by going to
-   ``.tox/py27`` and running the relative path of ``./bin/netshow`` or use the
-``./bin/python`` interpreter.
-6. Commit your changes: `git commit -am 'Add some feature'`
-4. Push to the branch: `git push origin my-new-feature`
-5. Submit a pull request :D
+![Cumulus icon](http://cumulusnetworks.com/static/cumulus/img/logo_2014.png)
 
+### Cumulus Linux
 
-## Main Contributors
+Cumulus Linux is a software distribution that runs on top of industry standard
+networking hardware. It enables the latest Linux applications and automation
+tools on networking gear while delivering new levels of innovation and
+ﬂexibility to the data center.
 
-Stanley Karunditu [@skamithi](http://github.com/skamithi)
+For further details please see: [cumulusnetworks.com](http://www.cumulusnetworks.com)
 
-## License
+This project is licensed under the GNU General Public License, Version 2.0
 
-TBD
