@@ -28,7 +28,7 @@ setup(
     author_email='ce-ceng@cumulusnetworks.com',
     packages=find_packages(),
     zip_safe=False,
-    license='GPLv2'.
+    license='GPLv2',
     cmdclass={"build": BuildWithI18n},
     namespace_packages=['netshowlib', 'netshowlib.cumulus',
                         'netshow', 'netshow.cumulus'],
