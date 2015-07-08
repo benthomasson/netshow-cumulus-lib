@@ -1,0 +1,22 @@
+p {
+  margin: 0 0 4px;
+}
+code {
+  padding: 2px 0px;
+}
+
+tr  {
+  font-size: 95%;
+}
+.table > tbody > tr > th,
+.table > tbody > tr > td {
+  padding: 2px;
+}
+
+dt {
+  background-color: #f0f0f0;
+}
+
+.viewcode-link {
+  font-weight: normal;
+}

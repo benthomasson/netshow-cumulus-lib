@@ -1,0 +1,47 @@
+Channel Bonding Driver: v3.7.1 (April 27, 2011)
+
+Bonding Mode: IEEE 802.3ad Dynamic link aggregation
+Transmit Hash Policy: layer3+4 (1)
+MII Status: up
+MII Polling Interval (ms): 100
+Up Delay (ms): 0
+Down Delay (ms): 0
+
+802.3ad info
+LACP rate: fast
+Min links: 2
+Aggregator selection policy (ad_select): stable
+System Identification: 65535 00:02:00:22:11:33
+Active Aggregator Info:
+        Aggregator ID: 3
+        Number of ports: 1
+        Actor Key: 33
+        Partner Key: 33
+        Partner Mac Address: 00:02:00:00:00:29
+
+Slave Interface: swp1
+MII Status: up
+Speed: 10000 Mbps
+Duplex: full
+Link Failure Count: 10
+Permanent HW addr: 00:02:00:00:00:33
+Aggregator ID: 3
+Slave queue ID: 0
+
+Slave Interface: swp2
+MII Status: up
+Speed: 10000 Mbps
+Duplex: full
+Link Failure Count: 11
+Permanent HW addr: 00:02:00:00:00:36
+Aggregator ID: 3
+Slave queue ID: 0
+
+Slave Interface: swp3
+MII Status: up
+Speed: 10000 Mbps
+Duplex: full
+Link Failure Count: 12
+Permanent HW addr: 00:02:00:00:00:37
+Aggregator ID: 3
+Slave queue ID: 0

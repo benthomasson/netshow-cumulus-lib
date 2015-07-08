@@ -1,0 +1,6 @@
+tox
+setuptools==15.0
+pip>=7.0.3
+stdeb
+https://launchpad.net/python-distutils-extra/trunk/2.38/+download/python-distutils-extra-2.38.tar.gz
+wheel
