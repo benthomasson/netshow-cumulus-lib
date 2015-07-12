@@ -5,10 +5,18 @@
 # pylint: disable=W0212
 # pylint: disable=W0201
 # pylint: disable=F0401
+import netshowlib.linux.common as linux_common
 from netshowlib.cumulus import counters
 import mock
 import io
 from asserts import assert_equals
+
+
+@mock.patch('netshowlib.linux.common.exec_command')
+def test_counters_empty(mock_exec):
+    mock_exec.side_effect = linux_common.ExecCommandException
+    _output = counters.get_ethtool_output('swp1')
+    assert_equals(_output, u'')
 
 
 def test_get_physical_port_counters():
