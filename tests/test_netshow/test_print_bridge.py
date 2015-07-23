@@ -150,10 +150,12 @@ class TestPrintBridge(object):
     @mock.patch('netshowlib.linux.common.read_from_sys')
     @mock.patch('netshowlib.linux.common.exec_command')
     @mock.patch('netshowlib.linux.common.read_symlink')
-    def test_summary(self, mock_read_symlink,
+    @mock.patch('netshowlib.linux.iface.Iface.is_l3')
+    def test_summary(self, mock_is_l3, mock_read_symlink,
                      mock_exec,
                      mock_read_from_sys,
                      mock_os_listdir):
+        mock_is_l3.return_value = True
         values4 = {
             ('/sys/class/net/br1/brif',): ['swp3.1', 'swp4.1']
         }
@@ -167,9 +169,10 @@ class TestPrintBridge(object):
             'tests/test_netshowlib/mstpctl_showall').read(),
             ('/usr/sbin/lldpctl -f xml',): None}
         mock_exec.side_effect = mod_args_generator(values3)
-        assert_equals(self.piface.summary,
-                      ['tagged: swp3-4', '802.1q_tag: 1',
-                       'stp: rootswitch(32768)'])
+        self.piface.iface.ip_address.ipv4 = ['10.1.1.1/24']
+        assert_equals(self.piface.summary, ['ip: 10.1.1.1/24',
+                                            'tagged: swp3-4', '802.1q_tag: 1',
+                                            'stp: rootswitch(32768)'])
 
     @mock.patch('netshowlib.linux.common.read_from_sys')
     def test_is_vlan_aware_bridge(self, mock_read_from_sys):
