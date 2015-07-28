@@ -11,6 +11,7 @@ Usage:
     netshow interface [<iface>] [all] [--mac | -m ] [--oneline | -1 | --json | -j ]
     netshow access [all] [--mac | -m ] [--oneline | -1  | --json | -j]
     netshow bridges [all] [--mac | -m ] [--oneline | -1  | --json | -j]
+    netshow bonds [all] [--mac | -m ] [--oneline | -1  | --json | -j]
     netshow bondmems [all] [--mac | -m ] [--oneline | -1  | --json | -j]
     netshow mgmt [all] [--mac | -m ] [--oneline | -1  | --json | -j]
     netshow l2 [all] [--mac | -m ] [--oneline | -1  | --json | -j]
