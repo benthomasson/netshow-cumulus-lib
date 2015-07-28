@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-06-16 21:51+0000\n"
+"POT-Creation-Date: 2015-07-28 16:45+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -89,21 +89,21 @@ msgstr ""
 msgid "in_clag"
 msgstr ""
 
-#: ../netshow/cumulus/print_bond.py:107 ../netshow/cumulus/show_counters.py:53
+#: ../netshow/cumulus/print_bond.py:107 ../netshow/cumulus/show_counters.py:58
 msgid "port"
 msgstr ""
 
-#: ../netshow/cumulus/print_bond.py:107 ../netshow/cumulus/show_counters.py:53
+#: ../netshow/cumulus/print_bond.py:107 ../netshow/cumulus/show_counters.py:58
 msgid "speed"
 msgstr ""
 
 #: ../netshow/cumulus/print_bond.py:108 ../netshow/cumulus/print_iface.py:148
-#: ../netshow/cumulus/show_counters.py:65
+#: ../netshow/cumulus/show_counters.py:70
 msgid "tx"
 msgstr ""
 
 #: ../netshow/cumulus/print_bond.py:108 ../netshow/cumulus/print_iface.py:148
-#: ../netshow/cumulus/show_counters.py:61
+#: ../netshow/cumulus/show_counters.py:66
 msgid "rx"
 msgstr ""
 
@@ -116,63 +116,63 @@ msgid "no_bond_members_found"
 msgstr ""
 
 #: ../netshow/cumulus/print_bridge.py:42
-#: ../netshow/cumulus/print_bridge.py:135
+#: ../netshow/cumulus/print_bridge.py:136
 msgid "vlan_aware_bridge"
 msgstr ""
 
-#: ../netshow/cumulus/print_bridge.py:62
+#: ../netshow/cumulus/print_bridge.py:63
 msgid "802.1d / per vlan instance"
 msgstr ""
 
-#: ../netshow/cumulus/print_bridge.py:64
+#: ../netshow/cumulus/print_bridge.py:65
 msgid "802.1d / single instance"
 msgstr ""
 
-#: ../netshow/cumulus/print_bridge.py:66
+#: ../netshow/cumulus/print_bridge.py:67
 msgid "RSTP / per vlan instance"
 msgstr ""
 
-#: ../netshow/cumulus/print_bridge.py:68
+#: ../netshow/cumulus/print_bridge.py:69
 msgid "RSTP / single instance"
 msgstr ""
 
-#: ../netshow/cumulus/print_bridge.py:78
+#: ../netshow/cumulus/print_bridge.py:79
 msgid "root_switch"
 msgstr ""
 
-#: ../netshow/cumulus/print_bridge.py:86 ../netshow/cumulus/print_bridge.py:94
+#: ../netshow/cumulus/print_bridge.py:87 ../netshow/cumulus/print_bridge.py:95
 msgid "none"
 msgstr ""
 
-#: ../netshow/cumulus/print_bridge.py:124
+#: ../netshow/cumulus/print_bridge.py:125
 msgid "stp_mode"
 msgstr ""
 
-#: ../netshow/cumulus/print_bridge.py:125
+#: ../netshow/cumulus/print_bridge.py:126
 msgid "root_port"
 msgstr ""
 
-#: ../netshow/cumulus/print_bridge.py:126
+#: ../netshow/cumulus/print_bridge.py:127
 msgid "ports_in_designated_role"
 msgstr ""
 
-#: ../netshow/cumulus/print_bridge.py:128
+#: ../netshow/cumulus/print_bridge.py:129
 msgid "ports_in_alternate_role"
 msgstr ""
 
-#: ../netshow/cumulus/print_bridge.py:130
+#: ../netshow/cumulus/print_bridge.py:131
 msgid "root_priority"
 msgstr ""
 
-#: ../netshow/cumulus/print_bridge.py:131
+#: ../netshow/cumulus/print_bridge.py:132
 msgid "bridge_priority"
 msgstr ""
 
-#: ../netshow/cumulus/print_bridge.py:133
+#: ../netshow/cumulus/print_bridge.py:134
 msgid "last_tcn"
 msgstr ""
 
-#: ../netshow/cumulus/print_bridge.py:135
+#: ../netshow/cumulus/print_bridge.py:136
 msgid "bridge_type"
 msgstr ""
 
@@ -222,27 +222,27 @@ msgstr ""
 msgid "vlans in %s state"
 msgstr ""
 
-#: ../netshow/cumulus/show_counters.py:53
+#: ../netshow/cumulus/show_counters.py:58
 msgid "mode"
 msgstr ""
 
-#: ../netshow/cumulus/show_counters.py:54
+#: ../netshow/cumulus/show_counters.py:59
 msgid "ucast"
 msgstr ""
 
-#: ../netshow/cumulus/show_counters.py:54
+#: ../netshow/cumulus/show_counters.py:59
 msgid "mcast"
 msgstr ""
 
-#: ../netshow/cumulus/show_counters.py:54
+#: ../netshow/cumulus/show_counters.py:59
 msgid "bcast"
 msgstr ""
 
-#: ../netshow/cumulus/show_counters.py:54
+#: ../netshow/cumulus/show_counters.py:59
 msgid "errors"
 msgstr ""
 
-#: ../netshow/cumulus/show_interfaces.py:40
+#: ../netshow/cumulus/show_interfaces.py:46
 msgid "interface_does_not_exist"
 msgstr ""
 
