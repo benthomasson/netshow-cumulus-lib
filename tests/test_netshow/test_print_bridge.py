@@ -39,9 +39,11 @@ class TestPrintBridge(object):
         values = {('bridge/vlan_filtering', 'br1'): None,
                   ('bridge/stp_state', 'br1', True): '2',
                   ('carrier', 'br1', True): '1',
+                  ('operstate', 'br1', True): 'up',
                   ('address', 'br1', True): '11:22:33:44:55:66',
                   ('speed', 'br1', True): '10000',
                   ('ifalias', 'br1', True): None,
+                  ('operstate', 'br1', True): 'up',
                   ('mtu', 'br1', True): '1500'}
         mock_read_from_sys.side_effect = mod_args_generator(values)
         values4 = {
@@ -212,7 +214,8 @@ class TestPrintBridgeMember(object):
     @mock.patch('netshowlib.linux.iface.Iface.read_from_sys')
     def test_speed(self, mock_read_sys):
         values = {('speed', ): '1000',
-                  ('carrier',): '1'}
+                  ('carrier',): '1',
+                  ('operstate',): 'up'}
         self.piface.iface._asic = {'asicname': 'xe2', 'initial_speed': '10000'}
         mock_read_sys.side_effect = mod_args_generator(values)
         assert_equals(self.piface.speed, '1G(sfp)')
