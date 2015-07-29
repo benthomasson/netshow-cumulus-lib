@@ -49,9 +49,11 @@ class PrintBridge(linux_print_bridge.PrintBridge):
         """
         _info = []
         _info.append(self.ip_info())
-        _info.append(self.untagged_ifaces())
+        for _entry in self.untagged_ifaces():
+            _info.append(_entry)
         if not self.iface.vlan_filtering:
-            _info.append(self.tagged_ifaces())
+            for _entry in self.tagged_ifaces():
+                _info.append(_entry)
         _info.append(self.vlan_id_field())
         _info.append(self.stp_summary())
         _info.append(self.is_vlan_aware_bridge())

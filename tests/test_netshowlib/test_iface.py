@@ -121,17 +121,18 @@ class TestCumulusIface(object):
     @mock.patch('netshowlib.cumulus.iface.Iface.initial_speed')
     def test_speed(self, mock_initial_speed, mock_read_from_sys):
         # admin down
-        values = {('carrier',): None}
+        values = {('carrier',): None,
+                  ('operstate',): None}
         mock_read_from_sys.side_effect = mod_args_generator(values)
         mock_initial_speed.return_value = 'initial_speed'
         assert_equals(self.iface.speed, 'initial_speed')
         # carrier down, but admin up
         self.iface._speed = None
-        values = {('carrier',): '0', ('speed',): '0'}
+        values = {('operstate',): 'up', ('carrier',): '0', ('speed',): '0'}
         mock_read_from_sys.side_effect = mod_args_generator(values)
         assert_equals(self.iface.speed, '0')
         # carrier up, but admin up
         self.iface._speed = None
-        values = {('carrier',): '1', ('speed',): '1000'}
+        values = {('operstate',): 'up', ('carrier',): '1', ('speed',): '1000'}
         mock_read_from_sys.side_effect = mod_args_generator(values)
         assert_equals(self.iface.speed, '1000')

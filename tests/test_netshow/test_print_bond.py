@@ -30,7 +30,8 @@ class TestPrintBondMember(object):
     @mock.patch('netshowlib.linux.iface.Iface.read_from_sys')
     def test_speed(self, mock_read_sys):
         values = {('speed', ): '1000',
-                  ('carrier',): '1'}
+                  ('carrier',): '1',
+                  ('operstate',): 'up'}
         self.piface.iface._asic = {'asicname': 'xe2', 'initial_speed': '10000'}
         mock_read_sys.side_effect = mod_args_generator(values)
         assert_equals(self.piface.speed, '1G(sfp)')
@@ -48,6 +49,7 @@ class TestPrintBond(object):
     def test_summary_in_clag(self, mock_is_l3, mock_is_trunk,
                              mock_is_access, mock_from_sys):
         values = {('carrier',): '1',
+                  ('operstate',): 'up',
                   ('speed',): '1000',
                   ('bonding/mode',): '802.3ad 4',
                   ('bonding/slaves',): 'swp2 swp3',
@@ -85,6 +87,7 @@ class TestPrintBond(object):
         values = {
         }
         values1 = {('carrier',): '1',
+                   ('operstate',): 'up',
                    ('speed',): '1000',
                    ('bonding/mode',): '802.3ad 4',
                    ('bonding/slaves',): 'swp2 swp3',
