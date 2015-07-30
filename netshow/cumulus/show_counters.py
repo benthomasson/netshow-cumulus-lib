@@ -2,14 +2,14 @@
 """ Module for printing show counter information
 """
 import netshowlib.netshowlib as nn
-import netshowlib.linux.iface as linux_iface
 from netshow.linux.netjson_encoder import NetEncoder
 from netshow.cumulus import print_iface
 import netshowlib.cumulus.cache as cumulus_cache
 from collections import OrderedDict
 import json
 from tabulate import tabulate
-from netshow.linux.common import _
+from netshow.cumulus.common import _
+from netshow.linux.common import legend
 
 
 class ShowCounters(object):
@@ -26,6 +26,9 @@ class ShowCounters(object):
         self.ifacelist = OrderedDict()
         self.cache = cumulus_cache
         self.print_iface = print_iface
+        self.show_legend = True
+        if cl.get('--hl') or cl.get('--hide-legend'):
+            self.show_legend = False
 
     def run(self):
         """
@@ -69,4 +72,4 @@ class ShowCounters(object):
                            _tx_counters.get('multicast'),
                            _tx_counters.get('broadcast'),
                            _tx_counters.get('errors')])
-        return tabulate(_table, _header, floatfmt='.0f')
+        return tabulate(_table, _header, floatfmt='.0f') + legend(self.show_legend)
