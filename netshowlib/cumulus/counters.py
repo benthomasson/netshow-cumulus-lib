@@ -17,7 +17,7 @@ def get_ethtool_output(ifacename):
     try:
         ethtool_output = linux_common.exec_command(cmd)
     except linux_common.ExecCommandException:
-        return {}
+        return u''
     return ethtool_output
 
 

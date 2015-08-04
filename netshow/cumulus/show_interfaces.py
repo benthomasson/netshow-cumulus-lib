@@ -16,6 +16,7 @@ import netshowlib.cumulus.cache as cumulus_cache
 from netshowlib.cumulus import iface
 from netshow.linux.netjson_encoder import NetEncoder
 import json
+from netshow.linux.common import legend
 from netshow.cumulus.common import _
 
 
@@ -48,7 +49,7 @@ class ShowInterfaces(linux_showint.ShowInterfaces):
             return json.dumps(_printiface,
                               cls=NetEncoder, indent=4)
         else:
-            return _printiface.cli_output()
+            return _printiface.cli_output() + legend(self.show_legend)
 
     @property
     def ifacelist(self):

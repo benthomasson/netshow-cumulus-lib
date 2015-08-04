@@ -11,6 +11,7 @@ Usage:
     netshow interface [<iface>] [all] [--mac | -m ] [--oneline | -1 | --json | -j ]
     netshow access [all] [--mac | -m ] [--oneline | -1  | --json | -j]
     netshow bridges [all] [--mac | -m ] [--oneline | -1  | --json | -j]
+    netshow bonds [all] [--mac | -m ] [--oneline | -1  | --json | -j]
     netshow bondmems [all] [--mac | -m ] [--oneline | -1  | --json | -j]
     netshow mgmt [all] [--mac | -m ] [--oneline | -1  | --json | -j]
     netshow l2 [all] [--mac | -m ] [--oneline | -1  | --json | -j]
@@ -89,7 +90,7 @@ def run():
         elif _nd.get('counters'):
             _showcounters = ShowCounters(_nd)
             print(_showcounters.run())
-        elif _nd.get('--version') or _nd.get('-v'):
+        elif _nd.get('--version') or _nd.get('-V'):
             print(print_version())
         else:
             print(__doc__)

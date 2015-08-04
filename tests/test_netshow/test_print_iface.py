@@ -58,7 +58,7 @@ class TestPrintIface(object):
 
     @mock.patch('netshowlib.linux.iface.Iface.read_from_sys')
     def test_speed(self, mock_read_from_sys):
-        values = {('speed',): '2000', ('carrier',): '1'}
+        values = {('speed',): '2000', ('operstate',): 'up', ('carrier',): '1'}
         mock_read_from_sys.side_effect = mod_args_generator(values)
         self.piface.iface._name = 'swp2s0'
         assert_equals(self.piface.speed, '2G(4x10g)')
