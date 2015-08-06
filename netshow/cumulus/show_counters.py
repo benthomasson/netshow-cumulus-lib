@@ -9,7 +9,7 @@ from collections import OrderedDict
 import json
 from tabulate import tabulate
 from netshow.cumulus.common import _
-from netshow.linux.common import legend
+from netshow.linux.common import legend_wrapped_cli_output
 
 
 class ShowCounters(object):
@@ -26,9 +26,9 @@ class ShowCounters(object):
         self.ifacelist = OrderedDict()
         self.cache = cumulus_cache
         self.print_iface = print_iface
-        self.show_legend = True
-        if cl.get('--hl') or cl.get('--hide-legend'):
-            self.show_legend = False
+        self.show_legend = False
+        if cl.get('-l') or cl.get('--legend'):
+            self.show_legend = True
 
     def run(self):
         """
@@ -72,4 +72,5 @@ class ShowCounters(object):
                            _tx_counters.get('multicast'),
                            _tx_counters.get('broadcast'),
                            _tx_counters.get('errors')])
-        return tabulate(_table, _header, floatfmt='.0f') + legend(self.show_legend)
+        return legend_wrapped_cli_output(tabulate(_table, _header,
+          floatfmt='.0f'))
