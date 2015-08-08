@@ -173,7 +173,7 @@ class TestPrintBridge(object):
         mock_exec.side_effect = mod_args_generator(values3)
         self.piface.iface.ip_address.ipv4 = ['10.1.1.1/24']
         assert_equals(self.piface.summary, ['ip: 10.1.1.1/24',
-                                            'tagged: swp3-4', '802.1q_tag: 1',
+                                            'tagged_members: swp3-4', '802.1q_tag: 1',
                                             'stp: rootswitch(32768)'])
 
     @mock.patch('netshowlib.linux.common.read_from_sys')
@@ -281,22 +281,20 @@ class TestPrintBridgeMember(object):
         self.piface.iface._name = 'swp3'
         _output = self.piface.bridgemem_details()
         _outputtable = _output.split('\n')
-        assert_equals(_outputtable[0], 'untagged vlans')
+        assert_equals(_outputtable[0], 'vlans in Root state')
         assert_equals(_outputtable[2], 'br0')
-        assert_equals(_outputtable[4], 'vlans in Root state')
-        assert_equals(_outputtable[6], 'br0')
-        assert_equals(_outputtable[8], 'vlans in Designated state')
-        assert_equals(_outputtable[10], '1')
-        assert_equals(_outputtable[12], 'vlans in Forwarding state')
-        assert_equals(_outputtable[14], 'br0, 1')
-        assert_equals(_outputtable[16], 'vlans in Discarding state')
-        assert_equals(_outputtable[18], '2')
-        assert_equals(_outputtable[20], 'vlans in Oper Edge Port state')
-        assert_equals(_outputtable[22], '1')
-        assert_equals(_outputtable[24], 'vlans in Network Port state')
-        assert_equals(_outputtable[26], 'br0')
-        assert_equals(_outputtable[28], 'vlans in Backup state')
-        assert_equals(_outputtable[30], '2')
+        assert_equals(_outputtable[4], 'vlans in Designated state')
+        assert_equals(_outputtable[6], 'br1(1)')
+        assert_equals(_outputtable[8], 'vlans in Forwarding state')
+        assert_equals(_outputtable[10], 'br0, br1(1)')
+        assert_equals(_outputtable[12], 'vlans in Discarding state')
+        assert_equals(_outputtable[14], 'br2(2)')
+        assert_equals(_outputtable[16], 'vlans in Oper Edge Port state')
+        assert_equals(_outputtable[18], 'br1(1)')
+        assert_equals(_outputtable[20], 'vlans in Network Port state')
+        assert_equals(_outputtable[22], 'br0')
+        assert_equals(_outputtable[24], 'vlans in Backup state')
+        assert_equals(_outputtable[26], 'br2(2)')
 
     def test_port_category(self):
         # call the linux bridge member port_category function
