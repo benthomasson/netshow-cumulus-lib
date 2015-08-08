@@ -162,13 +162,12 @@ class PrintIface(linux_printiface.PrintIface):
             return None
         # check if port is in STP
         _str = ''
-        if self.iface.vlan_filtering:
-            _vlanlist = self.iface.vlan_list
         _stpstate = self.iface.stp.state
         # get the list of states by grabbing all the keys
         if self.iface.vlan_filtering:
+            _vlanlist = self.iface.vlan_list
             _header = [_("all vlans on l2 port")]
-            _table = [[', '.join(linux_common.create_range('', self.iface.vlan_list))]]
+            _table = [[', '.join(linux_common.create_range('', _vlanlist))]]
             _str += tabulate(_table, _header, numalign='left') + self.new_line()
             _header = [_("untagged vlans")]
             _table = [[', '.join(self.iface.native_vlan)]]
