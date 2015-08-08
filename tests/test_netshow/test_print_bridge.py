@@ -281,7 +281,7 @@ class TestPrintBridgeMember(object):
         self.piface.iface._name = 'swp3'
         _output = self.piface.bridgemem_details()
         _outputtable = _output.split('\n')
-        assert_equals(_outputtable[0], 'untagged vlans')
+        assert_equals(_outputtable[0], 'vlans in Root state')
         assert_equals(_outputtable[2], 'br0')
         assert_equals(_outputtable[4], 'vlans in Root state')
         assert_equals(_outputtable[6], 'br0')

@@ -9,88 +9,6 @@ from netshowlib.cumulus import mstpd
 from collections import OrderedDict
 
 
-class MstpctlStpBridgeMember(object):
-    """
-    class responsible for managing stp info gathered from mstpctl
-    """
-    def __init__(self, bridgemem, cache=None):
-        self.bridgemem = bridgemem
-        self._cache = None
-        self.orig_cache = cache
-        self._initialize_state()
-        self.mstpd = mstpd
-
-    def _initialize_state(self):
-        """ initialize state attribute that keeps interesting
-        info about a bridge port
-        """
-        self._state = OrderedDict([
-            ('root', []),
-            ('designated', []),
-            ('forwarding', []),
-            ('alternate', []),
-            ('discarding', []),
-            ('oper_edge_port', []),
-            ('network_port', []),
-            ('backup', []),
-            ('disabled', [])])
-
-    @property
-    def state(self):
-        """
-        parse through mstpctl output
-        :return:  state hash with interesting info about the port
-        :return: None if STP is not running the port.
-        """
-
-        if self.orig_cache:
-            self._cache = self.orig_cache.mstpd.get('iface').get(self.bridgemem.name)
-        else:
-            self._cache = self.mstpd.cacheinfo().get('iface').get(self.bridgemem.name)
-        # if STP is not enabled on the interface, return state as None
-        # sub interfaces
-        _allbridges = set(self.bridgemem.bridge_masters.keys())
-        if self._cache:
-            _allstpbridges = set(self._cache.keys())
-        else:
-            _allstpbridges = set([])
-        # list bridges in disabled mode
-        for _disabled_bridge in _allbridges.difference(_allstpbridges):
-            _bridge = linux_bridge.BRIDGE_CACHE.get(_disabled_bridge)
-            if not _bridge:
-                _bridge = Bridge(_disabled_bridge, self.orig_cache)
-                linux_bridge.BRIDGE_CACHE[_disabled_bridge] = _bridge
-            self._state['disabled'].append(_bridge)
-
-        if not self._cache:
-            return self._state
-        self._initialize_state()
-        for _bridgename, _stpinfo in self._cache.items():
-            _bridge = linux_bridge.BRIDGE_CACHE.get(_bridgename)
-            if not _bridge:
-                _bridge = Bridge(_bridgename, self.orig_cache)
-                linux_bridge.BRIDGE_CACHE[_bridgename] = _bridge
-            if _stpinfo.get('role') == 'root':
-                self._state['root'].append(_bridge)
-            elif _stpinfo.get('role') == 'designated':
-                self._state['designated'].append(_bridge)
-            elif _stpinfo.get('role') == 'alternate':
-                self._state['alternate'].append(_bridge)
-            elif _stpinfo.get('role') == 'backup':
-                self._state['backup'].append(_bridge)
-
-            if _stpinfo.get('state') == 'forwarding':
-                self._state['forwarding'].append(_bridge)
-            elif _stpinfo.get('state') == 'discarding':
-                self._state['discarding'].append(_bridge)
-
-            if _stpinfo.get('oper_edge_port') == 'yes':
-                self._state['oper_edge_port'].append(_bridge)
-            elif _stpinfo.get('network_port') == 'yes':
-                self._state['network_port'].append(_bridge)
-
-        return self._state
-
 
 class MstpctlStpBridge(object):
     """
@@ -303,3 +221,88 @@ class Bridge(linux_bridge.Bridge):
         """
         self._get_members(BridgeMember)
         return self._members
+
+class MstpctlStpBridgeMember(object):
+    """
+    class responsible for managing stp info gathered from mstpctl
+    """
+    def __init__(self, bridgemem, cache=None):
+        self.bridgemem = bridgemem
+        self._cache = None
+        self.orig_cache = cache
+        self._initialize_state()
+        self.mstpd = mstpd
+        self.bridge_class = Bridge
+
+    def _initialize_state(self):
+        """ initialize state attribute that keeps interesting
+        info about a bridge port
+        """
+        self._state = OrderedDict([
+            ('root', []),
+            ('designated', []),
+            ('forwarding', []),
+            ('alternate', []),
+            ('discarding', []),
+            ('oper_edge_port', []),
+            ('network_port', []),
+            ('backup', []),
+            ('disabled', [])])
+
+    @property
+    def state(self):
+        """
+        parse through mstpctl output
+        :return:  state hash with interesting info about the port
+        :return: None if STP is not running the port.
+        """
+
+        if self.orig_cache:
+            self._cache = self.orig_cache.mstpd.get('iface').get(self.bridgemem.name)
+        else:
+            self._cache = self.mstpd.cacheinfo().get('iface').get(self.bridgemem.name)
+        # if STP is not enabled on the interface, return state as None
+        # sub interfaces
+        _allbridges = set(self.bridgemem.bridge_masters.keys())
+        if self._cache:
+            _allstpbridges = set(self._cache.keys())
+        else:
+            _allstpbridges = set([])
+        # list bridges in disabled mode
+        for _disabled_bridge in _allbridges.difference(_allstpbridges):
+            _bridge = linux_bridge.BRIDGE_CACHE.get(_disabled_bridge)
+            if not _bridge:
+                _bridge = self.bridge_class(_disabled_bridge, self.orig_cache)
+                linux_bridge.BRIDGE_CACHE[_disabled_bridge] = _bridge
+            self._state['disabled'].append(_bridge)
+
+        if not self._cache:
+            return self._state
+        self._initialize_state()
+        for _bridgename, _stpinfo in self._cache.items():
+            _bridge = linux_bridge.BRIDGE_CACHE.get(_bridgename)
+            if not _bridge:
+                _bridge = self.bridge_class(_bridgename, self.orig_cache)
+                linux_bridge.BRIDGE_CACHE[_bridgename] = _bridge
+            if _stpinfo.get('role') == 'root':
+                self._state['root'].append(_bridge)
+            elif _stpinfo.get('role') == 'designated':
+                self._state['designated'].append(_bridge)
+            elif _stpinfo.get('role') == 'alternate':
+                self._state['alternate'].append(_bridge)
+            elif _stpinfo.get('role') == 'backup':
+                self._state['backup'].append(_bridge)
+
+            if _stpinfo.get('state') == 'forwarding':
+                self._state['forwarding'].append(_bridge)
+            elif _stpinfo.get('state') == 'discarding':
+                self._state['discarding'].append(_bridge)
+
+            if _stpinfo.get('oper_edge_port') == 'yes':
+                self._state['oper_edge_port'].append(_bridge)
+            elif _stpinfo.get('network_port') == 'yes':
+                self._state['network_port'].append(_bridge)
+
+        return self._state
+
+
