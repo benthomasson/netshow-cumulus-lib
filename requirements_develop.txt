@@ -1,3 +1,4 @@
+gitversion
 tox
 setuptools==15.0
 pip>=7.0.3
