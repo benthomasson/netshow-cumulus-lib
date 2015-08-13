@@ -2,17 +2,23 @@
 # if installing this package from git, make sure to include 'gitversion'
 # in requirements.txt
 from gitversion import rewritable_git_version
+import io
 import os
-import shutil
 try:
     import ez_setup
     ez_setup.use_setuptools()
 except ImportError:
     pass
-from distutils.command.install_data import install_data
 from distutils.command.build import build
-from distutils import log
 from setuptools import setup, find_packages
+
+
+def read_contents(fname='README'):
+    """read contents of readme into setup.py long_description field
+    """
+    return io.open(os.path.join(os.path.dirname(__file__),
+                                fname), encoding="utf-8").read()
+
 
 class BuildWithI18n(build):
     sub_commands = build.sub_commands + [('build_i18n', None)]
@@ -24,7 +30,8 @@ class BuildWithI18n(build):
 setup(
     name='netshow-cumulus-lib',
     version=rewritable_git_version(__file__),
-    description="Cumulus Linux Provider for Netshow - Linux Network Abstraction Library",
+    description="Cumulus Linux Provider for Netshow - Network Abstraction and Aggregation Software",
+    long_description=read_contents(),
     url='http://github.com/CumulusNetworks/netshow-cumulus-lib',
     author='Cumulus Networks',
     author_email='ce-ceng@cumulusnetworks.com',
