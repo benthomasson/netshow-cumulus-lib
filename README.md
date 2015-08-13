@@ -1,6 +1,6 @@
 # netshow-cumulus
 
-Netshow-cumulus is a Provider for Netshow, a Network Abstraction Software. It is optimized to collect core networking data from Cumulus Linux devices.
+Netshow-cumulus is a Provider for [Netshow, Network Abstraction and Aggregation Software]('http://github.com/CumulusNetworks/netshow-core'). It is optimized to collect core networking data from Cumulus Linux devices.
 
 Netshow-cumulus has 2 main modules.
 
