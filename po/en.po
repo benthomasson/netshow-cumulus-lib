@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: netshow-cumulus-lib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-07-28 16:44+0000\n"
+"POT-Creation-Date: 2015-08-18 06:02+0000\n"
 "PO-Revision-Date: 2015-06-07 07:12-0500\n"
 "Last-Translator: stanley karunditu <stanleyk@cumulusnetworks.com>\n"
 "Language-Team: English\n"
@@ -90,21 +90,21 @@ msgstr "Not Support"
 msgid "in_clag"
 msgstr "InCLAG"
 
-#: ../netshow/cumulus/print_bond.py:107 ../netshow/cumulus/show_counters.py:60
+#: ../netshow/cumulus/print_bond.py:107 ../netshow/cumulus/show_counters.py:58
 msgid "port"
 msgstr "Port"
 
-#: ../netshow/cumulus/print_bond.py:107 ../netshow/cumulus/show_counters.py:60
+#: ../netshow/cumulus/print_bond.py:107 ../netshow/cumulus/show_counters.py:58
 msgid "speed"
 msgstr "Speed"
 
 #: ../netshow/cumulus/print_bond.py:108 ../netshow/cumulus/print_iface.py:148
-#: ../netshow/cumulus/show_counters.py:72
+#: ../netshow/cumulus/show_counters.py:70
 msgid "tx"
 msgstr "TX"
 
 #: ../netshow/cumulus/print_bond.py:108 ../netshow/cumulus/print_iface.py:148
-#: ../netshow/cumulus/show_counters.py:68
+#: ../netshow/cumulus/show_counters.py:66
 msgid "rx"
 msgstr "RX"
 
@@ -117,63 +117,63 @@ msgid "no_bond_members_found"
 msgstr "No Bond Member Found"
 
 #: ../netshow/cumulus/print_bridge.py:42
-#: ../netshow/cumulus/print_bridge.py:136
+#: ../netshow/cumulus/print_bridge.py:138
 msgid "vlan_aware_bridge"
 msgstr "Vlan Aware Bridge"
 
-#: ../netshow/cumulus/print_bridge.py:63
+#: ../netshow/cumulus/print_bridge.py:65
 msgid "802.1d / per vlan instance"
 msgstr "802.1d / Per Vlan Instance"
 
-#: ../netshow/cumulus/print_bridge.py:65
+#: ../netshow/cumulus/print_bridge.py:67
 msgid "802.1d / single instance"
 msgstr "802.1d/ Per Vlan Instance"
 
-#: ../netshow/cumulus/print_bridge.py:67
+#: ../netshow/cumulus/print_bridge.py:69
 msgid "RSTP / per vlan instance"
 msgstr "RSTP / Per Vlan Instance"
 
-#: ../netshow/cumulus/print_bridge.py:69
+#: ../netshow/cumulus/print_bridge.py:71
 msgid "RSTP / single instance"
 msgstr "RSTP / Single Instance"
 
-#: ../netshow/cumulus/print_bridge.py:79
+#: ../netshow/cumulus/print_bridge.py:81
 msgid "root_switch"
 msgstr "RootSwitch"
 
-#: ../netshow/cumulus/print_bridge.py:87 ../netshow/cumulus/print_bridge.py:95
+#: ../netshow/cumulus/print_bridge.py:89 ../netshow/cumulus/print_bridge.py:97
 msgid "none"
 msgstr "None"
 
-#: ../netshow/cumulus/print_bridge.py:125
+#: ../netshow/cumulus/print_bridge.py:127
 msgid "stp_mode"
 msgstr "STP Mode"
 
-#: ../netshow/cumulus/print_bridge.py:126
+#: ../netshow/cumulus/print_bridge.py:128
 msgid "root_port"
 msgstr "Root Port"
 
-#: ../netshow/cumulus/print_bridge.py:127
+#: ../netshow/cumulus/print_bridge.py:129
 msgid "ports_in_designated_role"
 msgstr "Ports in Designated Role"
 
-#: ../netshow/cumulus/print_bridge.py:129
+#: ../netshow/cumulus/print_bridge.py:131
 msgid "ports_in_alternate_role"
 msgstr "Ports in Alternate Role"
 
-#: ../netshow/cumulus/print_bridge.py:131
+#: ../netshow/cumulus/print_bridge.py:133
 msgid "root_priority"
 msgstr "Root Priority"
 
-#: ../netshow/cumulus/print_bridge.py:132
+#: ../netshow/cumulus/print_bridge.py:134
 msgid "bridge_priority"
 msgstr "Bridge Priority"
 
-#: ../netshow/cumulus/print_bridge.py:134
+#: ../netshow/cumulus/print_bridge.py:136
 msgid "last_tcn"
 msgstr "Last TCN"
 
-#: ../netshow/cumulus/print_bridge.py:136
+#: ../netshow/cumulus/print_bridge.py:138
 msgid "bridge_type"
 msgstr "Bridge Type"
 
@@ -213,33 +213,36 @@ msgstr "SVI/L3"
 msgid "counters"
 msgstr "Counters"
 
-#. get the list of states by grabbing all the keys
 #: ../netshow/cumulus/print_iface.py:169
+msgid "all vlans on l2 port"
+msgstr "Vlan List"
+
+#: ../netshow/cumulus/print_iface.py:172
 msgid "untagged vlans"
 msgstr "Untagged Vlans"
 
-#: ../netshow/cumulus/print_iface.py:174
+#: ../netshow/cumulus/print_iface.py:177
 #, python-format
 msgid "vlans in %s state"
 msgstr "Vlans In %s State"
 
-#: ../netshow/cumulus/show_counters.py:60
+#: ../netshow/cumulus/show_counters.py:58
 msgid "mode"
 msgstr "Mode"
 
-#: ../netshow/cumulus/show_counters.py:61
+#: ../netshow/cumulus/show_counters.py:59
 msgid "ucast"
 msgstr "Ucast"
 
-#: ../netshow/cumulus/show_counters.py:61
+#: ../netshow/cumulus/show_counters.py:59
 msgid "mcast"
 msgstr "Mcast"
 
-#: ../netshow/cumulus/show_counters.py:61
+#: ../netshow/cumulus/show_counters.py:59
 msgid "bcast"
 msgstr "Bcast"
 
-#: ../netshow/cumulus/show_counters.py:61
+#: ../netshow/cumulus/show_counters.py:59
 msgid "errors"
 msgstr "Errors"
 

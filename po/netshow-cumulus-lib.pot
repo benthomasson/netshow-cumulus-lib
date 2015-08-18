@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-07-28 16:45+0000\n"
+"POT-Creation-Date: 2015-08-18 06:02+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -116,63 +116,63 @@ msgid "no_bond_members_found"
 msgstr ""
 
 #: ../netshow/cumulus/print_bridge.py:42
-#: ../netshow/cumulus/print_bridge.py:136
+#: ../netshow/cumulus/print_bridge.py:138
 msgid "vlan_aware_bridge"
 msgstr ""
 
-#: ../netshow/cumulus/print_bridge.py:63
+#: ../netshow/cumulus/print_bridge.py:65
 msgid "802.1d / per vlan instance"
 msgstr ""
 
-#: ../netshow/cumulus/print_bridge.py:65
+#: ../netshow/cumulus/print_bridge.py:67
 msgid "802.1d / single instance"
 msgstr ""
 
-#: ../netshow/cumulus/print_bridge.py:67
+#: ../netshow/cumulus/print_bridge.py:69
 msgid "RSTP / per vlan instance"
 msgstr ""
 
-#: ../netshow/cumulus/print_bridge.py:69
+#: ../netshow/cumulus/print_bridge.py:71
 msgid "RSTP / single instance"
 msgstr ""
 
-#: ../netshow/cumulus/print_bridge.py:79
+#: ../netshow/cumulus/print_bridge.py:81
 msgid "root_switch"
 msgstr ""
 
-#: ../netshow/cumulus/print_bridge.py:87 ../netshow/cumulus/print_bridge.py:95
+#: ../netshow/cumulus/print_bridge.py:89 ../netshow/cumulus/print_bridge.py:97
 msgid "none"
 msgstr ""
 
-#: ../netshow/cumulus/print_bridge.py:125
+#: ../netshow/cumulus/print_bridge.py:127
 msgid "stp_mode"
 msgstr ""
 
-#: ../netshow/cumulus/print_bridge.py:126
+#: ../netshow/cumulus/print_bridge.py:128
 msgid "root_port"
 msgstr ""
 
-#: ../netshow/cumulus/print_bridge.py:127
+#: ../netshow/cumulus/print_bridge.py:129
 msgid "ports_in_designated_role"
 msgstr ""
 
-#: ../netshow/cumulus/print_bridge.py:129
+#: ../netshow/cumulus/print_bridge.py:131
 msgid "ports_in_alternate_role"
 msgstr ""
 
-#: ../netshow/cumulus/print_bridge.py:131
+#: ../netshow/cumulus/print_bridge.py:133
 msgid "root_priority"
 msgstr ""
 
-#: ../netshow/cumulus/print_bridge.py:132
+#: ../netshow/cumulus/print_bridge.py:134
 msgid "bridge_priority"
 msgstr ""
 
-#: ../netshow/cumulus/print_bridge.py:134
+#: ../netshow/cumulus/print_bridge.py:136
 msgid "last_tcn"
 msgstr ""
 
-#: ../netshow/cumulus/print_bridge.py:136
+#: ../netshow/cumulus/print_bridge.py:138
 msgid "bridge_type"
 msgstr ""
 
@@ -212,12 +212,15 @@ msgstr ""
 msgid "counters"
 msgstr ""
 
-#. get the list of states by grabbing all the keys
 #: ../netshow/cumulus/print_iface.py:169
+msgid "all vlans on l2 port"
+msgstr ""
+
+#: ../netshow/cumulus/print_iface.py:172
 msgid "untagged vlans"
 msgstr ""
 
-#: ../netshow/cumulus/print_iface.py:174
+#: ../netshow/cumulus/print_iface.py:177
 #, python-format
 msgid "vlans in %s state"
 msgstr ""
