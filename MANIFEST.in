@@ -2,3 +2,4 @@ graft data/provider
 graft po
 include ez_setup.py
 include LICENSE
+include version.py

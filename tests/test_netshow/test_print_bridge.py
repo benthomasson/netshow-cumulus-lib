@@ -173,7 +173,7 @@ class TestPrintBridge(object):
         mock_exec.side_effect = mod_args_generator(values3)
         self.piface.iface.ip_address.ipv4 = ['10.1.1.1/24']
         assert_equals(self.piface.summary, ['ip: 10.1.1.1/24',
-                                            'tagged_members: swp3-4', '802.1q_tag: 1',
+                                            'tagged_members: swp3-4.1', '802.1q_tag: 1',
                                             'stp: rootswitch(32768)'])
 
     @mock.patch('netshowlib.linux.common.read_from_sys')

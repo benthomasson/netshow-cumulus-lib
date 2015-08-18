@@ -1,7 +1,7 @@
 # pylint: disable=c0111
 # if installing this package from git, make sure to include 'gitversion'
 # in requirements.txt
-from gitversion import rewritable_git_version
+from version import __VERSION__
 import os
 import shutil
 try:
@@ -23,7 +23,7 @@ class BuildWithI18n(build):
 
 setup(
     name='netshow-cumulus-lib',
-    version=rewritable_git_version(__file__),
+    version=__VERSION__,
     description="Cumulus Linux Provider for Netshow - Linux Network Abstraction Library",
     url='http://github.com/CumulusNetworks/netshow-cumulus-lib',
     author='Cumulus Networks',

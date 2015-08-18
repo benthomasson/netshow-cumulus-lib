@@ -104,7 +104,7 @@ class MstpdInfo(object):
         initialize the iface portion of the bridgehash attribute.
         """
         if len(line.split()[0].split(':')) == 2:
-            self.iface = line.split()[0].split(':')[1].split('.')[0]
+            self.iface = line.split()[0].split(':')[1]
             self.is_bridge_info = False
             self.bridge_loc = None
             return True

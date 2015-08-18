@@ -182,9 +182,3 @@ class TestCumulusBridge(object):
         assert_equals(self.alternate, ['swp4'])
         assert_equals(self.discarding, ['swp4'])
         assert_equals(self.forwarding, ['swp3'])
-
-    @mock.patch('netshowlib.linux.common.os.listdir')
-    def test_members(self, mock_listdir):
-        mock_listdir.return_value = ['swp10.22', 'swp5', 'swp2s0.22']
-        assert_equals(sorted(self.iface.members),
-                      ['swp10', 'swp2s0', 'swp5'])
