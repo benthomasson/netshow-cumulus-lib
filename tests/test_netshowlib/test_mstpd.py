@@ -24,7 +24,9 @@ def test_cacheinfo(mock_exec):
                   '8.000.00:02:00:00:00:0f')
     # test getting data from iface structure
     assert_equals(sorted(_output['iface'].get('swp4').keys()),
-                  ['br0', 'br1', 'br2'])
+                  ['br0'])
+    assert_equals(sorted(_output['iface'].get('swp4.1').keys()),
+                  ['br1'])
     assert_equals(_output['iface'].get('swp3').get('br0').get('auto_edge_port'),
                   'yes')
 

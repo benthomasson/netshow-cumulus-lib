@@ -120,7 +120,7 @@ class MstpdInfo(object):
                 self.bridge_loc = self.bridgehash['bridge'][self.bridgename]['ifaces'][self.iface]
                 if not self.bridgehash.get('iface').get(self.iface):
                     self.bridgehash['iface'][self.iface] = {}
-                master_iface = self.iface.split('.')[0]
+                master_iface = self.iface
                 self.bridgehash['iface'][master_iface][self.bridgename] = self.bridge_loc
             else:
                 self.bridge_loc = self.bridgehash['bridge'].get(self.bridgename)
