@@ -12,9 +12,10 @@ from nose.tools import set_trace
 import io
 
 @mock.patch('netshowlib.cumulus.mstpd.linux_common.exec_command')
-def test_cacheinfo(mock_exec):
+def test_cacheinfo_classic_bridge(mock_exec):
     mock_exec.return_value = io.open('tests/test_netshowlib/mstpctl_showall').read()
     _output = mstpd.cacheinfo()
+    assert_equals(_output.get('bridge').get('br0').get('bridge_id'),  '8.000.00:02:00:00:00:0f')
     assert_equals(sorted(_output.get('bridge').keys()), ['br0', 'br1', 'br2'])
     assert_equals(sorted(_output.get('bridge').get('br0').get('ifaces').keys()),
                   ['swp3', 'swp4'])
@@ -32,6 +33,19 @@ def test_cacheinfo(mock_exec):
 
     # test getting force_protocol_version data
     assert_equals(_output.get('bridge').get('br0').get('force_protocol_version'), 'rstp')
+
+@mock.patch('netshowlib.cumulus.mstpd.linux_common.exec_command')
+def test_cacheinfo_classic_bridge(mock_exec):
+    mock_exec.return_value = io.open('tests/test_netshowlib/mstpctl_showall_vlanaware').read()
+    _output = mstpd.cacheinfo()
+    assert_equals(_output.get('bridge').get('bridge').get('bridge_id'), '8.000.44:38:39:ff:aa:11')
+
+
+@mock.patch('netshowlib.cumulus.mstpd.linux_common.exec_command')
+def test_cacheinfo_vlan_aware(mock_exec):
+    mock_exec.return_value = io.open('tests/test_netshowlib/mstpctl_showall').read()
+    _output = mstpd.cacheinfo()
+    assert_equals(_output.get('bridge').get('br0').get('bridge_id'),  '8.000.00:02:00:00:00:0f')
 
 @mock.patch('netshowlib.cumulus.mstpd.linux_common.exec_command')
 def test_cacheinfo_no_stp(mock_exec):

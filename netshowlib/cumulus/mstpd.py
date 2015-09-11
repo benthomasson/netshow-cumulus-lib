@@ -90,7 +90,8 @@ class MstpdInfo(object):
         """
         initialize bridge and bridge->ifaces section of the bridgehash attribute.
         """
-        if line.split()[0] == self.bridgename:
+        split_line = line.split()
+        if split_line[0] == self.bridgename and not split_line[1] == 'id':
             self.bridgehash['bridge'][self.bridgename] = {}
             self.bridgehash['bridge'][self.bridgename]['ifaces'] = {}
             self.is_bridge_info = True

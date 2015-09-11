@@ -1,0 +1,685 @@
+
+BRIDGE: bridge, Br_index: 137
+bridge CIST info
+  enabled         yes
+  bridge id       8.000.44:38:39:FF:AA:11
+  designated root 8.000.44:38:39:FF:AA:11
+  regional root   8.000.44:38:39:FF:AA:11
+  root port       none
+  path cost     0          internal path cost   0
+  max age       20         bridge max age       20
+  forward delay 15         bridge forward delay 15
+  tx hold count 6          max hops             20
+  hello time    2          ageing time          300
+  force protocol version     rstp
+  time since topology change 1563705s
+  topology change count      0
+  topology change            no
+  topology change port       None
+  last topology change port  None
+  migrate_time: 3, uptime: 1563706, PRSSM_state: role_selection
+  if_index: 137, name: bridge, up: yes, vlan_filter: yes
+bridge:host49s0 CIST info
+  enabled            no                      role                 Disabled
+  port id            8.004                   state                discarding
+  external port cost 200000000               admin external cost  0
+  internal port cost 200000000               admin internal cost  0
+  designated root    8.000.44:38:39:FF:AA:11 dsgn external cost   0
+  dsgn regional root 8.000.44:38:39:FF:AA:11 dsgn internal cost   0
+  designated bridge  8.000.44:38:39:FF:AA:11 designated port      0.000
+  admin edge port    yes                     auto edge port       yes
+  oper edge port     yes                     topology change ack  no
+  point-to-point     no                      admin point-to-point auto
+  restricted role    no                      restricted TCN       no
+  port hello time    2                       disputed             no
+  bpdu guard port    yes                     bpdu guard error     no
+  network port       no                      BA inconsistent      no
+  Num TX BPDU        0                       Num TX TCN           0
+  Num RX BPDU        0                       Num RX TCN           0
+  Num Transition FWD 0                       Num Transition BLK   1
+  bpdufilter port    no                     
+  clag ISL           no                      clag ISL Oper UP     no
+  clag role          primary                 clag dual conn mac   0:0:0:0:0:0
+  clag remote portID F.FFF                   clag system mac      44:38:39:ff:aa:11
+  agree: no, agreed: no, forward: no, forwarding: no
+  learn: no, learning: no, proposed: no, proposing: no
+  rcvdMsg: no, rcvdTc: no, reRoot: no, reselect: no
+  selected: yes, fdbFlush: no, tcProp: no, updtInfo: no
+  sync: no, synced: yes, master: no, mastered: no brAssuRcvdInfoWhile: 0s
+  calledFromFlushRoutine: no, infoInternal: no, rcvdTcAck: no
+  rcvdInternal: no, mcheck: no, rcvdBpdu: no, rcvdSTP: no, rcvdRSTP: no
+  rcvdTcn: no, sendRSTP: yes, newInfo: yes, newInfoMsti: yes, up: no
+  fdWhile: 20s, rrWhile: 0s, rbWhile: 0, tcwhile: 0s, rcvdInfoWhile: 0s
+  rcvdInfo: OtherInfo, infoIs: ioDisabled, selectedRole: Disabled
+  edgeDelayWhile: 3s, txCount: 0, rapidAgeingWhile: 0s, speed: 0, duplex: 0
+  Port Info SM: disabled, Port Role Transitition SM: disabled_port
+  Port State Transition SM: discarding, Topo Change SM: inactive
+  Port Receive SM: discard, Port Transmit SM: transmit_init
+  Port Protocol Migration SM: checking_rstp, Bridge Detection SM: edge
+  if_index: 123, name: host49s0, mdelayWhile: 3s, helloWhen: 0s, vlan_bond: 
+
+bridge:host49s1 CIST info
+  enabled            no                      role                 Disabled
+  port id            8.003                   state                discarding
+  external port cost 200000000               admin external cost  0
+  internal port cost 200000000               admin internal cost  0
+  designated root    8.000.44:38:39:FF:AA:11 dsgn external cost   0
+  dsgn regional root 8.000.44:38:39:FF:AA:11 dsgn internal cost   0
+  designated bridge  8.000.44:38:39:FF:AA:11 designated port      0.000
+  admin edge port    yes                     auto edge port       yes
+  oper edge port     yes                     topology change ack  no
+  point-to-point     no                      admin point-to-point auto
+  restricted role    no                      restricted TCN       no
+  port hello time    2                       disputed             no
+  bpdu guard port    yes                     bpdu guard error     no
+  network port       no                      BA inconsistent      no
+  Num TX BPDU        0                       Num TX TCN           0
+  Num RX BPDU        0                       Num RX TCN           0
+  Num Transition FWD 0                       Num Transition BLK   1
+  bpdufilter port    no                     
+  clag ISL           no                      clag ISL Oper UP     no
+  clag role          primary                 clag dual conn mac   0:0:0:0:0:0
+  clag remote portID F.FFF                   clag system mac      44:38:39:ff:aa:11
+  agree: no, agreed: no, forward: no, forwarding: no
+  learn: no, learning: no, proposed: no, proposing: no
+  rcvdMsg: no, rcvdTc: no, reRoot: no, reselect: no
+  selected: yes, fdbFlush: no, tcProp: no, updtInfo: no
+  sync: no, synced: yes, master: no, mastered: no brAssuRcvdInfoWhile: 0s
+  calledFromFlushRoutine: no, infoInternal: no, rcvdTcAck: no
+  rcvdInternal: no, mcheck: no, rcvdBpdu: no, rcvdSTP: no, rcvdRSTP: no
+  rcvdTcn: no, sendRSTP: yes, newInfo: yes, newInfoMsti: yes, up: no
+  fdWhile: 20s, rrWhile: 0s, rbWhile: 0, tcwhile: 0s, rcvdInfoWhile: 0s
+  rcvdInfo: OtherInfo, infoIs: ioDisabled, selectedRole: Disabled
+  edgeDelayWhile: 3s, txCount: 0, rapidAgeingWhile: 0s, speed: 0, duplex: 0
+  Port Info SM: disabled, Port Role Transitition SM: disabled_port
+  Port State Transition SM: discarding, Topo Change SM: inactive
+  Port Receive SM: discard, Port Transmit SM: transmit_init
+  Port Protocol Migration SM: checking_rstp, Bridge Detection SM: edge
+  if_index: 122, name: host49s1, mdelayWhile: 3s, helloWhen: 0s, vlan_bond: 
+
+bridge:host49s2 CIST info
+  enabled            no                      role                 Disabled
+  port id            8.002                   state                discarding
+  external port cost 200000000               admin external cost  0
+  internal port cost 200000000               admin internal cost  0
+  designated root    8.000.44:38:39:FF:AA:11 dsgn external cost   0
+  dsgn regional root 8.000.44:38:39:FF:AA:11 dsgn internal cost   0
+  designated bridge  8.000.44:38:39:FF:AA:11 designated port      0.000
+  admin edge port    yes                     auto edge port       yes
+  oper edge port     yes                     topology change ack  no
+  point-to-point     no                      admin point-to-point auto
+  restricted role    no                      restricted TCN       no
+  port hello time    2                       disputed             no
+  bpdu guard port    yes                     bpdu guard error     no
+  network port       no                      BA inconsistent      no
+  Num TX BPDU        0                       Num TX TCN           0
+  Num RX BPDU        0                       Num RX TCN           0
+  Num Transition FWD 0                       Num Transition BLK   1
+  bpdufilter port    no                     
+  clag ISL           no                      clag ISL Oper UP     no
+  clag role          primary                 clag dual conn mac   0:0:0:0:0:0
+  clag remote portID F.FFF                   clag system mac      44:38:39:ff:aa:11
+  agree: no, agreed: no, forward: no, forwarding: no
+  learn: no, learning: no, proposed: no, proposing: no
+  rcvdMsg: no, rcvdTc: no, reRoot: no, reselect: no
+  selected: yes, fdbFlush: no, tcProp: no, updtInfo: no
+  sync: no, synced: yes, master: no, mastered: no brAssuRcvdInfoWhile: 0s
+  calledFromFlushRoutine: no, infoInternal: no, rcvdTcAck: no
+  rcvdInternal: no, mcheck: no, rcvdBpdu: no, rcvdSTP: no, rcvdRSTP: no
+  rcvdTcn: no, sendRSTP: yes, newInfo: yes, newInfoMsti: yes, up: no
+  fdWhile: 20s, rrWhile: 0s, rbWhile: 0, tcwhile: 0s, rcvdInfoWhile: 0s
+  rcvdInfo: OtherInfo, infoIs: ioDisabled, selectedRole: Disabled
+  edgeDelayWhile: 3s, txCount: 0, rapidAgeingWhile: 0s, speed: 0, duplex: 0
+  Port Info SM: disabled, Port Role Transitition SM: disabled_port
+  Port State Transition SM: discarding, Topo Change SM: inactive
+  Port Receive SM: discard, Port Transmit SM: transmit_init
+  Port Protocol Migration SM: checking_rstp, Bridge Detection SM: edge
+  if_index: 121, name: host49s2, mdelayWhile: 3s, helloWhen: 0s, vlan_bond: 
+
+bridge:host49s3 CIST info
+  enabled            no                      role                 Disabled
+  port id            8.005                   state                discarding
+  external port cost 200000000               admin external cost  0
+  internal port cost 200000000               admin internal cost  0
+  designated root    8.000.44:38:39:FF:AA:11 dsgn external cost   0
+  dsgn regional root 8.000.44:38:39:FF:AA:11 dsgn internal cost   0
+  designated bridge  8.000.44:38:39:FF:AA:11 designated port      0.000
+  admin edge port    yes                     auto edge port       yes
+  oper edge port     yes                     topology change ack  no
+  point-to-point     no                      admin point-to-point auto
+  restricted role    no                      restricted TCN       no
+  port hello time    2                       disputed             no
+  bpdu guard port    yes                     bpdu guard error     no
+  network port       no                      BA inconsistent      no
+  Num TX BPDU        0                       Num TX TCN           0
+  Num RX BPDU        0                       Num RX TCN           0
+  Num Transition FWD 0                       Num Transition BLK   1
+  bpdufilter port    no                     
+  clag ISL           no                      clag ISL Oper UP     no
+  clag role          primary                 clag dual conn mac   0:0:0:0:0:0
+  clag remote portID F.FFF                   clag system mac      44:38:39:ff:aa:11
+  agree: no, agreed: no, forward: no, forwarding: no
+  learn: no, learning: no, proposed: no, proposing: no
+  rcvdMsg: no, rcvdTc: no, reRoot: no, reselect: no
+  selected: yes, fdbFlush: no, tcProp: no, updtInfo: no
+  sync: no, synced: yes, master: no, mastered: no brAssuRcvdInfoWhile: 0s
+  calledFromFlushRoutine: no, infoInternal: no, rcvdTcAck: no
+  rcvdInternal: no, mcheck: no, rcvdBpdu: no, rcvdSTP: no, rcvdRSTP: no
+  rcvdTcn: no, sendRSTP: yes, newInfo: yes, newInfoMsti: yes, up: no
+  fdWhile: 20s, rrWhile: 0s, rbWhile: 0, tcwhile: 0s, rcvdInfoWhile: 0s
+  rcvdInfo: OtherInfo, infoIs: ioDisabled, selectedRole: Disabled
+  edgeDelayWhile: 3s, txCount: 0, rapidAgeingWhile: 0s, speed: 0, duplex: 0
+  Port Info SM: disabled, Port Role Transitition SM: disabled_port
+  Port State Transition SM: discarding, Topo Change SM: inactive
+  Port Receive SM: discard, Port Transmit SM: transmit_init
+  Port Protocol Migration SM: checking_rstp, Bridge Detection SM: edge
+  if_index: 124, name: host49s3, mdelayWhile: 3s, helloWhen: 0s, vlan_bond: 
+
+bridge:host50s0 CIST info
+  enabled            no                      role                 Disabled
+  port id            8.00E                   state                discarding
+  external port cost 200000000               admin external cost  0
+  internal port cost 200000000               admin internal cost  0
+  designated root    8.000.44:38:39:FF:AA:11 dsgn external cost   0
+  dsgn regional root 8.000.44:38:39:FF:AA:11 dsgn internal cost   0
+  designated bridge  8.000.44:38:39:FF:AA:11 designated port      0.000
+  admin edge port    yes                     auto edge port       yes
+  oper edge port     yes                     topology change ack  no
+  point-to-point     no                      admin point-to-point auto
+  restricted role    no                      restricted TCN       no
+  port hello time    2                       disputed             no
+  bpdu guard port    yes                     bpdu guard error     no
+  network port       no                      BA inconsistent      no
+  Num TX BPDU        0                       Num TX TCN           0
+  Num RX BPDU        0                       Num RX TCN           0
+  Num Transition FWD 0                       Num Transition BLK   1
+  bpdufilter port    no                     
+  clag ISL           no                      clag ISL Oper UP     no
+  clag role          primary                 clag dual conn mac   0:0:0:0:0:0
+  clag remote portID F.FFF                   clag system mac      44:38:39:ff:aa:11
+  agree: no, agreed: no, forward: no, forwarding: no
+  learn: no, learning: no, proposed: no, proposing: no
+  rcvdMsg: no, rcvdTc: no, reRoot: no, reselect: no
+  selected: yes, fdbFlush: no, tcProp: no, updtInfo: no
+  sync: no, synced: yes, master: no, mastered: no brAssuRcvdInfoWhile: 0s
+  calledFromFlushRoutine: no, infoInternal: no, rcvdTcAck: no
+  rcvdInternal: no, mcheck: no, rcvdBpdu: no, rcvdSTP: no, rcvdRSTP: no
+  rcvdTcn: no, sendRSTP: yes, newInfo: yes, newInfoMsti: yes, up: no
+  fdWhile: 20s, rrWhile: 0s, rbWhile: 0, tcwhile: 0s, rcvdInfoWhile: 0s
+  rcvdInfo: OtherInfo, infoIs: ioDisabled, selectedRole: Disabled
+  edgeDelayWhile: 3s, txCount: 0, rapidAgeingWhile: 0s, speed: 0, duplex: 0
+  Port Info SM: disabled, Port Role Transitition SM: disabled_port
+  Port State Transition SM: discarding, Topo Change SM: inactive
+  Port Receive SM: discard, Port Transmit SM: transmit_init
+  Port Protocol Migration SM: checking_rstp, Bridge Detection SM: edge
+  if_index: 133, name: host50s0, mdelayWhile: 3s, helloWhen: 0s, vlan_bond: 
+
+bridge:host50s1 CIST info
+  enabled            no                      role                 Disabled
+  port id            8.00F                   state                discarding
+  external port cost 200000000               admin external cost  0
+  internal port cost 200000000               admin internal cost  0
+  designated root    8.000.44:38:39:FF:AA:11 dsgn external cost   0
+  dsgn regional root 8.000.44:38:39:FF:AA:11 dsgn internal cost   0
+  designated bridge  8.000.44:38:39:FF:AA:11 designated port      0.000
+  admin edge port    yes                     auto edge port       yes
+  oper edge port     yes                     topology change ack  no
+  point-to-point     no                      admin point-to-point auto
+  restricted role    no                      restricted TCN       no
+  port hello time    2                       disputed             no
+  bpdu guard port    yes                     bpdu guard error     no
+  network port       no                      BA inconsistent      no
+  Num TX BPDU        0                       Num TX TCN           0
+  Num RX BPDU        0                       Num RX TCN           0
+  Num Transition FWD 0                       Num Transition BLK   1
+  bpdufilter port    no                     
+  clag ISL           no                      clag ISL Oper UP     no
+  clag role          primary                 clag dual conn mac   0:0:0:0:0:0
+  clag remote portID F.FFF                   clag system mac      44:38:39:ff:aa:11
+  agree: no, agreed: no, forward: no, forwarding: no
+  learn: no, learning: no, proposed: no, proposing: no
+  rcvdMsg: no, rcvdTc: no, reRoot: no, reselect: no
+  selected: yes, fdbFlush: no, tcProp: no, updtInfo: no
+  sync: no, synced: yes, master: no, mastered: no brAssuRcvdInfoWhile: 0s
+  calledFromFlushRoutine: no, infoInternal: no, rcvdTcAck: no
+  rcvdInternal: no, mcheck: no, rcvdBpdu: no, rcvdSTP: no, rcvdRSTP: no
+  rcvdTcn: no, sendRSTP: yes, newInfo: yes, newInfoMsti: yes, up: no
+  fdWhile: 20s, rrWhile: 0s, rbWhile: 0, tcwhile: 0s, rcvdInfoWhile: 0s
+  rcvdInfo: OtherInfo, infoIs: ioDisabled, selectedRole: Disabled
+  edgeDelayWhile: 3s, txCount: 0, rapidAgeingWhile: 0s, speed: 0, duplex: 0
+  Port Info SM: disabled, Port Role Transitition SM: disabled_port
+  Port State Transition SM: discarding, Topo Change SM: inactive
+  Port Receive SM: discard, Port Transmit SM: transmit_init
+  Port Protocol Migration SM: checking_rstp, Bridge Detection SM: edge
+  if_index: 134, name: host50s1, mdelayWhile: 3s, helloWhen: 0s, vlan_bond: 
+
+bridge:host50s2 CIST info
+  enabled            no                      role                 Disabled
+  port id            8.010                   state                discarding
+  external port cost 200000000               admin external cost  0
+  internal port cost 200000000               admin internal cost  0
+  designated root    8.000.44:38:39:FF:AA:11 dsgn external cost   0
+  dsgn regional root 8.000.44:38:39:FF:AA:11 dsgn internal cost   0
+  designated bridge  8.000.44:38:39:FF:AA:11 designated port      0.000
+  admin edge port    yes                     auto edge port       yes
+  oper edge port     yes                     topology change ack  no
+  point-to-point     no                      admin point-to-point auto
+  restricted role    no                      restricted TCN       no
+  port hello time    2                       disputed             no
+  bpdu guard port    yes                     bpdu guard error     no
+  network port       no                      BA inconsistent      no
+  Num TX BPDU        0                       Num TX TCN           0
+  Num RX BPDU        0                       Num RX TCN           0
+  Num Transition FWD 0                       Num Transition BLK   1
+  bpdufilter port    no                     
+  clag ISL           no                      clag ISL Oper UP     no
+  clag role          primary                 clag dual conn mac   0:0:0:0:0:0
+  clag remote portID F.FFF                   clag system mac      44:38:39:ff:aa:11
+  agree: no, agreed: no, forward: no, forwarding: no
+  learn: no, learning: no, proposed: no, proposing: no
+  rcvdMsg: no, rcvdTc: no, reRoot: no, reselect: no
+  selected: yes, fdbFlush: no, tcProp: no, updtInfo: no
+  sync: no, synced: yes, master: no, mastered: no brAssuRcvdInfoWhile: 0s
+  calledFromFlushRoutine: no, infoInternal: no, rcvdTcAck: no
+  rcvdInternal: no, mcheck: no, rcvdBpdu: no, rcvdSTP: no, rcvdRSTP: no
+  rcvdTcn: no, sendRSTP: yes, newInfo: yes, newInfoMsti: yes, up: no
+  fdWhile: 20s, rrWhile: 0s, rbWhile: 0, tcwhile: 0s, rcvdInfoWhile: 0s
+  rcvdInfo: OtherInfo, infoIs: ioDisabled, selectedRole: Disabled
+  edgeDelayWhile: 3s, txCount: 0, rapidAgeingWhile: 0s, speed: 0, duplex: 0
+  Port Info SM: disabled, Port Role Transitition SM: disabled_port
+  Port State Transition SM: discarding, Topo Change SM: inactive
+  Port Receive SM: discard, Port Transmit SM: transmit_init
+  Port Protocol Migration SM: checking_rstp, Bridge Detection SM: edge
+  if_index: 135, name: host50s2, mdelayWhile: 3s, helloWhen: 0s, vlan_bond: 
+
+bridge:host50s3 CIST info
+  enabled            no                      role                 Disabled
+  port id            8.011                   state                discarding
+  external port cost 200000000               admin external cost  0
+  internal port cost 200000000               admin internal cost  0
+  designated root    8.000.44:38:39:FF:AA:11 dsgn external cost   0
+  dsgn regional root 8.000.44:38:39:FF:AA:11 dsgn internal cost   0
+  designated bridge  8.000.44:38:39:FF:AA:11 designated port      0.000
+  admin edge port    yes                     auto edge port       yes
+  oper edge port     yes                     topology change ack  no
+  point-to-point     no                      admin point-to-point auto
+  restricted role    no                      restricted TCN       no
+  port hello time    2                       disputed             no
+  bpdu guard port    yes                     bpdu guard error     no
+  network port       no                      BA inconsistent      no
+  Num TX BPDU        0                       Num TX TCN           0
+  Num RX BPDU        0                       Num RX TCN           0
+  Num Transition FWD 0                       Num Transition BLK   1
+  bpdufilter port    no                     
+  clag ISL           no                      clag ISL Oper UP     no
+  clag role          primary                 clag dual conn mac   0:0:0:0:0:0
+  clag remote portID F.FFF                   clag system mac      44:38:39:ff:aa:11
+  agree: no, agreed: no, forward: no, forwarding: no
+  learn: no, learning: no, proposed: no, proposing: no
+  rcvdMsg: no, rcvdTc: no, reRoot: no, reselect: no
+  selected: yes, fdbFlush: no, tcProp: no, updtInfo: no
+  sync: no, synced: yes, master: no, mastered: no brAssuRcvdInfoWhile: 0s
+  calledFromFlushRoutine: no, infoInternal: no, rcvdTcAck: no
+  rcvdInternal: no, mcheck: no, rcvdBpdu: no, rcvdSTP: no, rcvdRSTP: no
+  rcvdTcn: no, sendRSTP: yes, newInfo: yes, newInfoMsti: yes, up: no
+  fdWhile: 20s, rrWhile: 0s, rbWhile: 0, tcwhile: 0s, rcvdInfoWhile: 0s
+  rcvdInfo: OtherInfo, infoIs: ioDisabled, selectedRole: Disabled
+  edgeDelayWhile: 3s, txCount: 0, rapidAgeingWhile: 0s, speed: 0, duplex: 0
+  Port Info SM: disabled, Port Role Transitition SM: disabled_port
+  Port State Transition SM: discarding, Topo Change SM: inactive
+  Port Receive SM: discard, Port Transmit SM: transmit_init
+  Port Protocol Migration SM: checking_rstp, Bridge Detection SM: edge
+  if_index: 136, name: host50s3, mdelayWhile: 3s, helloWhen: 0s, vlan_bond: 
+
+bridge:host51s0 CIST info
+  enabled            no                      role                 Disabled
+  port id            8.007                   state                discarding
+  external port cost 200000000               admin external cost  0
+  internal port cost 200000000               admin internal cost  0
+  designated root    8.000.44:38:39:FF:AA:11 dsgn external cost   0
+  dsgn regional root 8.000.44:38:39:FF:AA:11 dsgn internal cost   0
+  designated bridge  8.000.44:38:39:FF:AA:11 designated port      0.000
+  admin edge port    yes                     auto edge port       yes
+  oper edge port     yes                     topology change ack  no
+  point-to-point     no                      admin point-to-point auto
+  restricted role    no                      restricted TCN       no
+  port hello time    2                       disputed             no
+  bpdu guard port    yes                     bpdu guard error     no
+  network port       no                      BA inconsistent      no
+  Num TX BPDU        0                       Num TX TCN           0
+  Num RX BPDU        0                       Num RX TCN           0
+  Num Transition FWD 0                       Num Transition BLK   1
+  bpdufilter port    no                     
+  clag ISL           no                      clag ISL Oper UP     no
+  clag role          primary                 clag dual conn mac   0:0:0:0:0:0
+  clag remote portID F.FFF                   clag system mac      44:38:39:ff:aa:11
+  agree: no, agreed: no, forward: no, forwarding: no
+  learn: no, learning: no, proposed: no, proposing: no
+  rcvdMsg: no, rcvdTc: no, reRoot: no, reselect: no
+  selected: yes, fdbFlush: no, tcProp: no, updtInfo: no
+  sync: no, synced: yes, master: no, mastered: no brAssuRcvdInfoWhile: 0s
+  calledFromFlushRoutine: no, infoInternal: no, rcvdTcAck: no
+  rcvdInternal: no, mcheck: no, rcvdBpdu: no, rcvdSTP: no, rcvdRSTP: no
+  rcvdTcn: no, sendRSTP: yes, newInfo: yes, newInfoMsti: yes, up: no
+  fdWhile: 20s, rrWhile: 0s, rbWhile: 0, tcwhile: 0s, rcvdInfoWhile: 0s
+  rcvdInfo: OtherInfo, infoIs: ioDisabled, selectedRole: Disabled
+  edgeDelayWhile: 3s, txCount: 0, rapidAgeingWhile: 0s, speed: 0, duplex: 0
+  Port Info SM: disabled, Port Role Transitition SM: disabled_port
+  Port State Transition SM: discarding, Topo Change SM: inactive
+  Port Receive SM: discard, Port Transmit SM: transmit_init
+  Port Protocol Migration SM: checking_rstp, Bridge Detection SM: edge
+  if_index: 126, name: host51s0, mdelayWhile: 3s, helloWhen: 0s, vlan_bond: 
+
+bridge:host51s1 CIST info
+  enabled            no                      role                 Disabled
+  port id            8.006                   state                discarding
+  external port cost 200000000               admin external cost  0
+  internal port cost 200000000               admin internal cost  0
+  designated root    8.000.44:38:39:FF:AA:11 dsgn external cost   0
+  dsgn regional root 8.000.44:38:39:FF:AA:11 dsgn internal cost   0
+  designated bridge  8.000.44:38:39:FF:AA:11 designated port      0.000
+  admin edge port    yes                     auto edge port       yes
+  oper edge port     yes                     topology change ack  no
+  point-to-point     no                      admin point-to-point auto
+  restricted role    no                      restricted TCN       no
+  port hello time    2                       disputed             no
+  bpdu guard port    yes                     bpdu guard error     no
+  network port       no                      BA inconsistent      no
+  Num TX BPDU        0                       Num TX TCN           0
+  Num RX BPDU        0                       Num RX TCN           0
+  Num Transition FWD 0                       Num Transition BLK   1
+  bpdufilter port    no                     
+  clag ISL           no                      clag ISL Oper UP     no
+  clag role          primary                 clag dual conn mac   0:0:0:0:0:0
+  clag remote portID F.FFF                   clag system mac      44:38:39:ff:aa:11
+  agree: no, agreed: no, forward: no, forwarding: no
+  learn: no, learning: no, proposed: no, proposing: no
+  rcvdMsg: no, rcvdTc: no, reRoot: no, reselect: no
+  selected: yes, fdbFlush: no, tcProp: no, updtInfo: no
+  sync: no, synced: yes, master: no, mastered: no brAssuRcvdInfoWhile: 0s
+  calledFromFlushRoutine: no, infoInternal: no, rcvdTcAck: no
+  rcvdInternal: no, mcheck: no, rcvdBpdu: no, rcvdSTP: no, rcvdRSTP: no
+  rcvdTcn: no, sendRSTP: yes, newInfo: yes, newInfoMsti: yes, up: no
+  fdWhile: 20s, rrWhile: 0s, rbWhile: 0, tcwhile: 0s, rcvdInfoWhile: 0s
+  rcvdInfo: OtherInfo, infoIs: ioDisabled, selectedRole: Disabled
+  edgeDelayWhile: 3s, txCount: 0, rapidAgeingWhile: 0s, speed: 0, duplex: 0
+  Port Info SM: disabled, Port Role Transitition SM: disabled_port
+  Port State Transition SM: discarding, Topo Change SM: inactive
+  Port Receive SM: discard, Port Transmit SM: transmit_init
+  Port Protocol Migration SM: checking_rstp, Bridge Detection SM: edge
+  if_index: 125, name: host51s1, mdelayWhile: 3s, helloWhen: 0s, vlan_bond: 
+
+bridge:host51s2 CIST info
+  enabled            no                      role                 Disabled
+  port id            8.009                   state                discarding
+  external port cost 200000000               admin external cost  0
+  internal port cost 200000000               admin internal cost  0
+  designated root    8.000.44:38:39:FF:AA:11 dsgn external cost   0
+  dsgn regional root 8.000.44:38:39:FF:AA:11 dsgn internal cost   0
+  designated bridge  8.000.44:38:39:FF:AA:11 designated port      0.000
+  admin edge port    yes                     auto edge port       yes
+  oper edge port     yes                     topology change ack  no
+  point-to-point     no                      admin point-to-point auto
+  restricted role    no                      restricted TCN       no
+  port hello time    2                       disputed             no
+  bpdu guard port    yes                     bpdu guard error     no
+  network port       no                      BA inconsistent      no
+  Num TX BPDU        0                       Num TX TCN           0
+  Num RX BPDU        0                       Num RX TCN           0
+  Num Transition FWD 0                       Num Transition BLK   1
+  bpdufilter port    no                     
+  clag ISL           no                      clag ISL Oper UP     no
+  clag role          primary                 clag dual conn mac   0:0:0:0:0:0
+  clag remote portID F.FFF                   clag system mac      44:38:39:ff:aa:11
+  agree: no, agreed: no, forward: no, forwarding: no
+  learn: no, learning: no, proposed: no, proposing: no
+  rcvdMsg: no, rcvdTc: no, reRoot: no, reselect: no
+  selected: yes, fdbFlush: no, tcProp: no, updtInfo: no
+  sync: no, synced: yes, master: no, mastered: no brAssuRcvdInfoWhile: 0s
+  calledFromFlushRoutine: no, infoInternal: no, rcvdTcAck: no
+  rcvdInternal: no, mcheck: no, rcvdBpdu: no, rcvdSTP: no, rcvdRSTP: no
+  rcvdTcn: no, sendRSTP: yes, newInfo: yes, newInfoMsti: yes, up: no
+  fdWhile: 20s, rrWhile: 0s, rbWhile: 0, tcwhile: 0s, rcvdInfoWhile: 0s
+  rcvdInfo: OtherInfo, infoIs: ioDisabled, selectedRole: Disabled
+  edgeDelayWhile: 3s, txCount: 0, rapidAgeingWhile: 0s, speed: 0, duplex: 0
+  Port Info SM: disabled, Port Role Transitition SM: disabled_port
+  Port State Transition SM: discarding, Topo Change SM: inactive
+  Port Receive SM: discard, Port Transmit SM: transmit_init
+  Port Protocol Migration SM: checking_rstp, Bridge Detection SM: edge
+  if_index: 128, name: host51s2, mdelayWhile: 3s, helloWhen: 0s, vlan_bond: 
+
+bridge:host51s3 CIST info
+  enabled            no                      role                 Disabled
+  port id            8.008                   state                discarding
+  external port cost 200000000               admin external cost  0
+  internal port cost 200000000               admin internal cost  0
+  designated root    8.000.44:38:39:FF:AA:11 dsgn external cost   0
+  dsgn regional root 8.000.44:38:39:FF:AA:11 dsgn internal cost   0
+  designated bridge  8.000.44:38:39:FF:AA:11 designated port      0.000
+  admin edge port    yes                     auto edge port       yes
+  oper edge port     yes                     topology change ack  no
+  point-to-point     no                      admin point-to-point auto
+  restricted role    no                      restricted TCN       no
+  port hello time    2                       disputed             no
+  bpdu guard port    yes                     bpdu guard error     no
+  network port       no                      BA inconsistent      no
+  Num TX BPDU        0                       Num TX TCN           0
+  Num RX BPDU        0                       Num RX TCN           0
+  Num Transition FWD 0                       Num Transition BLK   1
+  bpdufilter port    no                     
+  clag ISL           no                      clag ISL Oper UP     no
+  clag role          primary                 clag dual conn mac   0:0:0:0:0:0
+  clag remote portID F.FFF                   clag system mac      44:38:39:ff:aa:11
+  agree: no, agreed: no, forward: no, forwarding: no
+  learn: no, learning: no, proposed: no, proposing: no
+  rcvdMsg: no, rcvdTc: no, reRoot: no, reselect: no
+  selected: yes, fdbFlush: no, tcProp: no, updtInfo: no
+  sync: no, synced: yes, master: no, mastered: no brAssuRcvdInfoWhile: 0s
+  calledFromFlushRoutine: no, infoInternal: no, rcvdTcAck: no
+  rcvdInternal: no, mcheck: no, rcvdBpdu: no, rcvdSTP: no, rcvdRSTP: no
+  rcvdTcn: no, sendRSTP: yes, newInfo: yes, newInfoMsti: yes, up: no
+  fdWhile: 20s, rrWhile: 0s, rbWhile: 0, tcwhile: 0s, rcvdInfoWhile: 0s
+  rcvdInfo: OtherInfo, infoIs: ioDisabled, selectedRole: Disabled
+  edgeDelayWhile: 3s, txCount: 0, rapidAgeingWhile: 0s, speed: 0, duplex: 0
+  Port Info SM: disabled, Port Role Transitition SM: disabled_port
+  Port State Transition SM: discarding, Topo Change SM: inactive
+  Port Receive SM: discard, Port Transmit SM: transmit_init
+  Port Protocol Migration SM: checking_rstp, Bridge Detection SM: edge
+  if_index: 127, name: host51s3, mdelayWhile: 3s, helloWhen: 0s, vlan_bond: 
+
+bridge:host52s0 CIST info
+  enabled            no                      role                 Disabled
+  port id            8.00C                   state                discarding
+  external port cost 200000000               admin external cost  0
+  internal port cost 200000000               admin internal cost  0
+  designated root    8.000.44:38:39:FF:AA:11 dsgn external cost   0
+  dsgn regional root 8.000.44:38:39:FF:AA:11 dsgn internal cost   0
+  designated bridge  8.000.44:38:39:FF:AA:11 designated port      0.000
+  admin edge port    yes                     auto edge port       yes
+  oper edge port     yes                     topology change ack  no
+  point-to-point     no                      admin point-to-point auto
+  restricted role    no                      restricted TCN       no
+  port hello time    2                       disputed             no
+  bpdu guard port    yes                     bpdu guard error     no
+  network port       no                      BA inconsistent      no
+  Num TX BPDU        0                       Num TX TCN           0
+  Num RX BPDU        0                       Num RX TCN           0
+  Num Transition FWD 0                       Num Transition BLK   1
+  bpdufilter port    no                     
+  clag ISL           no                      clag ISL Oper UP     no
+  clag role          primary                 clag dual conn mac   0:0:0:0:0:0
+  clag remote portID F.FFF                   clag system mac      44:38:39:ff:aa:11
+  agree: no, agreed: no, forward: no, forwarding: no
+  learn: no, learning: no, proposed: no, proposing: no
+  rcvdMsg: no, rcvdTc: no, reRoot: no, reselect: no
+  selected: yes, fdbFlush: no, tcProp: no, updtInfo: no
+  sync: no, synced: yes, master: no, mastered: no brAssuRcvdInfoWhile: 0s
+  calledFromFlushRoutine: no, infoInternal: no, rcvdTcAck: no
+  rcvdInternal: no, mcheck: no, rcvdBpdu: no, rcvdSTP: no, rcvdRSTP: no
+  rcvdTcn: no, sendRSTP: yes, newInfo: yes, newInfoMsti: yes, up: no
+  fdWhile: 20s, rrWhile: 0s, rbWhile: 0, tcwhile: 0s, rcvdInfoWhile: 0s
+  rcvdInfo: OtherInfo, infoIs: ioDisabled, selectedRole: Disabled
+  edgeDelayWhile: 3s, txCount: 0, rapidAgeingWhile: 0s, speed: 0, duplex: 0
+  Port Info SM: disabled, Port Role Transitition SM: disabled_port
+  Port State Transition SM: discarding, Topo Change SM: inactive
+  Port Receive SM: discard, Port Transmit SM: transmit_init
+  Port Protocol Migration SM: checking_rstp, Bridge Detection SM: edge
+  if_index: 131, name: host52s0, mdelayWhile: 3s, helloWhen: 0s, vlan_bond: 
+
+bridge:host52s1 CIST info
+  enabled            no                      role                 Disabled
+  port id            8.00D                   state                discarding
+  external port cost 200000000               admin external cost  0
+  internal port cost 200000000               admin internal cost  0
+  designated root    8.000.44:38:39:FF:AA:11 dsgn external cost   0
+  dsgn regional root 8.000.44:38:39:FF:AA:11 dsgn internal cost   0
+  designated bridge  8.000.44:38:39:FF:AA:11 designated port      0.000
+  admin edge port    yes                     auto edge port       yes
+  oper edge port     yes                     topology change ack  no
+  point-to-point     no                      admin point-to-point auto
+  restricted role    no                      restricted TCN       no
+  port hello time    2                       disputed             no
+  bpdu guard port    yes                     bpdu guard error     no
+  network port       no                      BA inconsistent      no
+  Num TX BPDU        0                       Num TX TCN           0
+  Num RX BPDU        0                       Num RX TCN           0
+  Num Transition FWD 0                       Num Transition BLK   1
+  bpdufilter port    no                     
+  clag ISL           no                      clag ISL Oper UP     no
+  clag role          primary                 clag dual conn mac   0:0:0:0:0:0
+  clag remote portID F.FFF                   clag system mac      44:38:39:ff:aa:11
+  agree: no, agreed: no, forward: no, forwarding: no
+  learn: no, learning: no, proposed: no, proposing: no
+  rcvdMsg: no, rcvdTc: no, reRoot: no, reselect: no
+  selected: yes, fdbFlush: no, tcProp: no, updtInfo: no
+  sync: no, synced: yes, master: no, mastered: no brAssuRcvdInfoWhile: 0s
+  calledFromFlushRoutine: no, infoInternal: no, rcvdTcAck: no
+  rcvdInternal: no, mcheck: no, rcvdBpdu: no, rcvdSTP: no, rcvdRSTP: no
+  rcvdTcn: no, sendRSTP: yes, newInfo: yes, newInfoMsti: yes, up: no
+  fdWhile: 20s, rrWhile: 0s, rbWhile: 0, tcwhile: 0s, rcvdInfoWhile: 0s
+  rcvdInfo: OtherInfo, infoIs: ioDisabled, selectedRole: Disabled
+  edgeDelayWhile: 3s, txCount: 0, rapidAgeingWhile: 0s, speed: 0, duplex: 0
+  Port Info SM: disabled, Port Role Transitition SM: disabled_port
+  Port State Transition SM: discarding, Topo Change SM: inactive
+  Port Receive SM: discard, Port Transmit SM: transmit_init
+  Port Protocol Migration SM: checking_rstp, Bridge Detection SM: edge
+  if_index: 132, name: host52s1, mdelayWhile: 3s, helloWhen: 0s, vlan_bond: 
+
+bridge:host52s2 CIST info
+  enabled            no                      role                 Disabled
+  port id            8.00A                   state                discarding
+  external port cost 200000000               admin external cost  0
+  internal port cost 200000000               admin internal cost  0
+  designated root    8.000.44:38:39:FF:AA:11 dsgn external cost   0
+  dsgn regional root 8.000.44:38:39:FF:AA:11 dsgn internal cost   0
+  designated bridge  8.000.44:38:39:FF:AA:11 designated port      0.000
+  admin edge port    yes                     auto edge port       yes
+  oper edge port     yes                     topology change ack  no
+  point-to-point     no                      admin point-to-point auto
+  restricted role    no                      restricted TCN       no
+  port hello time    2                       disputed             no
+  bpdu guard port    yes                     bpdu guard error     no
+  network port       no                      BA inconsistent      no
+  Num TX BPDU        0                       Num TX TCN           0
+  Num RX BPDU        0                       Num RX TCN           0
+  Num Transition FWD 0                       Num Transition BLK   1
+  bpdufilter port    no                     
+  clag ISL           no                      clag ISL Oper UP     no
+  clag role          primary                 clag dual conn mac   0:0:0:0:0:0
+  clag remote portID F.FFF                   clag system mac      44:38:39:ff:aa:11
+  agree: no, agreed: no, forward: no, forwarding: no
+  learn: no, learning: no, proposed: no, proposing: no
+  rcvdMsg: no, rcvdTc: no, reRoot: no, reselect: no
+  selected: yes, fdbFlush: no, tcProp: no, updtInfo: no
+  sync: no, synced: yes, master: no, mastered: no brAssuRcvdInfoWhile: 0s
+  calledFromFlushRoutine: no, infoInternal: no, rcvdTcAck: no
+  rcvdInternal: no, mcheck: no, rcvdBpdu: no, rcvdSTP: no, rcvdRSTP: no
+  rcvdTcn: no, sendRSTP: yes, newInfo: yes, newInfoMsti: yes, up: no
+  fdWhile: 20s, rrWhile: 0s, rbWhile: 0, tcwhile: 0s, rcvdInfoWhile: 0s
+  rcvdInfo: OtherInfo, infoIs: ioDisabled, selectedRole: Disabled
+  edgeDelayWhile: 3s, txCount: 0, rapidAgeingWhile: 0s, speed: 0, duplex: 0
+  Port Info SM: disabled, Port Role Transitition SM: disabled_port
+  Port State Transition SM: discarding, Topo Change SM: inactive
+  Port Receive SM: discard, Port Transmit SM: transmit_init
+  Port Protocol Migration SM: checking_rstp, Bridge Detection SM: edge
+  if_index: 129, name: host52s2, mdelayWhile: 3s, helloWhen: 0s, vlan_bond: 
+
+bridge:host52s3 CIST info
+  enabled            no                      role                 Disabled
+  port id            8.00B                   state                discarding
+  external port cost 200000000               admin external cost  0
+  internal port cost 200000000               admin internal cost  0
+  designated root    8.000.44:38:39:FF:AA:11 dsgn external cost   0
+  dsgn regional root 8.000.44:38:39:FF:AA:11 dsgn internal cost   0
+  designated bridge  8.000.44:38:39:FF:AA:11 designated port      0.000
+  admin edge port    yes                     auto edge port       yes
+  oper edge port     yes                     topology change ack  no
+  point-to-point     no                      admin point-to-point auto
+  restricted role    no                      restricted TCN       no
+  port hello time    2                       disputed             no
+  bpdu guard port    yes                     bpdu guard error     no
+  network port       no                      BA inconsistent      no
+  Num TX BPDU        0                       Num TX TCN           0
+  Num RX BPDU        0                       Num RX TCN           0
+  Num Transition FWD 0                       Num Transition BLK   1
+  bpdufilter port    no                     
+  clag ISL           no                      clag ISL Oper UP     no
+  clag role          primary                 clag dual conn mac   0:0:0:0:0:0
+  clag remote portID F.FFF                   clag system mac      44:38:39:ff:aa:11
+  agree: no, agreed: no, forward: no, forwarding: no
+  learn: no, learning: no, proposed: no, proposing: no
+  rcvdMsg: no, rcvdTc: no, reRoot: no, reselect: no
+  selected: yes, fdbFlush: no, tcProp: no, updtInfo: no
+  sync: no, synced: yes, master: no, mastered: no brAssuRcvdInfoWhile: 0s
+  calledFromFlushRoutine: no, infoInternal: no, rcvdTcAck: no
+  rcvdInternal: no, mcheck: no, rcvdBpdu: no, rcvdSTP: no, rcvdRSTP: no
+  rcvdTcn: no, sendRSTP: yes, newInfo: yes, newInfoMsti: yes, up: no
+  fdWhile: 20s, rrWhile: 0s, rbWhile: 0, tcwhile: 0s, rcvdInfoWhile: 0s
+  rcvdInfo: OtherInfo, infoIs: ioDisabled, selectedRole: Disabled
+  edgeDelayWhile: 3s, txCount: 0, rapidAgeingWhile: 0s, speed: 0, duplex: 0
+  Port Info SM: disabled, Port Role Transitition SM: disabled_port
+  Port State Transition SM: discarding, Topo Change SM: inactive
+  Port Receive SM: discard, Port Transmit SM: transmit_init
+  Port Protocol Migration SM: checking_rstp, Bridge Detection SM: edge
+  if_index: 130, name: host52s3, mdelayWhile: 3s, helloWhen: 0s, vlan_bond: 
+
+bridge:peer1 CIST info
+  enabled            yes                     role                 Designated
+  port id            8.001                   state                forwarding
+  external port cost 1000                    admin external cost  0
+  internal port cost 1000                    admin internal cost  0
+  designated root    8.000.44:38:39:FF:AA:11 dsgn external cost   0
+  dsgn regional root 8.000.44:38:39:FF:AA:11 dsgn internal cost   0
+  designated bridge  8.000.44:38:39:FF:AA:11 designated port      8.001
+  admin edge port    yes                     auto edge port       yes
+  oper edge port     yes                     topology change ack  no
+  point-to-point     yes                     admin point-to-point auto
+  restricted role    no                      restricted TCN       no
+  port hello time    2                       disputed             no
+  bpdu guard port    no                      bpdu guard error     no
+  network port       no                      BA inconsistent      no
+  Num TX BPDU        781852                  Num TX TCN           0
+  Num RX BPDU        0                       Num RX TCN           0
+  Num Transition FWD 1                       Num Transition BLK   0
+  bpdufilter port    no                     
+  clag ISL           yes                     clag ISL Oper UP     no
+  clag role          primary                 clag dual conn mac   0:0:0:0:0:0
+  clag remote portID F.FFF                   clag system mac      44:38:39:ff:aa:11
+  agree: yes, agreed: yes, forward: yes, forwarding: yes
+  learn: yes, learning: yes, proposed: no, proposing: no
+  rcvdMsg: no, rcvdTc: no, reRoot: no, reselect: no
+  selected: yes, fdbFlush: no, tcProp: no, updtInfo: no
+  sync: no, synced: yes, master: no, mastered: no brAssuRcvdInfoWhile: 0s
+  calledFromFlushRoutine: no, infoInternal: no, rcvdTcAck: no
+  rcvdInternal: no, mcheck: no, rcvdBpdu: no, rcvdSTP: no, rcvdRSTP: no
+  rcvdTcn: no, sendRSTP: yes, newInfo: no, newInfoMsti: no, up: yes
+  fdWhile: 0s, rrWhile: 0s, rbWhile: 0, tcwhile: 0s, rcvdInfoWhile: 0s
+  rcvdInfo: OtherInfo, infoIs: ioMine, selectedRole: Designated
+  edgeDelayWhile: 0s, txCount: 0, rapidAgeingWhile: 0s, speed: 20000, duplex: 1
+  Port Info SM: current, Port Role Transitition SM: designated_port
+  Port State Transition SM: forwarding, Topo Change SM: learning
+  Port Receive SM: discard, Port Transmit SM: idle
+  Port Protocol Migration SM: sensing, Bridge Detection SM: edge
+  if_index: 119, name: peer1, mdelayWhile: 0s, helloWhen: 1s, vlan_bond: 
+
+
