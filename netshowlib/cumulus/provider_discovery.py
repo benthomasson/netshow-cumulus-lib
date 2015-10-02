@@ -8,6 +8,7 @@ except ImportError:
     common_mod = None
 import re
 
+
 def check():
     """
     Cumulus Provider Check
@@ -22,7 +23,7 @@ def check():
         for _line in _distro_info:
             if _line.startswith('DISTRIB_ID'):
                 vendor_name = _line.split('=')[1]
-        if vendor_name and re.search('cumulus networks', vendor_name.lower()):
+        if vendor_name and re.search('cumulus', vendor_name.lower()):
             return 'cumulus'
     except IOError:
         return None
