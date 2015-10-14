@@ -1,6 +1,6 @@
-Linux Provider API - Netshow Library
-====================================
+Cumulus Linux Provider API - Netshow Library
+=============================================
 
 .. toctree::
 
-    netshowlib.linux
+    netshowlib.cumulus

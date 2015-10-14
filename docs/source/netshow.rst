@@ -1,6 +1,6 @@
-Linux Provider API - Netshow App
-===============
+Cumulus Linux Provider API - Netshow App
+============================================
 
 .. toctree::
 
-    netshow.linux
+    netshow.cumulus
